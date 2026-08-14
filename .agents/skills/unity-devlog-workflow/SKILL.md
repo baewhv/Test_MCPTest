@@ -3,20 +3,20 @@ name: unity-devlog-workflow
 description: >-
   Unity MCP를 이용한 작업(씬 편집, 스크립트 작성, 테스트 등)을 수행하고, 
   작업 결과를 Git에 작업 내역(커밋 및 푸시)으로 자동 기록하며, 
-  Notion "학습일지" 캘린더 데이터베이스에 당일 작업 일지를 등록/관리하는 표준 워크플로우를 안내할 때 사용합니다.
+  Notion "학습일지" 캘린더 데이터베이스에 빈 일지 페이지 생성 및 작업 종료 시 비교/피드백을 수행하는 표준 워크플로우를 안내할 때 사용합니다.
 ---
 
-# Unity MCP 기반 개발 및 Git / Notion 일지 기록 워크플로우
+# Unity MCP 기반 개발 및 Git / Notion 일지 관리 워크플로우
 
-이 스킬은 Unity 작업을 `unityMCP` 도구로 진행한 뒤, 작업 결과와 진행 내역을 Git 작업 내역(커밋 및 푸시)으로 자동 반영하고 Notion "학습일지" 캘린더에 일지를 체계적으로 관리하는 표준 절차를 정의합니다.
+이 스킬은 Unity 작업을 `unityMCP` 도구로 진행한 뒤, 작업 결과와 진행 내역을 Git 작업 내역(커밋 및 푸시)으로 자동 반영하고, Notion "학습일지" 캘린더에 일지 페이지를 생성하여 작업 종료 시 사용자가 작성한 일지를 검토·피드백하는 표준 절차를 정의합니다.
 
 ---
 
 ## 1. 전체 워크플로우 요약
 
 ```
-[1단계: Unity 작업] -> [2단계: 작업 검증] -> [3단계: Git 자동 커밋/푸시] -> [4단계: Notion 학습일지 등록]
-   (unityMCP)          (read_console / tests)     (에이전트 자율 관리)             (notion MCP 중복 확인 후)
+[1단계: Unity 작업] ➔ [2단계: 작업 검증] ➔ [3단계: Git 자동 커밋/푸시] ➔ [4단계: Notion 빈 일지 페이지 생성] ➔ [5단계: 작업 종료 시 일지 비교 및 1회 피드백]
+   (unityMCP)          (read_console)            (에이전트 자율 관리)           (당일 중복 확인 후 생성, 초안 X)          (빈 내용 권유 or 토글 피드백)
 ```
 
 ---
@@ -25,37 +25,44 @@ description: >-
 
 ### 1단계: Unity MCP 작업 수행
 - `unityMCP` 도구를 활용하여 요청된 기능(스크립트 작성, 게임오브젝트 배치, 컴포넌트 추가/수정, 머티리얼 설정 등)을 수행합니다.
-- 주요 사용 도구:
-  - 스크립트 생성/수정: `create_script`, `manage_script`, `apply_text_edits`
-  - 게임오브젝트/컴포넌트: `manage_gameobject`, `manage_components`, `find_gameobjects`
-  - 씬/에셋 관리: `manage_scene`, `manage_asset`, `manage_material`
-  - 툴/에디터 제어: `execute_code`, `execute_menu_item`
+- 주요 사용 도구: `create_script`, `manage_script`, `apply_text_edits`, `manage_gameobject`, `manage_components`, `find_gameobjects`, `manage_scene` 등.
 
 ### 2단계: 결과 및 콘솔 검증
-- 작업 후 Unity 콘솔 에러를 확인하여 작업 안전성을 검증합니다.
-- 콘솔 확인: `unityMCP`의 `read_console` (action: "get", types: ["error", "warning"])
-- 스크립트 컴파일 오류 또는 런타임 에러가 없는지 확인합니다.
+- 작업 후 `unityMCP`의 `read_console` (action: "get", types: ["error", "warning"])을 호출하여 컴파일/런타임 에러가 없는지 안전성을 검증합니다.
 
 ### 3단계: Git 작업 내역 자동 반영 (에이전트 자율 위임)
-- 에이전트가 작업 변경 사항(`git status`, `git diff`)을 분석하여 논리적 단위로 스테이징 및 커밋합니다.
-- Conventional Commits 형식(`feat`, `fix`, `chore`, `docs` 등)으로 명확한 커밋 메시지를 작성합니다.
-- 로컬 커밋 완료 후 원격 저장소(`origin/main`)로 `git push`까지 에이전트가 주도적으로 수행합니다.
+- 에이전트가 작업 변경 사항(`git status`, `git diff`)을 분석하여 Conventional Commits 형식(`feat`, `fix`, `chore`, `docs` 등)으로 논리적 단위의 분할 커밋을 생성합니다.
+- 커밋 완료 후 원격 저장소(`origin/main`)로 `git push`까지 에이전트가 자율적으로 완료합니다.
 - 상세 규칙: [Git 커밋 가이드](./references/git_conventions.md) 참조
 
-### 4단계: Notion "학습일지" 캘린더 등록 규칙
-- **데이터베이스**: `학습일지` (`13cc49b1-3a07-814e-b7b5-cf14b64ca1ee`)
+### 4단계: Notion "학습일지" 빈 페이지 생성 규칙
+- **대상 데이터베이스**: `학습일지` (`13cc49b1-3a07-814e-b7b5-cf14b64ca1ee`)
 - **제목 형식**: `[YYYY-MM-DD] 작업 기록` (예: `[2026-08-14] 작업 기록`)
-- **분류 속성**: `일지`
-- **날짜 속성 (Date)**: 작업 당일 날짜 (`YYYY-MM-DD`)
-- **중복 방지 규칙**:
-  - 일지 등록 전 Notion 검색(`API-post-search` 또는 `API-query-data-source`)으로 당일 날짜의 `[YYYY-MM-DD] 작업 기록` 페이지가 이미 존재하는지 확인합니다.
-  - **이미 존재하는 경우**: 새 페이지를 추가로 생성하지 않습니다 (필요 시 기존 페이지 본문에 추가/업데이트).
-  - **존재하지 않는 경우**: 새 일지 페이지를 생성하고 상세 작업 내역 마크다운을 작성합니다.
-- 상세 템플릿: [Notion 일지 템플릿 문서](./references/notion_template.md) 참조
+- **속성 설정**:
+  - `Date`: 작업 당일 날짜 (`YYYY-MM-DD`)
+  - `분류`: `일지` (Select)
+- **중복 방지 및 초안 작성 금지 규칙**:
+  1. 작업 시작/진행 시 `API-post-search`로 당일의 `[YYYY-MM-DD] 작업 기록` 페이지가 이미 존재하는지 확인합니다.
+  2. **이미 존재하는 경우**: 새 페이지를 생성하지 않습니다.
+  3. **존재하지 않는 경우**: `API-post-page`를 호출하여 **빈 페이지(본문 없이 제목/속성만)**를 생성합니다.
+  4. ⚠️ **에이전트는 일지 페이지의 초안(본문)을 직접 작성하지 않습니다.** (사용자가 직접 학습/작업 내용을 기록하도록 비워둠)
+
+### 5단계: 작업 종료 시 일지 검토 및 피드백 규칙
+- **트리거 시점**: 사용자가 "작업 종료", "오늘 작업 마무리", "여기까지 할게요" 등 종료 의사를 표현하거나 날짜가 바뀌었을 때 수행합니다.
+- **검토 절차**:
+  1. 당일 `[YYYY-MM-DD] 작업 기록` 페이지의 본문 내용을 `API-retrieve-page-markdown` 또는 `API-get-block-children`으로 조회합니다.
+  2. **3-1. 빈 내용인 경우**:
+     - 사용자에게 오늘 진행한 작업에 대해 일지 작성을 권유하는 메시지를 전달합니다.
+  3. **3-2. 내용이 작성되어 있는 경우**:
+     - 사용자가 작성한 일지 내용과 당일 실제 Git 변경 내역(커밋 로그, 수정된 스크립트/오브젝트)을 비교 분석합니다.
+     - 빠지거나 보완하면 좋을 기술적 세부사항이 있다면, Notion 페이지 하단에 **Toggle(토글 블록)**을 추가하여 간단한 피드백을 첨부합니다.
+- **피드백 횟수 제한**:
+  - 피드백은 사용자의 별도 요청이 없다면 **단 1회만** 진행합니다.
+  - 이미 페이지 내에 피드백 토글 블록이 존재하거나 피드백을 완료한 경우 추가로 피드백을 작성하지 않습니다.
 
 ---
 
 ## 3. 참조 문서
 - [Git 커밋 가이드](./references/git_conventions.md)
-- [Notion 일지 템플릿 및 API 구조](./references/notion_template.md)
+- [Notion 일지 템플릿 및 피드백 규격](./references/notion_template.md)
 - [Unity MCP 도구 활용 가이드](./references/unity_mcp_guide.md)
