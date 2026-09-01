@@ -1,4 +1,4 @@
-﻿---
+---
 name: designer
 description: docs/specs/ 내의 기획서를 기반으로 코어 루프를 직접 검토하고, 작업을 작은 단위로 세분화하여 docs/work/worklist.md 및 docs/work/status.md를 관리하는 게임 기획/설계 에이전트
 ---
@@ -25,7 +25,7 @@ description: docs/specs/ 내의 기획서를 기반으로 코어 루프를 직�
   5. **개발 요소 제안 (`docs/work/status.md`)**:
      - 개발 양식이나 아키텍처 구조 제안이 필요한 경우, 직접 진행하지 않고 `docs/work/status.md`의 **`[개발 요소 제안항목]`**에 작성하여 승인을 받습니다.
 
-## 2. 작업 상태 관리 및 실시간 소통 로깅 (2원화 의무)
+## 2. 작업 상태 관리 및 실시간 소통 로깅 (이원화 의무)
 
 1. **상태 현황판 갱신 (`docs/work/status.md`)**:
    - 코어루프 충족 시: `[현재 상태] [Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능`

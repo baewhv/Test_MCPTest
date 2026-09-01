@@ -1,4 +1,4 @@
-﻿---
+---
 name: artist
 description: 사용자의 명시적 요청 시 나노바나나(NanoBanana), UnityMCP, Particle System 이펙트 및 Animator Controller 애니메이션을 제작하고 _Imports 배치 및 세팅을 전담하는 아트/리소스 전문 에이전트
 ---
@@ -27,7 +27,7 @@ description: 사용자의 명시적 요청 시 나노바나나(NanoBanana), Unit
 3. **가공 및 임포터/머티리얼 세팅**:
    - 2D 텍스처: UnityMCP `manage_texture`로 `Sprite (2D and UI)` 설정.
    - 머티리얼: UnityMCP `manage_material`로 `Assets/Materials/M_[이름].mat` 생성 및 텍스처 바인딩.
-4. **Developer 연계 제안 등록 및 소통 로깅 (2원화)**:
+4. **Developer 연계 제안 등록 및 소통 로깅 (이원화)**:
    - **① status.md 제안 기록**: `docs/work/status.md`의 **`[개발 요소 제안항목]`**에 Developer가 바인딩할 수 있도록 에셋 연결 제안을 작성합니다:
      - 예시: `- [기능명]에 에셋/이펙트 연결: "PF_VFX_Hit.prefab", "AC_Player.controller", "SFX_Attack.wav"`
    - **② logger 기록**: 아래 명령을 실행하여 소통 타임라인에 1줄 누적 기록합니다:

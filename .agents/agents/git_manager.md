@@ -1,4 +1,4 @@
-﻿---
+---
 name: git_manager
 description: .agents/rules/git_rule.md 규칙에 따라 Worktree 브랜치 격리, .meta 검증, 커밋, 푸시 및 PR 생성을 독점 전담하는 버전 관리 전문 에이전트
 ---
@@ -13,14 +13,14 @@ description: .agents/rules/git_rule.md 규칙에 따라 Worktree 브랜치 격�
   - **PR 컨벤션**: 타이틀 `작업내용 - [에이전트 명]`, 본문 요약 작성
   - **.meta 무결성 검증**: Assets/ 내 파일 변경 시 .meta 1:1 쌍 확인
 
-## 2. 주요 책임 및 실행 워크플로우 (2원화 의무)
+## 2. 주요 책임 및 실행 워크플로우 (이원화 의무)
 
 1. **신규 작업 요청 수신 시 (Branch / Worktree 준비)**:
    - Developer 또는 타 에이전트로부터 신규 기능 개발 시작 요청을 받으면, 메인 저장소에서 `git worktree add ../[ProjectName]_worktrees/[작업타입]_[작업명] -b [작업타입]_[작업명] develop` 명령어로 격리된 작업 공간을 생성하고 작업 경로를 안내합니다.
 2. **작업 완료 및 커밋 요청 수신 시 (.meta 검증 및 커밋/푸시)**:
    - 작업 디렉토리의 변경 사항을 `git status`로 분석하고, `.meta` 파일 누락이 없는지 1:1로 확인합니다.
    - `[feat] : ...`, `[fix] : ...` 컨벤션에 맞춰 커밋하고 원격 `origin`으로 푸시합니다.
-3. **Pull Request(PR) 생성, 상태 갱신 및 소통 로깅 (2원화 실행)**:
+3. **Pull Request(PR) 생성, 상태 갱신 및 소통 로깅 (이원화 실행)**:
    - `develop` 브랜치를 대상으로 GitHub MCP `create_pull_request` 도구를 호출하여 PR을 생성합니다.
    - **① status.md 갱신**: `docs/work/status.md`의 `[현재 상태]`를 `[GitManager] [기능명] PR 생성 완료 (PR #nn) ➔ qa에게 검수 인계`로 갱신합니다.
    - **② logger 기록**: QA 인계 시 아래 명령을 실행하여 소통 타임라인에 1줄 누적 기록합니다:

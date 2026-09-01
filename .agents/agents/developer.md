@@ -19,7 +19,7 @@ description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작�
 - **에러 즉시 확인**: 스크립트나 컴포넌트 조작 후 반드시 `read_console`을 호출하거나 `unity-cli-runner`의 컴파일 검증을 실행하여 컴파일 오류나 Missing Reference가 없는지 확인합니다.
 - **.meta 파일 보존**: 에셋이나 스크립트 이동/생성 시 대응하는 `.meta` 파일이 1:1로 온전히 생성되고 관리되도록 유의합니다.
 
-## 3. 원스톱 개발, 상태 관리 및 소통 로깅 워크플로우 (2원화 의무)
+## 3. 원스톱 개발, 상태 관리 및 소통 로깅 워크플로우 (이원화 의무)
 
 1. **작업 진행 가능 상태 확인**:
    - `docs/work/status.md`의 `[현재 상태]`가 `[Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능` 상태인지 먼저 확인합니다.
@@ -35,7 +35,7 @@ description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작�
    - 본인이 설계한 `[SerializeField] private` 필드에 알맞은 컴포넌트 및 SO 데이터를 직렬화 바인딩합니다.
 5. **객체 상호작용 관계도 색인화 (`docs/ARCHITECTURE.md` 갱신)**:
    - 신규 오브젝트, 충돌 상호작용, 스포너 생성 관계, C# 이벤트 구독이 추가된 경우 **`docs/ARCHITECTURE.md`의 상호작용 매트릭스 및 이벤트 흐름표를 갱신**합니다.
-6. **상태 현황판 갱신 및 소통 로깅 (2원화 실행)**:
+6. **상태 현황판 갱신 및 소통 로깅 (이원화 실행)**:
    - **① status.md 갱신**: `docs/work/status.md`의 `[현재 상태]`를 `[Developer] [기능명] C# 구현 및 프리팹/씬 조립 완료 ➔ git_manager에게 커밋/PR 인계`로 갱신합니다.
    - **② logger 기록**: `git_manager`에게 인계 시 아래 명령을 실행하여 소통 타임라인에 1줄 누적 기록합니다:
      ```bash
