@@ -1,14 +1,22 @@
-﻿# 기획서 등록 가이드 및 템플릿 (Game Specifications)
+﻿# 기획서 등록 가이드 및 사용자 원본 보관소 (User Specifications)
 
-이 폴더는 사용자가 작성한 게임 기획서(GDD, 시스템 명세서, 단위 기능 기획서 등)를 등록하는 **기획서 전용 투입 디렉토리(Drop-in Directory)**입니다.
+이 폴더는 사용자가 직접 작성한 게임 기획서(GDD, 시스템 명세서, 단위 기능 기획서 등)를 보관하는 **사용자 전용 원본 디렉토리(User Read-Only Directory)**입니다.
+
+> [!IMPORTANT]
+> **에이전트 수정 절대 금지 (Strict Read-Only by Agents)**
+> `Designer`를 포함한 모든 AI 에이전트는 이 폴더(`docs/specs/`) 내의 사용자 원본 문서를 **절대로 수정하거나 덮어쓸 수 없으며, 오직 '읽기(Read-Only)'만 수행**합니다.
 
 ---
 
-## 1. 사용 방법 (Workflow)
-1. 새로운 기능이나 게임 시스템을 기획할 때, 이 폴더(`docs/specs/`) 내에 마크다운(`.md`) 파일 또는 텍스트 문서로 기획서를 추가합니다.
-   - 파일명 예시: `01_player_movement.md`, `02_inventory_system.md`, `03_battle_loop.md`
-2. 채팅창에 **"기획서 분석해줘"** 또는 **"새로운 기획서 확인해줘"**라고 요청하면, `Designer` 에이전트가 이 폴더의 문서를 자동으로 탐색하여 분석을 시작합니다.
-3. `Designer`는 코어 루프 구현 가능 여부를 검토한 후, `docs/work/worklist.md`에 개발자가 구현할 작은 단위 태스크로 자동 세분화합니다.
+## 1. 사용 방법 및 워크플로우 (Workflow)
+
+1. 사용자가 이 폴더(`docs/specs/`)에 새로운 기획서 문서(`.md`, `.pdf`, 텍스트 등)를 작성하여 넣습니다.
+   - 예시: `01_player_movement.md`, `02_inventory_system.md`
+2. 채팅창에 **"기획서 분석해줘"**라고 요청하면 `Designer` 에이전트가 문서를 읽고 분석합니다.
+3. **산출물 및 의견의 완전한 분리 보관**:
+   - **사용자 기획서 (`docs/specs/`)**: **원본 100% 보존 (에이전트 수정 일절 없음)**
+   - **기획 부족/보완 필요 항목**: [`docs/work/status.md`](../work/status.md)의 `[기획 필요항목]`에만 기록
+   - **AI 작업 세분화 결과**: [`docs/work/worklist.md`](../work/worklist.md)에 개발 태스크 체크리스트로만 작성
 
 ---
 
