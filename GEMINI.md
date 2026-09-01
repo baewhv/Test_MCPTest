@@ -29,9 +29,11 @@
   3. **QA 및 런타임 검증**: `qa` (NUnit 테스트, 콘솔 무결성, 코어루프 검증, 스크린샷 캡처)
   4. **버전 관리 및 PR 독점 전담**: `git_manager` (.agents/rules/git_rule.md 준수)
 
-## 6. 실시간 작업 상태 관리 규칙 (Workflow Status Rule)
+## 6. 실시간 작업 상태 관리 규칙 (Workflow Status Rule - AI & 사용자 상태 제어용)
+- **목적**: AI 에이전트 간 작업 진행 가능 여부 판단(FSM 상태 제어) 및 사용자의 현재 진행 단계 확인.
+- **관리 파일**: `docs/work/status.md`
 - 모든 에이전트는 작업 착수 전 반드시 `docs/work/status.md`의 `[현재 상태]`를 확인하여 작업 진행 가능 여부를 검증한다.
-- 작업 착수, 완료, 인계, 검수 시작 및 완료 시마다 `docs/work/status.md`의 `[현재 상태]`를 아래의 **표준 상태 전이 규격**에 맞춰 실시간으로 갱신한다:
+- 작업 착수, 완료, 인계, 검수 시작 및 완료 시마다 `docs/work/status.md`의 `[현재 상태]`를 아래의 **표준 상태 전이 규격**에 맞춰 실시간으로 갱신(덮어쓰기)한다:
   - **1. 기획 완료**: `[Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능` *(미달성 시: `[Designer] 코어루프 조건 미달성 (기획 보완 대기)`)*
   - **2. 개발 완료**: `[Developer] [기능명] C# 구현 및 프리팹/씬 조립 완료 ➔ git_manager에게 커밋/PR 인계`
   - **3. PR 생성 완료**: `[GitManager] [기능명] PR 생성 완료 (PR #nn) ➔ qa에게 검수 인계`
@@ -40,8 +42,10 @@
   - **4-C. QA 반려**: `[QA] [기능명] QA 검수 반려 (결함 발견) ➔ developer에게 수정 요청 인계`
   - **5. 머지 정리 완료**: `[GitManager] PR 머지 확인 및 Worktree 정리 완료 ➔ 다음 작업 대기`
 
-## 7. 에이전트 실시간 소통 기록 규칙 (Communication Logging)
-- 에이전트 간 인계(Handoff), 일감 위임, 결과 반환, PR 요청, QA 검증 요청이 일어날 때마다 `agent-communication-logger` 스킬을 사용하여 `docs/logs/agent_comm_YYYY-MM-DD.md` 파일에 실시간 소통 로그를 1줄씩 기록한다:
+## 7. 에이전트 실시간 소통 기록 규칙 (Communication Logger - 사용자 실시간 모니터링/검증용)
+- **목적**: 사용자가 4대 에이전트의 실제 협업 흐름, 데이터 인계, PR 생성, QA 검증 과정을 시간대별로 감사(Audit) 및 검증.
+- **관리 파일**: `docs/logs/agent_comm_YYYY-MM-DD.md`
+- 에이전트 간 인계(Handoff), 일감 위임, 결과 반환, PR 요청, QA 검증 요청 및 결과 반환이 일어날 때마다 `agent-communication-logger` 스킬을 사용하여 실시간 소통 로그를 **1줄씩 누적 기록**한다:
   ```bash
   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from <발신자> --to <수신자> --type <소통유형> --msg "<전달내용요약>"
   ```

@@ -25,7 +25,13 @@ description: 기획서를 기반으로 코어 루프를 직접 검토하고, 작
   5. **개발 요소 제안 (`docs/work/status.md`)**:
      - 개발 양식이나 아키텍처 구조 제안이 필요한 경우, 직접 진행하지 않고 `docs/work/status.md`의 **`[개발 요소 제안항목]`**에 작성하여 승인을 받습니다.
 
-## 2. 작업 상태 관리 (`docs/work/status.md`)
-- 기획 분석 완료 시 `docs/work/status.md`의 `[현재 상태]`를 표준 포맷으로 갱신합니다:
-  - 코어루프 충족 시: `[현재 상태] [Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능`
-  - 코어루프 미달 시: `[현재 상태] [Designer] 코어루프 조건 미달성 (기획 보완 대기)`
+## 2. 작업 상태 관리 및 실시간 소통 로깅 (2원화 의무)
+
+1. **상태 현황판 갱신 (`docs/work/status.md`)**:
+   - 코어루프 충족 시: `[현재 상태] [Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능`
+   - 코어루프 미달 시: `[현재 상태] [Designer] 코어루프 조건 미달성 (기획 보완 대기)`
+2. **사용자 모니터링용 소통 로깅 (`docs/logs/agent_comm_YYYY-MM-DD.md`)**:
+   - 기획 완료 및 Developer 인계 시 아래 명령을 실행하여 소통 타임라인에 1줄 누적 기록합니다:
+     ```bash
+     node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Designer" --to "Developer" --type "기획 인계" --msg "[기능명] 기획 분석 완료 및 worklist 등록"
+     ```
