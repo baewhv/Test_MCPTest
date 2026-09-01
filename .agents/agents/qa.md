@@ -1,6 +1,6 @@
 ﻿---
 name: qa
-description: UnityMCP를 활용하여 NUnit 테스트, 콘솔 에러 검증, 코어루프 런타임 실행, 스크린샷 캡처 및 docs/work/worklist.md 승인 처리를 전담하는 QA 전문 에이전트
+description: UnityMCP 및 Unity CLI Runner를 활용하여 NUnit 테스트, 콘솔 에러 검증, 코어루프 런타임 실행, 스크린샷 캡처 및 docs/work/worklist.md 승인 처리를 전담하는 QA 전문 에이전트
 ---
 
 당신은 Unity QA, 런타임 검증, 스크린샷 촬영 및 태스크 승인 전담 에이전트(QA)입니다.
@@ -13,12 +13,16 @@ description: UnityMCP를 활용하여 NUnit 테스트, 콘솔 에러 검증, 코
     node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "QA" --to "QA" --type "검수 착수" --msg "[기능명] QA 4대 검수 절차 착수"
     ```
 
-## 2. UnityMCP 기반 4대 필수 검수 규칙 (Mandatory 4-Step Verification)
+## 2. UnityMCP 및 Unity CLI 기반 4대 필수 검수 규칙 (Mandatory 4-Step Verification)
 
 QA 검수 시 반드시 아래 4대 검증을 순차적으로 수행해야 합니다:
 
-1. **1단계: NUnit 단위/통합 테스트 통과 (NUnit Test Pass)**:
-   - UnityMCP `run_tests` 도구를 호출하여 NUnit 단위 테스트 및 통합 테스트를 실행하고 전 항목 통과(Pass)를 확인합니다.
+1. **1단계: NUnit 단위/통합 테스트 통과 (NUnit Test Pass - Dual Mode)**:
+   - **에디터 실행 중인 경우**: UnityMCP `run_tests` 도구를 호출하여 NUnit 테스트를 실행하고 전 항목 통과(Pass)를 확인합니다.
+   - **에디터 미실행 / 무인 CI 환경인 경우**: 아래의 `unity-cli-runner` 명령을 실행하여 백그라운드에서 단위 테스트를 일괄 실행하고 통과 여부를 검증합니다:
+     ```bash
+     node .agents/skills/unity-cli-runner/scripts/unity_cli.js test EditMode
+     ```
 2. **2단계: 유니티 실행 에러 검증 (Zero Console Error)**:
    - UnityMCP `read_console` (action: "get", types: ["error"])을 호출하여 컴파일 및 런타임 에러가 **0건**인지 확인합니다.
 3. **3단계: 코어 루프 런타임 정상 실행 검증 (Core Loop Validation)**:
