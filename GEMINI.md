@@ -45,3 +45,9 @@
   ```bash
   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from <발신자> --to <수신자> --type <소통유형> --msg "<전달내용요약>"
   ```
+
+## 9. C# 코딩 컨벤션 및 Unity 아키텍처 규칙 (C# Coding & Unity Architecture)
+- C# 코드 작성, 검수, 위임 시 반드시 `.agents/rules/csharp_coding_rule.md` 규칙을 100% 준수한다.
+  - 타입별 명칭: `E*` (열거형), `I*` (인터페이스), `Base*` (추상 클래스)
+  - 필드/메서드: Rider IDE 규칙 준수 (`PascalCase` 메서드/프로퍼티, `_camelCase` private 필드)
+  - Unity 아키텍처: New Input System 기본, Addressables 비동기 로딩, `[SerializeField] private` 직렬화 할당, 프리팹 우선 배치, 런타임 표준 컴포넌트 구현 (에디터 빌더 스크립트 작성 금지)
