@@ -25,10 +25,11 @@
 
 ---
 
-## 3. Unity 프로젝트 및 CLI 환경 명세 (Unity Specification)
+## 3. Unity 프로젝트 및 에셋 환경 명세 (Unity Specification)
 - **Unity Project Name**: `TestMCP`
 - **Unity Editor Path**: `C:\Program Files\Unity\Hub\Editor\6000.5.8f1\Editor\Unity.exe`
 - **Target Platform**: `PC, Mac & Linux Standalone`
-- **Unity Asset Root**: `Assets/`
+- **Asset Root**: `Assets/`
+- **Raw Imports Root (Submodule Boundary)**: `Assets/_Imports/`
 - **Default Screenshot Output**: `Assets/Screenshots`
 - **Core Loop Test Scene**: `Assets/Scenes/SampleScene.unity`

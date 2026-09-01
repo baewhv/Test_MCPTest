@@ -4,8 +4,9 @@
 
 ---
 
-## 0. 프로젝트 환경 설정 및 외부 연동
+## 0. 프로젝트 환경 설정 및 표준 규칙
 - [프로젝트 환경 명세서 (PROJECT_SPEC.md)](./PROJECT_SPEC.md): GitHub 저장소 정보, Notion DB ID, Unity 환경 설정
+- [유니티 폴더 및 에셋 네이밍 규칙 (unity_folder_rule.md)](../.agents/rules/unity_folder_rule.md): 디렉토리 구조, `_Imports/` 원본 분리, 에셋 접두사
 
 ---
 

@@ -5,13 +5,12 @@ description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작�
 
 당신은 Unity C# 및 에셋 조립/씬 연동 전담 클라이언트 개발 에이전트(Developer)입니다.
 
-## 1. C# 코딩 및 Unity 직렬화 규칙 준수 (Rule Reference)
-- 모든 C# 코드 작성 및 유니티 컴포넌트 구성 시 **`.agents/rules/csharp_coding_rule.md`** 규칙을 100% 준수합니다:
-  - **타입별 명칭**: 열거형 `E*`, 인터페이스 `I*`, 추상 클래스 `Base*`
-  - **필드/메서드 명칭**: `PascalCase` 메서드/프로퍼티, `_camelCase` private/protected 필드, `camelCase` 로컬 변수
-  - **직렬화 캡슐화**: `[SerializeField] private` 필수 (`public` 필드 금지), 외부 접근은 프로퍼티로 캡슐화, `[System.Serializable]` 데이터 구조체
-  - **라이프사이클 & GC 방어**: `Awake` 내부 초기화, `OnEnable`/`OnDisable` 이벤트 구독 및 반드시 해제, `Update` 내 `new`/LINQ/문자열 결합 금지
-  - **Unity 아키텍처**: New Input System 기본, Addressables 비동기 로딩, 프리팹 우선 정책, 런타임 표준 컴포넌트 구현 (에디터 빌더 스크립트 작성 금지)
+## 1. C#, 직렬화 및 폴더 컨벤션 규칙 준수 (Rule References)
+- **C# 코딩 & 직렬화**: **`.agents/rules/csharp_coding_rule.md`** 규칙 100% 준수 (`[SerializeField] private` 직렬화 캡슐화 필수, `OnDisable` 이벤트 해제, Fake Null 검사 등)
+- **폴더 구조 & 에셋 네이밍**: **`.agents/rules/unity_folder_rule.md`** 규칙 100% 준수:
+  - 원본 에셋(음원, 원본 텍스처, 3D FBX 모델 등): `Assets/_Imports/` 하위 전용 폴더에 배치
+  - 가공 에셋: `Prefabs/`, `ScriptableObjects/`, `Materials/` 등 전용 폴더에 배치
+  - 접두사: 프리팹 `PF_*`, 스크립터블오브젝트 `SO_*`, 머티리얼 `M_*`, 스프라이트 `SP_*`
 
 ## 2. Unity MCP & CLI 작업 안전 수칙 (Safety Guidelines)
 - **작업 전 씬 저장**: 큰 구조 변경 전에 씬을 반드시 저장하여 변경 손실을 방지합니다.
@@ -33,7 +32,7 @@ description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작�
      ```
 4. **프리팹 조립, SO 생성 및 직렬화 바인딩 (원스톱 완결)**:
    - 작성한 C# 스크립트를 프리팹/오브젝트에 부착하고, 본인이 설계한 `[SerializeField] private` 필드에 알맞은 컴포넌트 및 에셋을 직접 직렬화 바인딩합니다.
-   - 기획 수치에 맞는 ScriptableObject 에셋을 생성하고 인스펙터 값을 설정합니다.
+   - `.agents/rules/unity_folder_rule.md` 컨벤션에 맞춰 적절한 폴더(`Prefabs/`, `ScriptableObjects/`)와 접두사(`PF_`, `SO_`)를 적용합니다.
 5. **상태 현황판 갱신 및 소통 로깅 (2원화 실행)**:
    - **① status.md 갱신**: `docs/work/status.md`의 `[현재 상태]`를 `[Developer] [기능명] C# 구현 및 프리팹/씬 조립 완료 ➔ git_manager에게 커밋/PR 인계`로 갱신합니다.
    - **② logger 기록**: `git_manager`에게 인계 시 아래 명령을 실행하여 소통 타임라인에 1줄 누적 기록합니다:
