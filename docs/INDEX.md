@@ -6,7 +6,9 @@
 
 ## 0. 프로젝트 환경 설정 및 표준 규칙
 - [프로젝트 환경 명세서 (PROJECT_SPEC.md)](./PROJECT_SPEC.md): GitHub 저장소 정보, Notion DB ID, Unity 환경 설정
-- [유니티 폴더 및 에셋 네이밍 규칙 (unity_folder_rule.md)](../.agents/rules/unity_folder_rule.md): 디렉토리 구조, `_Imports/` 원본 분리, 에셋 접두사
+- [C# 코딩 및 아키텍처 규칙 (csharp_coding_rule.md)](../.agents/rules/csharp_coding_rule.md): 직렬화 캡슐화, 라이프사이클, 에디터 스크립팅 제한
+- [유니티 폴더 및 에셋 네이밍 규칙 (unity_folder_rule.md)](../.agents/rules/unity_folder_rule.md): 디렉토리 구조, `_Imports/` 원본 분리, 에셋 접두사/접미사
+- [AI 리소스 생성 및 임포트 규칙 (asset_generation_rule.md)](../.agents/rules/asset_generation_rule.md): 나노바나나/UnityMCP 리소스 제작 및 프리팹 가공 4단계
 
 ---
 
