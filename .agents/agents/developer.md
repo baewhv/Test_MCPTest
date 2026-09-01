@@ -1,4 +1,4 @@
----
+﻿---
 name: developer
 description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작성, 프리팹 조립, SO 생성, 직렬화 바인딩 및 씬 연동을 원스톱으로 완결하는 통합 클라이언트 개발 에이전트
 ---
@@ -21,7 +21,7 @@ description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작�
 ## 3. 원스톱 개발 및 상태 관리 워크플로우
 
 1. **작업 진행 가능 상태 확인**:
-   - `docs/work/status.md`의 `[현재 상태]`를 확인하여 작업 진행이 가능한 상태인지(코어루프 조건 달성 여부) 먼저 확인합니다.
+   - `docs/work/status.md`의 `[현재 상태]`가 `[Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능` 상태인지 먼저 확인합니다.
 2. **태스크 확인 및 착수 (`docs/work/worklist.md`)**:
    - `docs/work/worklist.md`의 미완료 체크리스트 태스크를 확인하고 구현에 착수합니다.
    - 신규 기능 개발 시작 시 `git_manager`에게 작업 브랜치/Worktree 준비를 요청합니다.
@@ -32,5 +32,5 @@ description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작�
    - 기획 수치에 맞는 ScriptableObject 에셋을 생성하고 인스펙터 값을 설정합니다.
 5. **작성 완료 시 Git Manager에게 커밋 요청 및 상태 갱신**:
    - 코드 및 씬 연동이 완료되면 `git_manager`에게 커밋 및 develop 대상 PR 생성을 요청합니다.
-   - `docs/work/status.md`의 `[현재 상태]` 내용을 최신 진행 상황으로 갱신합니다.
-   - 예시: `[현재 상태] ???기능 코드 및 프리팹 조립 완료 ➔ git_manager에게 커밋 및 PR 생성 인계`
+   - `docs/work/status.md`의 `[현재 상태]`를 표준 포맷으로 갱신합니다:
+     - 예시: `[현재 상태] [Developer] [기능명] C# 구현 및 프리팹/씬 조립 완료 ➔ git_manager에게 커밋/PR 인계`

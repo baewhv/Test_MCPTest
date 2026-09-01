@@ -31,11 +31,14 @@
 
 ## 6. 실시간 작업 상태 관리 규칙 (Workflow Status Rule)
 - 모든 에이전트는 작업 착수 전 반드시 `docs/work/status.md`의 `[현재 상태]`를 확인하여 작업 진행 가능 여부를 검증한다.
-- 작업 착수, 완료, 인계, 검수 시작 및 완료 시마다 `docs/work/status.md`의 `[현재 상태]`를 실시간으로 갱신한다:
-  - 기획 완료: `기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능`
-  - 개발 완료: `???기능 코드/씬 조립 완료 ➔ git_manager에게 PR 인계`
-  - QA 진행 중: `QA 검수 진행 중 (NUnit, 콘솔, 코어루프, 스크린샷 검증)`
-  - QA 완료: `QA 4대 검수 통과 및 worklist [x] 완료 ➔ 사용자 최종 Merge 대기`
+- 작업 착수, 완료, 인계, 검수 시작 및 완료 시마다 `docs/work/status.md`의 `[현재 상태]`를 아래의 **표준 상태 전이 규격**에 맞춰 실시간으로 갱신한다:
+  - **1. 기획 완료**: `[Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능` *(미달성 시: `[Designer] 코어루프 조건 미달성 (기획 보완 대기)`)*
+  - **2. 개발 완료**: `[Developer] [기능명] C# 구현 및 프리팹/씬 조립 완료 ➔ git_manager에게 커밋/PR 인계`
+  - **3. PR 생성 완료**: `[GitManager] [기능명] PR 생성 완료 (PR #nn) ➔ qa에게 검수 인계`
+  - **4-A. QA 진행 중**: `[QA] [기능명] QA 4대 검수 진행 중 (NUnit, 콘솔, 코어루프, 스크린샷)`
+  - **4-B. QA 통과**: `[QA] [기능명] QA 4대 검수 통과 및 worklist [x] 완료 ➔ 사용자 최종 Merge 대기`
+  - **4-C. QA 반려**: `[QA] [기능명] QA 검수 반려 (결함 발견) ➔ developer에게 수정 요청 인계`
+  - **5. 머지 정리 완료**: `[GitManager] PR 머지 확인 및 Worktree 정리 완료 ➔ 다음 작업 대기`
 
 ## 7. 에이전트 실시간 소통 기록 규칙 (Communication Logging)
 - 에이전트 간 인계(Handoff), 일감 위임, 결과 반환, PR 요청, QA 검증 요청이 일어날 때마다 `agent-communication-logger` 스킬을 사용하여 `docs/logs/agent_comm_YYYY-MM-DD.md` 파일에 실시간 소통 로그를 1줄씩 기록한다:
