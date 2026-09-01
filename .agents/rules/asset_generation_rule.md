@@ -1,6 +1,6 @@
 ﻿# AI 리소스 생성 및 프로토타입 규칙 (Asset Generation & Prototype Rules)
 
-이 문서는 토큰 및 API 비용을 극대화하여 절약하는 **프로토타입/더미 리소스 기본 원칙**과, 사용자의 명시적 요청 시 나노바나나/UnityMCP를 가동하는 **AI 리소스 정식 제작 파이프라인**을 규정합니다.
+이 문서는 토큰 및 API 비용을 극대화하여 절약하는 **프로토타입/더미 리소스 기본 원칙**, **이펙트(Particle System) 및 애니메이션(Animator Controller) 공통 표준**, 그리고 **AI 리소스 정식 제작 파이프라인**을 규정합니다.
 
 ---
 
@@ -23,7 +23,20 @@
 
 ---
 
-## 2. 정식 AI 리소스 생성 도구 및 규격 (사용자 명시 요청 시)
+## 2. 이펙트 및 애니메이션 공통 표준 (VFX & Animation Standards)
+
+이펙트 및 움직임 연출 요청 시 아래의 표준 컴포넌트를 공통으로 사용합니다:
+
+1. **이펙트 제작 표준 (Particle System)**:
+   - 모든 시각 효과/이펙트는 유니티 내장 **`Particle System` (파티클 시스템)**을 사용하여 구현합니다.
+   - 파티클 프리팹은 `Assets/Prefabs/VFX/` 폴더에 **`PF_VFX_[이름].prefab`** (또는 `PF_Effect_[이름].prefab`) 형태로 조립합니다.
+2. **애니메이션 제작 표준 (Animator Controller)**:
+   - 캐릭터 및 오브젝트의 움직임/동작 연출은 반드시 **`Animator Controller` (`AC_[이름].controller`)**를 사용하여 상태 머신(State Machine) 기반으로 제어합니다.
+   - 애니메이션 클립(`Anim_[이름].anim`)은 `Assets/Animations/` 폴더에 배치하고, `Developer`는 C# 스크립트에서 `Animator.StringToHash()`로 캐싱된 파라미터를 통해 상태 전이를 트리거합니다.
+
+---
+
+## 3. 정식 AI 리소스 생성 도구 및 규격 (사용자 명시 요청 시)
 
 ### ① 2D 스프라이트 및 텍스처 (2D Sprites & Textures)
 - **도구**: Antigravity `generate_image` (NanoBanana / Imagen) 또는 UnityMCP `generate_image`
@@ -43,7 +56,7 @@
 
 ---
 
-## 3. 리소스 가공 및 프리팹 완결 4단계 파이프라인
+## 4. 리소스 가공 및 프리팹 완결 4단계 파이프라인
 
 정식 AI 리소스 제작 시 아래 4단계를 거쳐 완제품으로 가공합니다:
 
@@ -54,7 +67,7 @@
 
 ---
 
-## 4. 에이전트 준수 의무
-- **`Developer`**: 평소 기능 개발 시 프리미티브(Capsule, Cube 등) 기반의 경량 더미 리소스로 프리팹을 조립합니다.
-- **`Artist`**: 사용자의 명시적인 리소스 제작 요청이 있을 때만 AI 생성 파이프라인을 가동합니다.
-- **`QA`**: 더미 리소스 상태에서도 게임 로직 및 코어루프가 정상 동작하는지 우선 검증합니다.
+## 5. 에이전트 준수 의무
+- **`Developer`**: 평소 기능 개발 시 프리미티브 기반 더미 리소스를 사용하며, 이펙트는 `ParticleSystem`, 움직임은 `Animator Controller`와 C# 스크립트를 연결합니다.
+- **`Artist`**: 사용자 요청 시 파티클 이펙트 구성 및 애니메이션 클립(`Anim_*`)을 제작하고 `status.md`에 연결 제안을 남깁니다.
+- **`QA`**: 파티클 시스템과 애니메이터 컨트롤러가 Missing 없이 정상 재생되는지 검수합니다.
