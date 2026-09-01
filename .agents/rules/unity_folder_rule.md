@@ -1,4 +1,4 @@
-﻿# 유니티 프로젝트 폴더 및 에셋 네이밍 규칙 (Unity Folder & Naming Rules)
+# 유니티 프로젝트 폴더 및 에셋 네이밍 규칙 (Unity Folder & Naming Rules)
 
 이 문서는 프로젝트의 모든 유니티 폴더 구조, 에셋 배치 위치 및 네이밍 컨벤션을 규정하는 단독 표준 규칙입니다.
 
@@ -35,19 +35,20 @@ Assets/
 
 ---
 
-## 3. 에셋 네이밍 접두사(Prefix) 컨벤션
+## 3. 에셋 네이밍 컨벤션 (Naming Conventions)
 
-| 에셋 종류 | 접두사 (Prefix) | 네이밍 예시 |
-| :--- | :---: | :--- |
-| **프리팹 (Prefab)** | `PF_` | `PF_Player.prefab`, `PF_Coin.prefab`, `PF_HUD.prefab` |
-| **스크립터블 오브젝트 (SO)** | `SO_` | `SO_PlayerStat.asset`, `SO_WeaponConfig.asset` |
-| **머티리얼 (Material)** | `M_` | `M_CoinGold.mat`, `M_PlayerSkin.mat` |
-| **스프라이트 (Sprite)** | `SP_` | `SP_HeartIcon.png`, `SP_Coin.png` |
-| **씬 (Scene)** | `S_` | `S_MainMenu.unity`, `S_InGame.unity` |
-| **애니메이터 컨트롤러** | `AC_` | `AC_Player.controller` |
-| **애니메이션 클립** | `Anim_` | `Anim_Player_Idle.anim`, `Anim_Player_Run.anim` |
-| **텍스처 (Texture)** | `T_` | `T_Ground_Albedo.png`, `T_Ground_Normal.png` |
-| **오디오 (Audio)** | `BGM_` / `SFX_` | `BGM_Title.wav`, `SFX_ButtonClick.wav` |
+| 에셋 종류 | 구분 및 규칙 | 네이밍 예시 |
+| :--- | :--- | :--- |
+| **프리팹 (Prefab)** | 접두사 `PF_` | `PF_Player.prefab`, `PF_Coin.prefab`, `PF_HUD.prefab` |
+| **스크립터블 오브젝트 (SO)** | 접두사 `SO_` | `SO_PlayerStat.asset`, `SO_WeaponConfig.asset` |
+| **머티리얼 (Material)** | 접두사 `M_` | `M_CoinGold.mat`, `M_PlayerSkin.mat` |
+| **스프라이트 (Sprite)** | 접두사 `SP_` | `SP_HeartIcon.png`, `SP_Coin.png` |
+| **일반 씬 (General Scene)** | 접미사 `*Scene` | `MainMenuScene.unity`, `LobbyScene.unity`, `LoadingScene.unity` |
+| **스테이지 씬 (Stage Scene)** | 패턴 `Stage[X]-[Y]` | `Stage1-1.unity`, `Stage1-2.unity`, `Stage2-1.unity` |
+| **애니메이터 컨트롤러** | 접두사 `AC_` | `AC_Player.controller` |
+| **애니메이션 클립** | 접두사 `Anim_` | `Anim_Player_Idle.anim`, `Anim_Player_Run.anim` |
+| **텍스처 (Texture)** | 접두사 `T_` | `T_Ground_Albedo.png`, `T_Ground_Normal.png` |
+| **오디오 (Audio)** | 접두사 `BGM_` / `SFX_` | `BGM_Title.wav`, `SFX_ButtonClick.wav` |
 
 ---
 
