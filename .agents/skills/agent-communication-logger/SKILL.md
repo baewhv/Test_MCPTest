@@ -14,7 +14,19 @@ node .agents/skills/agent-communication-logger/scripts/log_comm.js --from <발�
 ```
 
 ## 2. 매개변수 (Parameters)
-- `--from` (필수): 발신 에이전트명 (예: `Designer`, `Developer`, `UnityBuilder`, `GitManager`, `UnityDebugger`)
-- `--to` (필수): 수신 대상명 (예: `Developer`, `code_worker`, `unity_builder`, `git_manager`, `GitHub PR #1`)
-- `--type` (필수): 소통 유형 (예: `기획 인계`, `코드 연산 위임`, `결과 반환`, `에셋 조립 인계`, `PR 요청`, `QA 검증 요청`, `QA 리뷰 댓글`)
+- `--from` (필수): 발신 에이전트명 (`Designer`, `Developer`, `QA`, `GitManager`)
+- `--to` (필수): 수신 대상명 (`Designer`, `Developer`, `QA`, `GitManager`, `GitHub PR #nn`)
+- `--type` (필수): 소통 유형 (`기획 인계`, `C# 개발 완료 및 PR 요청`, `QA 검수 요청`, `QA 승인`, `QA 반려/수정요청`, `머지 및 완료`)
 - `--msg` (필수): 전달하는 핵심 내용 및 변경점 요약
+
+## 3. 표준 소통 유형 매핑 예시
+1. **기획 완료 시**:
+   `--from "Designer" --to "Developer" --type "기획 인계" --msg "[기능명] 기획 분석 완료 및 worklist 등록"`
+2. **개발 완료 시**:
+   `--from "Developer" --to "GitManager" --type "PR 요청" --msg "[기능명] C# 구현 및 프리팹 조립 완료, 커밋/PR 요청"`
+3. **PR 생성 시**:
+   `--from "GitManager" --to "QA" --type "QA 검수 요청" --msg "[기능명] PR #nn 생성 완료, QA 4대 검수 요청"`
+4. **QA 승인 시**:
+   `--from "QA" --to "GitManager" --type "QA 승인" --msg "[기능명] QA 4대 검수 통과 및 worklist [x] 완료, 사용자 머지 대기"`
+5. **QA 반려 시**:
+   `--from "QA" --to "Developer" --type "QA 반려/수정요청" --msg "[기능명] 결함 발견 (세부사항)으로 수정 요청"`
