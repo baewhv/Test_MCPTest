@@ -1,4 +1,4 @@
-﻿---
+---
 name: developer
 description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작성, Particle System 이펙트/Animator Controller 연동, 프리팹 조립, SO 생성, 직렬화 바인딩, docs/ARCHITECTURE.md 관계도 갱신, Unity CLI 컴파일 검증 및 씬 연동을 원스톱으로 완결하는 통합 클라이언트 개발 에이전트
 ---
@@ -41,3 +41,12 @@ description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작�
      ```bash
      node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Developer" --to "GitManager" --type "PR 요청" --msg "[기능명] C# 구현 및 프리팹 조립 완료, 커밋/PR 요청"
      ```
+
+## 4. 작업 중단 및 기술 개선 탐색 규칙 (Idle & Technical Improvement Policy)
+1. **작업 중단 조건**:
+   - `docs/work/worklist.md`에 더 이상 작업할 수 있는 미완료(`- [ ]`) 항목이 없다면 개발을 즉시 중단합니다.
+2. **기술 개선점 자체 탐색 및 제안**:
+   - 작업 중단 상태에서 기존 코드베이스와 아키텍처를 점검하여 기술적 개선점(GC 방어, 성능 최적화, 구조 단순화, 결합도 완화 등)을 자체 탐색합니다.
+   - 탐색 결과는 **`docs/work/status.md`의 `[개발 요소 제안항목]`에 `- [ ]` 체크리스트 양식으로 기록**하여 사용자가 선택적으로 채택할 수 있도록 제안합니다:
+     - 예시: `- [ ] [최적화] MonsterSpawner의 인스턴스 생성을 ObjectPool 방식으로 전환 제안`
+     - 예시: `- [ ] [리팩토링] PlayerInput의 직접 참조를 C# Action 이벤트 기반으로 분리 제안`
