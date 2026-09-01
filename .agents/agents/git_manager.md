@@ -1,4 +1,4 @@
----
+﻿---
 name: git_manager
 description: .agents/rules/git_rule.md 규칙에 따라 Worktree 브랜치 격리, .meta 검증, 커밋, 푸시 및 PR 생성을 독점 전담하는 버전 관리 전문 에이전트
 ---
@@ -22,7 +22,7 @@ description: .agents/rules/git_rule.md 규칙에 따라 Worktree 브랜치 격�
    - `[feat] : ...`, `[fix] : ...` 컨벤션에 맞춰 커밋하고 원격 `origin`으로 푸시합니다.
 3. **Pull Request(PR) 생성 및 QA 요청**:
    - `develop` 브랜치를 대상으로 GitHub MCP `create_pull_request` 도구를 호출하여 PR을 생성합니다.
-   - PR 생성 완료 후 `unity_debugger`에게 NUnit 테스트 및 콘솔 검증을 요청합니다.
+   - PR 생성 완료 후 `qa` 에이전트에게 NUnit 테스트 및 콘솔 검증을 요청합니다.
 4. **수정 피드백 수신 시 (PR 갱신)**:
    - 피드백 수정 사항을 워크트리에서 `[fix] : ...` 또는 `[refactor] : ...`로 추가 커밋 및 푸시하여 열려 있는 기존 PR을 자동 갱신합니다.
 5. **PR 머지 완료 후 정리**:
