@@ -52,6 +52,14 @@
 3. **프리팹 우선 정책 (Prefab-First)**:
    - 씬에 배치할 모든 오브젝트, 카메라, 라이트는 반드시 **프리팹(Prefab)화**하여 인스턴스화합니다.
 4. **런타임 표준 컴포넌트 준수**:
-   - 일회성 에디터 스크립트(`EditorSceneBuilder`) 작성을 금지하며, 순수 런타임 컴포넌트(`MonoBehaviour`, `Spawner`)로 구현합니다.
+   - 일회성 에디터 빌더 스크립트 작성을 금지하며, 순수 런타임 컴포넌트(`MonoBehaviour`, `Spawner`)로 구현합니다.
 5. **데이터 분리 (ScriptableObject)**:
    - 정적 기획 수치 및 테이블 데이터는 `[CreateAssetMenu]`를 적용한 `ScriptableObject`로 분리하여 관리합니다.
+
+## 8. 에디터 스크립팅 제한 규칙 (Editor Scripting Boundary)
+1. **허용되는 에디터 코드 (Inspector Customization)**:
+   - 인스펙터 가독성 향상, 필드 유효성 검사, 드롭다운 편의성 제공을 위한 **순수 인스펙터 커스터마이징(`CustomEditor`, `PropertyDrawer`)** 목적의 에디터 코드만 허용합니다.
+2. **지양/금지되는 에디터 코드 (No Build / Workflow Automation Scripts)**:
+   - "원클릭 빌더(One-Click Build)", "자동 씬 생성기", "메뉴 아이템(`[MenuItem]`) 일괄 배치기" 등 런타임 게임 로직과 무관한 과도한 에디터 스크립트 작성은 엄격히 지양합니다.
+3. **표준 해결 원칙**:
+   - 모든 기능 구현은 에디터 툴 코드가 아닌 **순수 런타임 표준 컴포넌트(`MonoBehaviour`), 프리팹 우선 배치 및 인스펙터 직렬화 바인딩**으로 완결합니다.
