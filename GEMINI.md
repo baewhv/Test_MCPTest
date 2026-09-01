@@ -27,7 +27,7 @@
 - **허용 타입**: `feat`, `fix`, `build`, `chore`, `docs`, `style`, `refactor`, `test`
 - 메시지 내용은 한 줄로 요약해서 작성한다.
 - Body는 기본적으로 생략하며, 한 줄로 작성하기 어려울 때만 작성한다.
-- 이슈와 연관되어 있다면 끝에 `#nnn`을 첨부한다.
+- 이슈와 연관되어 있다면 끝에 `#nnn`을 첨부합니다.
 
 ## 6. 브랜치 운영 및 네이밍 규칙 (Branch Convention)
 - **3단계 구조**: `main` (빌드/배포) ➔ `develop` (개발 총괄) ➔ `작업 브랜치` (실제 개발 이행)
@@ -38,7 +38,7 @@
 
 ## 7. 에이전트 역할 범위 준수 및 위임 제안 규칙 (Role Boundary & Delegation)
 - 에이전트가 작업 중 본인의 전담 역할(R&R) 외의 작업을 진행해야 하거나 요청받은 경우, 임의로 직접 수행하지 않는다.
-- 해당 업무에 알맞은 전문 에이전트(기획 ➔ `designer`, C# 개발 ➔ `developer`, 씬/오브젝트 조립 ➔ `unity_builder`, QA/테스트 ➔ `unity_debugger`, 버전관리/PR ➔ `git_manager`)로 넘겨서 진행할 것을 사용자에게 명확히 제안하고 확인을 받는다.
+- 해당 업무에 알맞은 전문 4대 에이전트(기획/세분화 ➔ `designer`, C#개발/조립 ➔ `developer`, QA/테스트 ➔ `unity_debugger`, 버전관리/PR ➔ `git_manager`)로 넘겨서 진행할 것을 사용자에게 명확히 제안하고 확인을 받는다.
 
 ## 8. 에이전트 실시간 소통 기록 규칙 (Communication Logging)
 - 에이전트 간 인계(Handoff), 일감 위임, 결과 반환, PR 요청, QA 검증 요청이 일어날 때마다 `agent-communication-logger` 스킬을 사용하여 `docs/logs/agent_comm_YYYY-MM-DD.md` 파일에 실시간 소통 로그를 1줄씩 기록한다:
@@ -47,7 +47,7 @@
   ```
 
 ## 9. C# 코딩 컨벤션 및 Unity 아키텍처 규칙 (C# Coding & Unity Architecture)
-- C# 코드 작성, 검수, 위임 시 반드시 `.agents/rules/csharp_coding_rule.md` 규칙을 100% 준수한다.
+- C# 코드 작성, 직렬화 바인딩, 검수 시 반드시 `.agents/rules/csharp_coding_rule.md` 규칙을 100% 준수한다.
   - 타입별 명칭: `E*` (열거형), `I*` (인터페이스), `Base*` (추상 클래스)
   - 필드/메서드: Rider IDE 규칙 준수 (`PascalCase` 메서드/프로퍼티, `_camelCase` private 필드)
-  - Unity 아키텍처: New Input System 기본, Addressables 비동기 로딩, `[SerializeField] private` 직렬화 할당, 프리팹 우선 배치, 런타임 표준 컴포넌트 구현 (에디터 빌더 스크립트 작성 금지)
+  - Unity 직렬화 & 아키텍처: `[SerializeField] private` 직렬화 캡슐화 필수, New Input System 기본, Addressables 비동기 로딩, 프리팹 우선 배치, 런타임 표준 컴포넌트 구현 (에디터 빌더 스크립트 작성 금지)
