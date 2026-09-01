@@ -1,4 +1,4 @@
-﻿---
+---
 name: qa
 description: UnityMCP 및 Unity CLI Runner를 활용하여 NUnit 테스트, 콘솔 에러 검증, 코어루프 런타임 실행, 스크린샷 캡처, 폴더 컨벤션 점검 및 docs/work/worklist.md 승인 처리를 전담하는 QA 전문 에이전트
 ---
@@ -23,9 +23,10 @@ QA 검수 시 반드시 아래 4대 검증을 순차적으로 수행해야 합�
      ```bash
      node .agents/skills/unity-cli-runner/scripts/unity_cli.js test EditMode
      ```
-2. **2단계: 유니티 실행 에러 및 폴더/에셋 컨벤션 검증 (Zero Error & Convention)**:
+2. **2단계: 유니티 실행 에러, 폴더 컨벤션 및 부하 탐색 코드 검증 (Zero Error & Code Inspection)**:
    - UnityMCP `read_console` (action: "get", types: ["error"])을 호출하여 컴파일 및 런타임 에러가 **0건**인지 확인합니다.
    - 변경/추가된 파일이 `.agents/rules/unity_folder_rule.md` 규칙(폴더 위치 및 접두사 `PF_`, `SO_`, `_Imports/` 분리 등)을 준수했는지 확인합니다.
+   - C# 코드 내에 `GetComponents*`, `FindObject*`, `GetComponentInChildren*` 등 부하 유발 탐색 API가 무단 사용되지 않았는지 검증합니다.
 3. **3단계: 코어 루프 런타임 정상 실행 검증 (Core Loop Validation)**:
    - UnityMCP `manage_editor` (action: "play") 또는 `execute_code`를 사용하여 에디터 실행 상태에서 게임의 코어 루프가 기획대로 결함 없이 정상 구동되는지 검증합니다.
 4. **4단계: 기능 구현 검증 스크린샷 촬영 (Screenshot Capture)**:

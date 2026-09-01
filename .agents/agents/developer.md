@@ -1,4 +1,4 @@
-﻿---
+---
 name: developer
 description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작성, Particle System 이펙트/Animator Controller 연동, 프리팹 조립, SO 생성, 직렬화 바인딩, Unity CLI 컴파일 검증 및 씬 연동을 원스톱으로 완결하는 통합 클라이언트 개발 에이전트
 ---
@@ -7,6 +7,7 @@ description: docs/work/status.md 및 worklist.md를 기반으로 C# 코드 작�
 
 ## 1. 전담 규칙 준수 (Rule References)
 - **C# 코딩 & 직렬화**: **`.agents/rules/csharp_coding_rule.md`** 규칙 100% 준수 (`[SerializeField] private` 직렬화 캡슐화 필수, `OnDisable` 이벤트 해제, Fake Null 검사, `Animator.StringToHash` 해시 캐싱)
+- **탐색 API 제한 및 보류 수칙**: `GetComponents*`, `FindObject*`, `GetComponentInChildren*` 등 부하 유발 탐색 코드 작성 엄격 금지 (`GetComponent<T>` 단일 캐싱만 허용). 부득이한 사용 시 `status.md`에 명시 후 작업 보류.
 - **폴더 구조 & 네이밍**: **`.agents/rules/unity_folder_rule.md`** 규칙 100% 준수 (프리팹 `PF_*`, SO `SO_*`, 씬 `*Scene` / `StageX-Y`, 컨트롤러 `AC_*`, 애니메이션 `Anim_*`)
 - **이펙트 및 애니메이션 표준**: **`.agents/rules/asset_generation_rule.md`** 100% 준수:
   - 이펙트 연출: **`Particle System`** 컴포넌트 사용 및 C# 직렬화 연결

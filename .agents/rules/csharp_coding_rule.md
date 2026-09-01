@@ -32,13 +32,22 @@
 3. **`Start()`**:
    - 타 매니저, 타 오브젝트와의 외부 참조 연결 및 게임 루프를 시작합니다.
 
-## 5. 성능 최적화 및 GC 방어 규칙 (Performance & GC Defense)
+## 5. 성능 최적화 및 계층 탐색 API 엄격 제한 규칙 (Performance & Search API Policy)
 1. **`Update()` / `FixedUpdate()` 내 할당 금지**:
    - 매 프레임 실행되는 루프 내에서 `new` 객체 생성, 문자열 결합(`+`), LINQ 쿼리(`Where`, `Select`), `GetComponent` 호출을 엄격히 금지합니다 (필드 사전 캐싱 의무).
 2. **해시값 캐싱**:
    - 애니메이터 파라미터나 셰이더 프로퍼티는 `Animator.StringToHash()`, `Shader.PropertyToID()`로 정적 캐싱하여 전달합니다.
-3. **광범위 씬 탐색 최소화**:
-   - `FindAnyObjectByType`, `GameObject.Find`, `GetComponentsInChildren` 등 광범위 탐색 API 사용을 지양하고 직렬화 바인딩을 기본으로 합니다.
+3. **계층 및 씬 탐색 API 엄격 제한 (Search API Policy)**:
+   - **허용 범위**: 자체 오브젝트 내 `Awake()` 시점의 단일 컴포넌트 캐싱(`GetComponent<T>()`)까지만 허용합니다.
+   - **엄격 지양/금지 대상**:
+     - `GetComponents*` (복수 컴포넌트 탐색 및 GC 유발)
+     - `FindObject*` / `FindObjects*` / `GameObject.Find*` (씬 전체 순회 탐색)
+     - `GetComponentInChildren*` / `GetComponentInParent*` (자식/부모 계층 순회 탐색)
+     - 씬이나 계층 구조를 임의로 들쑤시는 모든 부하 유발 코드는 작성하지 않으며, `[SerializeField] private` 직렬화 바인딩을 기본으로 합니다.
+4. **부하 탐색 코드 불가피 시 '보류 및 보고' 프로토콜 (Hold Protocol)**:
+   - 동적 런타임 제약 등으로 무거운 탐색 API 사용이 불가피하다고 판단될 경우:
+     - 코드를 임의 작성하여 PR을 올리지 않고 **작업을 즉시 보류(Pending)**합니다.
+     - `docs/work/status.md`의 `[개발 요소 제안항목]`에 **"부하 탐색 코드([API명]) 사용 필요 사유 및 대안"**을 상세히 명시하고 사용자의 확인/승인을 대기합니다.
 
 ## 6. Null 검사 및 이벤트 안전 수칙
 1. **Unity Fake Null 안전 검사**:
