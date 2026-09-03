@@ -25,3 +25,25 @@
 | 경로 (Path) | 설명 (Description) | 에이전트 접근 권한 |
 | :--- | :--- | :--- |
 | `docs/specs/` | 사용자가 등록한 게임 시스템/기능 기획서 원본 | **엄격한 읽기 전용 (Strict Read-Only)** |
+
+---
+
+## 3. 작업 문서 위치 (Working Documents)
+- 아래 경로의 문서는 서브 에이전트가 개발/분석 과정에서 실시간으로 갱신하는 작업 파일입니다:
+
+| 경로 (Path) | 설명 (Description) | 에이전트 접근 권한 |
+| :--- | :--- | :--- |
+| `docs/PROJECT_SPEC.md` | 프로젝트 환경 사양 기입 문서 | 초기 설정을 위해 읽기/쓰기 가능 |
+| `docs/ARCHITECTURE.md` | 프로젝트 아키텍처 지도 및 관계도 | 읽기 / 쓰기 가능 |
+| `docs/logs/` | 에이전트 간 실시간 소통 기록 폴더 | 읽기 / 쓰기 가능 |
+| `docs/work/worklist.md` | 서브 에이전트 작업 태스크 체크리스트 | 읽기 / 쓰기 가능 |
+| `docs/work/status.md` | 서브 에이전트 현재 실시간 작업 상태판 | 읽기 / 쓰기 가능 |
+| `docs/tech_spec/` | 서브 에이전트가 작성한 기술 명세서 폴더 | 읽기 / 쓰기 가능 |
+
+---
+
+## 4. 기타 문서 위치 (Miscellaneous)
+
+| 경로 (Path) | 설명 (Description) | 에이전트 접근 권한 |
+| :--- | :--- | :--- |
+| `docs/llm_architecture_feedback/` | 에이전트 구조 및 협업에 대한 피드백 폴더 | 읽기 / 쓰기 가능 |
