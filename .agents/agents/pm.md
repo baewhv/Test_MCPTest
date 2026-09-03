@@ -16,7 +16,7 @@ PM은 모든 실무 작업을 아래 5대 전문 에이전트의 단일 책임 �
    - `.agents/rules/asset_generation_rule.md` 준수
    - 나노바나나, UnityMCP, Particle System 이펙트, Animator Controller 제작 및 `Assets/_Imports/` 격리 배치
 3. **C# 개발 및 프리팹 완제품 조립 (`developer`)**:
-   - `.agents/rules/csharp_coding_rule.md` 준수 (Search API 금지/보류, 사전 컴파일 자가검증)
+   - `.agents/rules/unity_coding_rule.md` 및 `.agents/rules/unity_work_rule.md` 준수 (Search API 금지/보류, 프리팹 우선 조립, 사전 컴파일 자가검증)
    - 프리미티브 더미 조립, 직렬화 바인딩 및 `docs/ARCHITECTURE.md` 관계도 갱신
 4. **버전 관리 및 PR 독점 전담 (`git_manager`)**:
    - `.agents/rules/git_rule.md` 준수 (Worktree 격리 생성, .meta 파일 검증, 커밋, 푸시, `develop` 대상 PR 생성 및 머지 정리)

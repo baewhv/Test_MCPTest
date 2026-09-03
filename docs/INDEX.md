@@ -7,7 +7,8 @@
 ## 0. 프로젝트 환경 설정 및 표준 규칙
 - [프로젝트 환경 명세서 (PROJECT_SPEC.md)](./PROJECT_SPEC.md): GitHub 저장소 정보, Notion DB ID, Unity 환경 설정
 - [객체 상호작용 및 아키텍처 관계도 (ARCHITECTURE.md)](./ARCHITECTURE.md): 충돌 매트릭스, 스포너 생명주기, 이벤트 흐름, 데이터 바인딩 총괄 색인
-- [C# 코딩 및 아키텍처 규칙 (csharp_coding_rule.md)](../.agents/rules/csharp_coding_rule.md): 직렬화 캡슐화, 라이프사이클, Search API 금지 및 보류, 에디터 스크립팅 제한
+- [유니티 C# 코딩 규칙 (unity_coding_rule.md)](../.agents/rules/unity_coding_rule.md): 직렬화 캡슐화, 라이프사이클, Search API 금지 및 보류
+- [유니티 작업 및 씬/프리팹 규칙 (unity_work_rule.md)](../.agents/rules/unity_work_rule.md): 씬 충돌 방지, 독립 완제품 프리팹 우선, 직렬화 바인딩, 에디터 스크립팅 제한
 - [유니티 폴더 및 에셋 네이밍 규칙 (unity_folder_rule.md)](../.agents/rules/unity_folder_rule.md): 디렉토리 구조, `_Imports/` 원본 분리, 에셋 접두사/접미사
 - [AI 리소스 생성 및 프로토타입 규칙 (asset_generation_rule.md)](../.agents/rules/asset_generation_rule.md): 토큰 절약형 프리미티브, Particle System, Animator Controller, AI 4단계 파이프라인
 
