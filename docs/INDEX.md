@@ -11,14 +11,16 @@
 - [유니티 작업 및 씬/프리팹 스킬 (unity-work-rule)](../.agents/skills/unity-work-rule/SKILL.md): 씬 충돌 방지, 독립 완제품 프리팹 우선, 직렬화 바인딩, 에디터 스크립팅 제한
 - [Unity CLI 러너 스킬 (unity-cli-runner)](../.agents/skills/unity-cli-runner/SKILL.md): 백그라운드 컴파일 검증 및 NUnit 무인 테스트
 - [소통 로거 스킬 (agent-communication-logger)](../.agents/skills/agent-communication-logger/SKILL.md): 에이전트 간 실시간 인계 타임라인 누적 로깅
+- [Notion 개발일지 워크플로우 스킬 (unity-devlog-workflow)](../.agents/skills/unity-devlog-workflow/SKILL.md): 일일 작업 종료 및 Notion 캘린더 일지/토글 피드백 자동 생성
 - [유니티 폴더 및 에셋 네이밍 규칙 (unity_folder_rule.md)](../.agents/rules/unity_folder_rule.md): 디렉토리 구조, `_Imports/` 원본 분리, 에셋 접두사/접미사
 - [AI 리소스 생성 및 프로토타입 규칙 (asset_generation_rule.md)](../.agents/rules/asset_generation_rule.md): 토큰 절약형 프리미티브, Particle System, Animator Controller, AI 4단계 파이프라인
-- [Git 버전 관리 규칙 (git_rule.md)](../.agents/rules/git_rule.md): 3단계 브랜치, Worktree 격리, PR 컨벤션
+- [Git 버전 관리 규칙 (git_rule.md)](../.agents/rules/git_rule.md): 3단계 브랜치, Worktree 격리, PR 컨벤션, Zero-Dirty 워킹 트리 보장
 
 ---
 
 ## 1. 시스템 및 기능 기획 명세서 (Specifications)
 - [기획서 등록 가이드 및 템플릿](./specs/README.md)
+- [기획 상세 명세서 보관소 (docs/tech_spec/)](./tech_spec/): Designer가 작성한 기능별 상세 명세서
 - *(신규 기능 기획서가 `docs/specs/`에 추가되면 이곳에 링크가 등록됩니다)*
 
 ---
