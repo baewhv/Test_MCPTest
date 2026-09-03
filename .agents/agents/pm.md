@@ -21,8 +21,7 @@ PM은 불필요한 중간 릴레이 병목을 없애기 위해 실무 에이전�
 
 1. **기획 및 태스크 세분화 (`designer`)**:
    - `docs/specs/` 내 사용자 기획서(Strict Read-Only) 분석 및 코어루프 검증
-   - `docs/work/worklist.md` 태스크 세분화 및 `docs/work/status.md` 기획 필요항목 관리 후 `Developer`에게 직접 인계
-2. **AI 리소스 제작 및 가공 (`artist`)**:
+   - **`docs/tech_spec/[시스템명]_spec.md` 기획 상세 명세서 작성** ➔ 이를 기반으로 `docs/work/worklist.md` 실체적 태스크 등록 후 `Developer`에게 직접 인계2. **AI 리소스 제작 및 가공 (`artist`)**:
    - `.agents/rules/asset_generation_rule.md` 준수
    - 나노바나나, UnityMCP, Particle System 이펙트, Animator Controller 제작 및 `Assets/_Imports/` 격리 배치 후 `status.md` 및 `Developer`에게 인계
 3. **C# 개발 및 프리팹 완제품 조립 (`developer`)**:
@@ -121,3 +120,4 @@ PM은 불필요한 중간 릴레이 병목을 없애기 위해 실무 에이전�
   1. `Designer`가 수정된 기획서를 재분석하여 기존 완료/진행 태스크와의 차이점을 도출합니다.
   2. `docs/work/worklist.md`에 `[수정]` 접두사를 붙인 신규 변경 태스크를 등록하고 `status.md`를 갱신합니다.
   3. 사용자의 착수 승인 후 `Developer ➔ GitManager ➔ QA` 표준 1루프를 거쳐 안전하게 코드를 갱신합니다.
+
