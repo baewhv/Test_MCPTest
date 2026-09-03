@@ -1,7 +1,6 @@
 ﻿# 프로젝트 환경 명세서 (Project Environment Specification)
 
-이 문서는 5대 에이전트와 연동 스킬이 올바르게 작동하기 위해 필요한 프로젝트 고유 메타데이터, 외부 연동 및 필수 도구 인프라 명세서입니다.
-새로운 프로젝트를 시작할 때, 다음 내용이 비어있다면 작업을 이행하지 않습니다.
+- **환경 설정 상태 (Setup Status)**: `[SETUP_COMPLETED]`
 
 > [!NOTE]
 > GitHub 토큰, Notion 토큰 등 민감한 인증 키(API Key/PAT)는 이곳에 입력하지 마시고, MCP 설정(`config/mcp_config.json`)을 통해 안전하게 관리됩니다.
@@ -43,4 +42,3 @@
 | **Unity CLI** | CLI Tool | 백그라운드 무인 컴파일 검증 및 NUnit 단위 테스트 | Developer/QA의 오프라인 사전 검증 불가 |
 | **Notion MCP** | MCP Server | 일일 학습일지 자동 생성 및 접힌 토글 피드백 | 작업 종료 시 Notion 자동 일지 작성 불가 |
 | **Rider MCP** | MCP Server | C# 네이밍 컨벤션 검사 및 IDE 진단 연동 | C# IDE 정적 분석 및 네이밍 실시간 검증 불가 |
-
