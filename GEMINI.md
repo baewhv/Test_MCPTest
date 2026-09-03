@@ -17,25 +17,7 @@
 
 ---
 
-## 3. 실시간 작업 상태 관리 규칙 (Workflow Status Rule - AI & 사용자 상태 제어용)
-- **목적**: AI 에이전트 간 작업 진행 가능 여부 판단(FSM 상태 제어) 및 사용자의 현재 진행 단계 확인.
-- **관리 파일**: `docs/work/status.md`
-- 모든 에이전트는 작업 착수 전 반드시 `docs/work/status.md`의 `[현재 상태]`를 확인하여 작업 진행 가능 여부를 검증한다.
-- 필수 도구(GitHub MCP, Unity MCP, Unity CLI, Notion MCP, Rider MCP) 미연결 시 작업을 임의 진행하지 않고 도구 차단 상태로 대기한다.
-- 작업 착수, 완료, 인계, 검수 시작 및 완료 시마다 `docs/work/status.md`의 `[현재 상태]`를 아래의 **표준 상태 전이 규격**에 맞춰 실시간으로 갱신(덮어쓰기)한다:
-  - **1. 기획 완료**: `[Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능` *(미달성 시: `[Designer] 코어루프 조건 미달성 (기획 보완 대기)`)*
-  - **2. 리소스 제작 완료 (병렬/선행)**: `[Artist] [기능명] 리소스 제작 및 세팅 완료 ➔ status.md 제안항목에 에셋 연결 기록`
-  - **3. 개발 완료**: `[Developer] [기능명] C# 구현 및 프리팹/씬 조립 완료 ➔ git_manager에게 커밋/PR 인계`
-  - **4. PR 생성 완료**: `[GitManager] [기능명] PR 생성 완료 (PR #nn) ➔ qa에게 검수 인계`
-  - **5-A. QA 진행 중**: `[QA] [기능명] QA 4대 검수 진행 중 (NUnit, 콘솔, 코어루프, 스크린샷)`
-  - **5-B. QA 통과**: `[QA] [기능명] QA 4대 검수 통과 및 worklist [x] 완료 ➔ 사용자 최종 Merge 대기`
-  - **5-C. QA 반려**: `[QA] [기능명] QA 검수 반려 (결함 발견) ➔ developer에게 수정 요청 인계`
-  - **6. 머지 정리 완료**: `[GitManager] PR 머지 확인 및 Worktree 정리 완료 ➔ 다음 작업 대기`
-  - **※ 도구 차단/대기**: `[도구차단] [에이전트명] [기능명] 작업 중단 (필수 도구 [도구명] 미연결) ➔ 사용자 설정 대기`
-
----
-
-## 4. 에이전트 실시간 소통 기록 규칙 (Communication Logger - 사용자 실시간 모니터링/검증용)
+## 3. 에이전트 실시간 소통 기록 규칙 (Communication Logger - 사용자 실시간 모니터링/검증용)
 - **목적**: 사용자가 5대 에이전트의 실제 협업 흐름, 데이터 인계, PR 생성, QA 검증 과정을 시간대별로 감사(Audit) 및 검증.
 - **관리 파일**: `docs/logs/agent_comm_YYYY-MM-DD.md`
 - 에이전트 간 인계(Handoff), 일감 위임, 결과 반환, PR 요청, QA 검증 요청 및 결과 반환이 일어날 때마다 `agent-communication-logger` 스킬을 사용하여 실시간 소통 로그를 **1줄씩 누적 기록**한다:
@@ -45,7 +27,7 @@
 
 ---
 
-## 5. 사용자 작업 실행 및 상태 연계 프로토콜 (Task Commands & Intent Routing)
+## 4. 사용자 작업 실행 및 상태 연계 프로토콜 (Task Commands & Intent Routing)
 
 ### ① 1개 작업 단위 루프의 정의 (Single Task Loop Definition)
 - 1개 작업(Task)의 완료 기준은 다음의 완전한 사이클을 완수하는 것이다:
@@ -74,7 +56,7 @@
 
 ---
 
-## 6. 게임 수정 및 아키텍처 리팩토링 규칙 (Modification & Refactoring Protocol)
+## 5. 게임 수정 및 아키텍처 리팩토링 규칙 (Modification & Refactoring Protocol)
 
 ### ① 기획 내용 수정 프로토콜 (Doc-Driven Revision)
 - **트리거**: 사용자가 `docs/specs/` 내 기획서를 수정하고 *"기획서 [기능명] 수정했으니 반영해줘"* 등의 요청을 전달할 때 발동한다.
