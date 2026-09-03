@@ -5,8 +5,14 @@
 
 ---
 
-## 1. 5대 전문 에이전트 역할 및 위임 규칙 (Role Boundary & Delegation)
-- 모든 작업은 전담 5대 에이전트 체계로 분업하며, 본인 역할 외의 작업 요청 시 담당 전문 에이전트로 위임할 것을 사용자에게 제안한다:
+## 1. 사용자 작업 지시 및 PM 위임 원칙 (PM Delegation Rule)
+- 메인(Default) 에이전트는 사용자로부터 작업 실행 지시("기획서 분석해줘", "작업 하나 진행해줘", "N개 작업 진행해줘", "리팩토링해줘" 등)를 수신하면, 직접 코딩이나 검수를 수행하지 않고 **`invoke_subagent` 도구를 호출하여 `PM` 에이전트에게 지시를 위임**한다.
+- `PM` 에이전트는 전체 파이프라인을 총괄 지휘하며 5대 전문 서브에이전트(`designer`, `artist`, `developer`, `qa`, `git_manager`)를 오케스트레이션하여 작업 1루프를 완결한다.
+
+---
+
+## 2. 5대 전문 에이전트 역할 및 위임 규칙 (Role Boundary & Delegation)
+- 모든 개발 및 기획 실무는 전담 5대 에이전트 체계로 분업한다:
   1. **기획 및 태스크 세분화**: `designer` (docs/work/worklist.md 및 status.md 관리)
   2. **AI 리소스 제작 및 가공**: `artist` (.agents/rules/asset_generation_rule.md 준수, _Imports 배치 및 status.md 제안)
   3. **C# 개발 및 프리팹 완제품 조립**: `developer` (.agents/rules/csharp_coding_rule.md 준수, 에셋 바인딩)
@@ -15,7 +21,7 @@
 
 ---
 
-## 2. 실시간 작업 상태 관리 규칙 (Workflow Status Rule - AI & 사용자 상태 제어용)
+## 3. 실시간 작업 상태 관리 규칙 (Workflow Status Rule - AI & 사용자 상태 제어용)
 - **목적**: AI 에이전트 간 작업 진행 가능 여부 판단(FSM 상태 제어) 및 사용자의 현재 진행 단계 확인.
 - **관리 파일**: `docs/work/status.md`
 - 모든 에이전트는 작업 착수 전 반드시 `docs/work/status.md`의 `[현재 상태]`를 확인하여 작업 진행 가능 여부를 검증한다.
@@ -33,7 +39,7 @@
 
 ---
 
-## 3. 에이전트 실시간 소통 기록 규칙 (Communication Logger - 사용자 실시간 모니터링/검증용)
+## 4. 에이전트 실시간 소통 기록 규칙 (Communication Logger - 사용자 실시간 모니터링/검증용)
 - **목적**: 사용자가 5대 에이전트의 실제 협업 흐름, 데이터 인계, PR 생성, QA 검증 과정을 시간대별로 감사(Audit) 및 검증.
 - **관리 파일**: `docs/logs/agent_comm_YYYY-MM-DD.md`
 - 에이전트 간 인계(Handoff), 일감 위임, 결과 반환, PR 요청, QA 검증 요청 및 결과 반환이 일어날 때마다 `agent-communication-logger` 스킬을 사용하여 실시간 소통 로그를 **1줄씩 누적 기록**한다:
@@ -43,7 +49,7 @@
 
 ---
 
-## 4. 사용자 작업 실행 및 상태 연계 프로토콜 (Task Commands & Intent Routing)
+## 5. 사용자 작업 실행 및 상태 연계 프로토콜 (Task Commands & Intent Routing)
 
 ### ① 1개 작업 단위 루프의 정의 (Single Task Loop Definition)
 - 1개 작업(Task)의 완료 기준은 다음의 완전한 사이클을 완수하는 것이다:
@@ -72,7 +78,7 @@
 
 ---
 
-## 5. 게임 수정 및 아키텍처 리팩토링 규칙 (Modification & Refactoring Protocol)
+## 6. 게임 수정 및 아키텍처 리팩토링 규칙 (Modification & Refactoring Protocol)
 
 ### ① 기획 내용 수정 프로토콜 (Doc-Driven Revision)
 - **트리거**: 사용자가 `docs/specs/` 내 기획서를 수정하고 *"기획서 [기능명] 수정했으니 반영해줘"* 등의 요청을 전달할 때 발동한다.
