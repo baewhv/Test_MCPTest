@@ -1,7 +1,7 @@
 ﻿# 객체 상호작용 및 아키텍처 관계도 (Object Architecture & Interaction Map)
 
-이 문서는 프로젝트 내 모든 게임 오브젝트 간의 충돌 상호작용, 생성 및 생명주기 관리(Spawner/Pool), 이벤트 구독 관계, ScriptableObject 데이터 바인딩을 총괄 색인화하는 마스터 아키텍처 문서입니다.
-`Developer` 에이전트가 신규 기능을 구현하거나 프리팹을 조립할 때마다 실시간으로 갱신 관리합니다.
+이 문서는 프로젝트 내 모든 게임 오브젝트 간의 충돌 상호작용, 생성 및 생명주기 관리(Spawner/Pool), 이벤트 구독 관계, Public API 계약, ScriptableObject 데이터 바인딩을 총괄 색인화하는 마스터 아키텍처 문서입니다.
+`Developer`가 신규 기능을 구현할 때마다 실시간으로 갱신 관리하며, 모든 서브에이전트(`Developer`, `QA`, `PM`)는 소스 코드를 반복해서 뒤지는 대신 본 문서를 1차 참조하여 작업을 수행합니다.
 
 ---
 
@@ -30,7 +30,15 @@
 
 ---
 
-## 4. ScriptableObject 데이터 참조 구조 (Data Binding)
+## 4. 주요 클래스 Public API 계약 (API Contract)
+
+| 클래스명 (Class) | 주요 메서드 및 프로퍼티 시그니처 | 역할 및 반환값 / 호출 시점 |
+| :--- | :--- | :--- |
+| *(클래스명)* | `public void TakeDamage(int amount)` | 피격 시 데미지 적용, HP 감소 및 사망 이벤트 트리거 |
+
+---
+
+## 5. ScriptableObject 데이터 참조 구조 (Data Binding)
 
 | 데이터 SO (Asset) | 참조 컴포넌트 (Consumer) | 전달 데이터 및 역할 |
 | :--- | :--- | :--- |
@@ -38,7 +46,7 @@
 
 ---
 
-## 5. 아키텍처 및 호출 흐름 다이어그램 (Architecture Diagram)
+## 6. 아키텍처 및 호출 흐름 다이어그램 (Architecture Diagram)
 
 ```mermaid
 graph TD
