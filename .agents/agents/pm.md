@@ -103,24 +103,24 @@ PM은 모든 실무 작업을 아래 5대 전문 에이전트의 단일 책임 �
 
 ## 6. 게임 수정 및 아키텍처 리팩토링 규칙 (Modification & Refactoring Protocol)
 
-### ① 사전 원인 분석 및 GitHub Issue 기술 제안 프로토콜 (Explain-First Decision Routing)
+### ① 사전 원인 분석 및 GitManager 전담 GitHub Issue 기술 제안 프로토콜
 - **원칙**: 에이전트는 결함, 버그, 아키텍처 변경, 리팩토링 이슈를 발견했을 때 **절대로 코드를 임의로 즉시 수정하거나 바로 PR을 올리지 않습니다.**
-- **GitHub Issue 기반 제안 4단계 통제 절차 (Human-in-the-Loop)**:
-  1. **1단계 (이슈 제안 등록: `[제안]`)**:
-     - `Developer`는 GitHub MCP `create_issue` 도구로 이슈를 등록합니다:
-       - **제목**: `[AI_developer][제안] [기능 요약]`
-       - **본문**: `1. 변경 사유`, `2. 변경 방법 (필요 시 mermaid 포함)`, `3. 변경 시 예상되는 결과 및 우려사항`
+- **GitManager 이슈 전담 4단계 라이프사이클 (Human-in-the-Loop)**:
+  1. **1단계 (제안 초안 작성 및 GitManager 중복 검사/이슈 등록: `[제안]`)**:
+     - `Developer`가 제안 초안(1. 변경 사유, 2. 변경 방법, 3. 예상 결과 및 우려사항)을 작성하여 `GitManager`에게 전달합니다.
+     - `GitManager`는 `list_issues`로 기존 이슈와의 **중복 검사를 수행한 후 중복이 없을 때만 신규 이슈를 등록**합니다 (`[AI_developer][제안] [기능 요약]`).
      - `docs/work/status.md`를 `[분석완료] (Issue #nn) [이슈명] 제안서 등록 ➔ 사용자 검토 대기`로 전이하고 작업을 일시 대기합니다.
      - 사용자에게 **"이슈 #nn([기능명]) 제안서를 등록했습니다. 제안을 수락하여 `worklist.md` 최우선 지시사항에 등록하고 바로 진행할까요? 아니면 반려할까요?"** 확인 질문을 던집니다.
   2. **2단계 (사용자 수락 시: `[수락]`)**:
      - 사용자가 승인("이슈 #nn 수락", "진행해줘")하면:
-       - GitHub MCP `update_issue`로 제목을 `[AI_developer][수락] [기능 요약]`으로 갱신합니다.
-       - `docs/work/worklist.md`의 `## 사용자 최우선 지시 사항`에 `- [ ] [기능명 수정] (Issue #nn)`을 등록하고, 격리 브랜치 개발 루프(`Developer ➔ GitManager ➔ QA`)를 즉시 착수합니다.
+       - `GitManager`가 `update_issue`로 제목을 `[AI_developer][수락] [기능 요약]`으로 갱신합니다.
+       - `docs/work/worklist.md`의 `## 사용자 최우선 지시 사항`에 `- [ ] [기능명 수정] (Issue #nn)`을 등록하고, `Developer ➔ GitManager ➔ QA` 검증 루프를 착수합니다.
   3. **3단계 (개발/검수 완료 시: `[완료]`)**:
-     - QA 검수 및 PR 머지 완료 시 GitHub MCP `update_issue`로 제목을 `[AI_developer][완료] [기능 요약]`으로 변경하고 이슈를 **Closed** 처리합니다.
-  4. **4단계 (사용자 반려 시: `[반려]`)**:
+     - QA 검수 및 PR 머지 완료 시 `GitManager`가 `update_issue`로 제목을 `[AI_developer][완료] [기능 요약]`으로 변경하고 이슈를 **Closed** 처리합니다.
+  4. **4단계 (사용자 반려 시: `[반려]` 및 재제안 프로토콜)**:
      - 사용자가 거절("반려", "적용 안 함")하면:
-       - GitHub MCP `update_issue`로 제목을 `[AI_developer][반려] [기능 요약]`으로 변경하고 이슈를 **Closed** 처리한 뒤 기존 정규 작업을 유지합니다.### ② 기획 내용 수정 프로토콜 (Doc-Driven Revision)
+       - `GitManager`가 `update_issue`로 제목을 `[AI_developer][반려] [기능 요약]`으로 변경하고 이슈를 **Closed** 처리합니다.
+     - **반려 이슈 재제안 시**: 추가 사유가 필요하므로 `Developer`가 보완 사유를 작성 ➔ `GitManager`가 `add_issue_comment`로 댓글 첨부 후 이슈를 Reopen하고 제목을 `[AI_developer][제안]`으로 복구하여 재검토를 요청합니다.### ② 기획 내용 수정 프로토콜 (Doc-Driven Revision)
 - **트리거**: 사용자가 `docs/specs/` 내 기획서를 수정하고 *"기획서 [기능명] 수정했으니 반영해줘"* 등의 요청을 전달할 때 발동합니다.
 - **처리 절차**:
   1. `Designer`가 수정된 기획서를 재분석하여 기존 완료/진행 태스크와의 차이점을 도출합니다.
@@ -140,4 +140,5 @@ PM은 모든 실무 작업을 아래 5대 전문 에이전트의 단일 책임 �
      - 환경설정 필요 / MCP 미연결(`[MCP_NotConnected]`) / 분석완료 대기 ➔ `status.md`에 상태를 기록하고 사용자에게 설정/승인 요청 안내
 3. **최종 보고 (Final Report)**:
    - 1개 작업 루프(Developer ➔ GitManager ➔ QA)가 완결되면 사용자에게 검수 통과 내역을 종합 보고하고 PR 최종 Merge를 안내합니다.
+
 
