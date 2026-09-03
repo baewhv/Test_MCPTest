@@ -103,3 +103,10 @@ InitTestScene*.unity*
 
 # Ignore imported assets
 Assets/Imports/**
+# Project Auditor & Unity Performance Settings noise
+ProjectSettings/ProjectAuditorSettings.asset
+ProjectSettings/ProjectAuditorSettings.asset.meta
+
+# TextMesh Pro Font Fallback / Dynamic Atlas Cache
+Assets/TextMesh Pro/**/LiberationSans SDF - Fallback.asset
+Assets/TextMesh Pro/**/LiberationSans SDF - Fallback.asset.meta
