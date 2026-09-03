@@ -1,6 +1,11 @@
-﻿# 유니티 C# 코딩 규칙 (Unity Coding Rule)
+﻿---
+name: unity-coding-rule
+description: 유니티 C# 스크립트 작성 시 [SerializeField] private 직렬화 캡슐화, OnDisable 이벤트 해제, Fake Null 검사, Animator.StringToHash 캐싱 및 부하 유발 Search API 제한을 준수하는 표준 C# 코딩 스킬
+---
 
-이 문서는 프로젝트의 모든 C# 스크립트 작성, 필드 캡슐화, 라이프사이클 및 탐색 API 제한을 규정하는 단독 코드 레벨 표준 규칙입니다.
+# 유니티 C# 코딩 표준 스킬 (Unity Coding Skill)
+
+이 스킬은 프로젝트의 모든 C# 스크립트 작성, 필드 캡슐화, 라이프사이클 및 탐색 API 제한을 규정하는 표준 코드 레벨 지침입니다.
 
 ---
 
