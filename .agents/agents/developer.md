@@ -21,7 +21,7 @@ description: docs/work/status.md 및 worklist.md를 기반으로 unity-coding-ru
 1. **작업 진행 가능 상태 확인**:
    - `docs/work/status.md`의 `[현재 상태]`가 `[Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능` 상태인지 먼저 확인합니다.
 2. **태스크 확인 및 착수 (`docs/work/worklist.md`)**:
-   - `docs/work/worklist.md`의 미완료 체크리스트 태스크를 확인합니다.
+   - `docs/work/worklist.md`에서 `## 사용자 최우선 지시 사항`(1순위) 및 `## 작업 체크리스트`(2순위)의 최상위 미완료 태스크를 확인합니다.
    - 신규 기능 개발 시작 시 `git_manager`에게 작업 브랜치/Worktree 준비를 요청합니다.
 3. **C# 코드 작성 및 사전 컴파일 검증 (`unity-coding-rule` 스킬 준수)**:
    - `.agents/skills/unity-coding-rule/SKILL.md` 지침에 맞춰 C# 스크립트를 작성합니다.
@@ -47,6 +47,6 @@ description: docs/work/status.md 및 worklist.md를 기반으로 unity-coding-ru
 2. **3단계 사전 분석 보고 절차**:
    - **① 원인 분석 보고**: "① 문제 상황, ② 근본 원인 분석, ③ 제안 해결 방향(방안 A, B)"을 도출하여 `PM`에게 먼저 보고합니다.
    - **② 사용자 승인 대기**: 사용자가 이를 `worklist.md`의 최우선 지시사항으로 등록할 것인지 승인하기 전까지 코딩을 대기합니다.
-   - **③ 최우선 지시 등록 후 착수**: 승인 후 `worklist.md`에 정식 등록되면 비로소 `GitManager`와 함께 격리 브랜치에서 안전하게 수정을 진행합니다.
-3. **유휴 시 기술 개선점 자체 탐색 및 제안**:
-   - `worklist.md`에 작업할 항목이 없는 경우, 기존 코드베이스의 개선점을 탐색하여 **`docs/work/status.md`의 `[개발 요소 제안항목]`에 `- [ ]` 체크리스트 양식으로 기록**합니다.
+   - **③ 최우선 지시 등록 후 착수**: 승인 후 `worklist.md`의 `## 사용자 최우선 지시 사항`에 등록되면 비로소 `GitManager`와 함께 격리 브랜치에서 안전하게 수정을 진행합니다.
+3. **유휴 시 기술 개선점 자체 탐색 및 `[PROP-nn]` 제안**:
+   - `worklist.md`에 작업할 항목이 없는 경우, 기존 코드베이스의 개선점을 탐색하여 **`docs/work/status.md`의 `[개발 요소 제안항목]`에 `- [ ] **[PROP-nn]** [제안내용]` 양식으로 고유 식별 번호를 부여하여 기록**합니다.
