@@ -17,8 +17,10 @@
 > - **※ 사전 분석 완료**: `[분석완료] [이슈명] 원인 및 해결 방향 도출 ➔ 사용자 검토 및 worklist 등록 분기 대기`
 
 ## [기획 필요항목]
-- *(기획서 검토 시 누락/보완이 필요한 항목과 에이전트 추론 추천 목록이 이곳에 기록됩니다)*
+<!-- Designer 추가 기획 제안은 GitHub Issue([AI_designer][제안]) 등록 후 (Issue #nn) 링크로 기록됩니다 -->
+- *(기획서 검토 시 누락/보완이 필요한 항목 및 Designer의 GitHub 이슈 제안([AI_designer][제안] #nn)이 이곳에 기록됩니다)
 
 ## [개발 요소 제안항목]
 <!-- Developer 기술 제안은 GitHub Issue([AI_developer][제안]) 등록 후 (Issue #nn) 링크로 기록됩니다 -->
 - *(Artist의 에셋 연결 제안, Developer의 GitHub 이슈 제안([AI_developer][제안] #nn), 부하 탐색 코드 보류 사유 및 필수 도구 미연결 안내가 이곳에 기록됩니다)*
+
