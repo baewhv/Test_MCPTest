@@ -1,39 +1,36 @@
 ﻿# 프로젝트 환경 명세서 (Project Environment Specification)
 
 이 문서는 5대 에이전트와 연동 스킬이 올바르게 작동하기 위해 필요한 프로젝트 고유 메타데이터, 외부 연동 및 필수 도구 인프라 명세서입니다.
+새로운 프로젝트를 시작할 때, 다음 내용이 비어있다면 작업을 이행하지 않습니다.
 
-> [!IMPORTANT]
-> **작업 착수 필수 전제조건 (Pre-flight Requirements)**
-> 1. 새로운 프로젝트를 시작할 때 아래 항목의 필수 정보가 비어있다면 에이전트는 작업을 이행하지 않고 사용자에게 입력을 요청합니다.
-> 2. 필수 MCP 도구가 연결되어 있지 않다면 작업을 이행하지 않고 도구 연결을 대기합니다.
-> 3. GitHub 토큰, Notion 토큰 등 민감한 인증 키(API Key/PAT)는 이곳에 입력하지 마시고, MCP 설정(`config/mcp_config.json`)을 통해 안전하게 관리됩니다.
+> [!NOTE]
+> GitHub 토큰, Notion 토큰 등 민감한 인증 키(API Key/PAT)는 이곳에 입력하지 마시고, MCP 설정(`config/mcp_config.json`)을 통해 안전하게 관리됩니다.
 
 ---
 
 ## 1. 버전 관리 및 저장소 정보 (Git & GitHub)
-- **GitHub Repository URL**: 
+- **GitHub Repository URL**: `https://github.com/baewhv/Test_MCPTest`
 - **Default Integration Branch**: `develop`
 - **Release Branch**: `main`
-- **Worktree Parent Directory**: 
+- **Worktree Parent Directory**: `../TestMCP_worktrees`
 
 ---
 
 ## 2. 외부 연동 명세 (Notion & External Services)
-- **Notion Database Name**: 
-- **Notion Database ID**: 
-  - *(Name을 기준으로 실제 존재하는 노션 데이터베이스인지 확인 후 ID를 기입합니다)*
+- **Notion Database Name**: `학습일지`
+- **Notion Database ID**: `13cc49b1-3a07-814e-b7b5-cf14b64ca1ee`
 - **Notion Page Title Format**: `[YYYY-MM-DD] 작업 기록`
 
 ---
 
 ## 3. Unity 프로젝트 및 에셋 환경 명세 (Unity Specification)
-- **Unity Project Name**: 
-- **Unity Editor Path**: 
+- **Unity Project Name**: `TestMCP`
+- **Unity Editor Path**: `C:\Program Files\Unity\Hub\Editor\6000.5.8f1\Editor\Unity.exe`
 - **Target Platform**: `PC, Mac & Linux Standalone`
 - **Asset Root**: `Assets/`
 - **Raw Imports Root (Submodule Boundary)**: `Assets/_Imports/`
 - **Default Screenshot Output**: `Assets/Screenshots`
-- **Core Loop Test Scene**: 
+- **Core Loop Test Scene**: `Assets/Scenes/SampleScene.unity`
 
 ---
 
@@ -46,3 +43,4 @@
 | **Unity CLI** | CLI Tool | 백그라운드 무인 컴파일 검증 및 NUnit 단위 테스트 | Developer/QA의 오프라인 사전 검증 불가 |
 | **Notion MCP** | MCP Server | 일일 학습일지 자동 생성 및 접힌 토글 피드백 | 작업 종료 시 Notion 자동 일지 작성 불가 |
 | **Rider MCP** | MCP Server | C# 네이밍 컨벤션 검사 및 IDE 진단 연동 | C# IDE 정적 분석 및 네이밍 실시간 검증 불가 |
+
