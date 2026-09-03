@@ -36,12 +36,14 @@ description: docs/specs/ 내 원본 기획서를 심층 분석하여 docs/tech_s
   ```
 
 ### 2단계: 상세 명세서 기반 실무 태스크 도출 및 `worklist.md` 등록
-- 작성된 `docs/tech_spec/[시스템명]_spec.md`의 실제 구현 블록들을 기준으로 `docs/work/worklist.md`에 체크리스트를 작성합니다:
-  - **인위적 개수 제한 철폐**: 무조건적인 N개 쪼개기를 배제하고, 실제 C# 클래스 구현, Zero-Override 프리팹 조립, 이벤트 연동 단위에 맞춰 자연스러운 개수로 세분화합니다.
-  - **독립 완결성(Self-Contained Unit)**: 각 태스크는 Developer가 명세서를 참조하여 단일 1루프(Developer ➔ GitManager ➔ QA)로 완결 및 검증할 수 있는 단위여야 합니다.
-  - **명세서 참조 링크 표기**: 태스크 그룹 상단에 해당 상세 명세서 경로(`[기획 상세 명세서](docs/tech_spec/[시스템명]_spec.md)`)를 명시합니다.
-
-## 3. GitHub Issue 추가 기획 제안 프로토콜
+- 작성된 `docs/tech_spec/[시스템명]_spec.md`를 바탕으로 **4단계 아키텍처 우선 순서(Architecture-First Order)**에 따라 태스크를 세분화하여 `docs/work/worklist.md`에 등록합니다:
+  1. **[1단계] 기반 인프라 및 데이터 계약**: 공유 인터페이스(`IDamageable`), 공용 매니저, 데이터 `SO` 정의
+  2. **[2단계] 핵심 수학/이동 유틸리티 및 베이스 클래스**: 궤적 계산 모듈, 추상 클래스(`EnemyBase`), 오브젝트 풀러
+  3. **[3단계] 액터 엔티티 및 Zero-Override 완제품 프리팹**: 플레이어 기체, 적 AI 기체, 2D 히트박스 충돌 연동
+  4. **[4단계] HUD/UI, 연출 및 코어루프 통합 검수**: 스코어보드 UI, 파티클 이펙트/사운드 연동, NUnit 통합 검수
+- **인위적 개수 제한 철폐**: 무조건적인 N개 쪼개기를 배제하고, 위 의존성 흐름에 맞춰 실제 구현 단위로 자연스럽게 도출합니다.
+- **독립 완결성(Self-Contained Unit)**: 각 태스크는 Developer가 명세서를 참조하여 단일 1루프(Developer ➔ GitManager ➔ QA)로 완결 및 검증할 수 있는 단위여야 합니다.
+- **명세서 참조 링크 표기**: 태스크 그룹 상단에 해당 상세 명세서 경로(`[기획 상세 명세서](docs/tech_spec/[시스템명]_spec.md)`)를 명시합니다.## 3. GitHub Issue 추가 기획 제안 프로토콜
 
 ### ① 추가 기획 제안서 초안 작성 규격 (GitManager 위임)
 - 기획서 상 부족한 부분이 생기면 아래 표준 양식으로 제안서 초안을 작성하여 `GitManager`에게 중복 검사 및 이슈 생성을 요청합니다:
@@ -77,3 +79,4 @@ description: docs/specs/ 내 원본 기획서를 심층 분석하여 docs/tech_s
      ```bash
      node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Designer" --to "Developer" --type "기획 인계" --msg "[기능명] 상세 명세서(docs/tech_spec) 작성 및 worklist 등록 완료"
      ```
+
