@@ -11,13 +11,9 @@
 
 ---
 
-## 2. 5대 전문 에이전트 역할 및 위임 규칙 (Role Boundary & Delegation)
-- 모든 개발 및 기획 실무는 전담 5대 에이전트 체계로 분업한다:
-  1. **기획 및 태스크 세분화**: `designer` (docs/work/worklist.md 및 status.md 관리)
-  2. **AI 리소스 제작 및 가공**: `artist` (.agents/rules/asset_generation_rule.md 준수, _Imports 배치 및 status.md 제안)
-  3. **C# 개발 및 프리팹 완제품 조립**: `developer` (.agents/rules/csharp_coding_rule.md 준수, 에셋 바인딩)
-  4. **QA 및 런타임 검증**: `qa` (NUnit 테스트, 콘솔 무결성, 코어루프 검증, 스크린샷 캡처)
-  5. **버전 관리 및 PR 독점 전담**: `git_manager` (.agents/rules/git_rule.md 준수)
+## 2. 서브에이전트 작업 보고 및 턴 종료 규칙 (Subagent Reporting & Turn Completion)
+- 모든 서브에이전트(Subagent)는 할당받은 작업이 **완료되거나 중단(도구 차단, 결함 발견, 기획 보완 대기 등)되면, 그 결과 내용 및 사유를 `PM`에게 명확히 보고하고 도구 호출을 중단하여 턴을 마친다.**
+- 서브에이전트는 임의로 다음 단계의 서브에이전트를 직접 연쇄 호출하지 않고, PM에게 결과를 반환하여 PM이 중앙 집중식으로 다음 파이프라인을 제어하도록 한다.
 
 ---
 
