@@ -19,10 +19,13 @@ description: docs/tech_spec/ 및 docs/ARCHITECTURE.md를 기반으로 C# 소스 
 
 1. **작업 진행 가능 상태 확인**:
    - `docs/work/status.md`의 `[현재 상태]`가 `[Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능` 상태인지 먼저 확인합니다.
-2. **기술 명세서 우선 참조 (코드 중복 탐색 금지)**:
-   - 타 클래스나 시스템과 연동할 때 여러 C# 소스 파일을 일일이 열어보지 않고, **`docs/tech_spec/[시스템명]_spec.md` 및 `docs/ARCHITECTURE.md`의 상호작용 매트릭스, 이벤트 흐름, Public API 계약을 1차 참조**하여 필요한 시그니처를 즉시 파악합니다.
-   - 신규 기능 개발 시작 시 `git_manager`에게 작업 브랜치/Worktree 준비를 요청합니다.
-3. **C# 코드 작성 및 사전 컴파일 검증 (`unity-coding-rule` 스킬 준수)**:
+2. **기술 명세서 우선 참조 및 아키텍처 우선(Architecture-First) 구현 (코드 중복 탐색 금지)**:
+   - 타 클래스나 시스템과 연동할 때 여러 C# 소스 파일을 일일이 열어보지 않고, **`docs/PROJECT_SPEC.md` 및 `docs/tech_spec/[시스템명]_spec.md`와 `docs/ARCHITECTURE.md`를 1차 참조**하여 구현 순서를 잡습니다:
+     1. **[1단계] 기반 인프라 & 데이터 계약**: `PROJECT_SPEC.md` 및 `tech_spec`에 정의된 공유 인터페이스(`IDamageable`), Data SO, 코어 매니저를 가장 먼저 구현
+     2. **[2단계] 핵심 수학/이동 유틸리티 & 베이스 클래스**: 궤적 계산 모듈, 추상 클래스(`EnemyBase`), 오브젝트 풀러
+     3. **[3단계] 액터 엔티티 및 Zero-Override 완제품 프리팹**: 플레이어, 적 AI 기체, 2D 히트박스 바인딩
+     4. **[4단계] HUD/UI, 연출 및 코어루프 통합 검수**: 스코어보드, 파티클 이펙트/사운드, NUnit 통합 검수
+   - 신규 기능 개발 시작 시 `git_manager`에게 작업 브랜치/Worktree 준비를 요청합니다.3. **C# 코드 작성 및 사전 컴파일 검증 (`unity-coding-rule` 스킬 준수)**:
    - `.agents/skills/unity-coding-rule/SKILL.md` 지침에 맞춰 C# 스크립트를 작성합니다.
    - 애니메이터 파라미터는 정적 해시(`Animator.StringToHash`)로 관리하고, 파티클 시스템을 제어합니다.
    - 코드 작성 후 `node .agents/skills/unity-cli-runner/scripts/unity_cli.js compile`을 실행하여 컴파일 에러 0건을 자체 검증합니다.
@@ -64,4 +67,5 @@ description: docs/tech_spec/ 및 docs/ARCHITECTURE.md를 기반으로 C# 소스 
 
 ### ③ 반려된 이슈 재제안 시 추가 사유 보완
 - 과거에 `[반려]`되었던 이슈를 재상정해야 할 경우, 추가적인 사유가 필요하므로 **기존 반려 사유를 해소할 수 있는 추가적인 기술적 타당성, 보완 근거 및 변경 대안**을 상세히 작성하여 `GitManager`에게 전달합니다.
+
 

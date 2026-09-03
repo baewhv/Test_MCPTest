@@ -15,7 +15,8 @@ description: docs/specs/ 내 원본 기획서를 심층 분석하여 docs/tech_s
 인위적인 태스크 개수 맞추기(예: 챕터별로 무조건 4개씩 기계적으로 쪼개는 형식적 규격화)를 엄격히 금지하며, 아래 **2단계 심층 설계 절차**를 거쳐 실질적인 개발 단위로 세분화합니다:
 
 ### 1단계: 기획 상세 명세서 작성 (`docs/tech_spec/[시스템명]_spec.md`)
-- `docs/specs/` 내 원본 기획서를 정밀 분석하여 `docs/tech_spec/[시스템명]_spec.md` 파일을 신규 작성합니다:
+- `docs/specs/` 내 원본 기획서와 `docs/PROJECT_SPEC.md`의 아키텍처 기준(2D/3D, SO 데이터 패턴 등)을 정밀 분석하여 `docs/tech_spec/[시스템명]_spec.md` 파일을 신규 작성합니다.
+- **기반 인프라 및 데이터 구조 확정 타이밍**: 바로 이 명세서 작성 시점에 필요한 **공용 인터페이스(`IDamageable`), 데이터 SO 스키마(`SO_*`), 코어 매니저 계층**을 명확히 정의하여 고정합니다:
   ```markdown
   # [시스템명] 상세 기획 명세서 (Specification)
 
@@ -25,17 +26,15 @@ description: docs/specs/ 내 원본 기획서를 심층 분석하여 docs/tech_s
   ## 2. 상세 메커니즘 및 게임 룰셋
   - (구체적 수치, 계산 공식, 상태 머신 FSM, 속도/딜레이 등 구체적 파라미터)
 
-  ## 3. 데이터 구조 및 컴포넌트 설계
-  - (필요한 ScriptableObject 필드 구조 및 프리팹 조립 컴포넌트)
+  ## 3. 데이터 구조 및 컴포넌트 설계 (Data-Driven SO)
+  - (docs/PROJECT_SPEC.md 기준에 맞춘 ScriptableObject 필드 구조 및 프리팹 조립 컴포넌트)
 
   ## 4. 예외 상황 및 엣지 케이스 (Edge Cases)
   - (화면 이탈, 동시 피격, 잔여 탄환 처리, 조작권 상실 등 예외 처리 수칙)
 
   ## 5. 시스템 간 상호작용 및 이벤트 흐름
-  - (타 매니저/오브젝트와의 상호작용 및 이벤트 발행/구독 관계, 필요 시 mermaid 다이어그램 첨부)
-  ```
-
-### 2단계: 상세 명세서 기반 실무 태스크 도출 및 `worklist.md` 등록
+  - (공유 인터페이스, 타 매니저/오브젝트와의 상호작용 및 이벤트 발행/구독 관계, 필요 시 mermaid 다이어그램 첨부)
+  ```### 2단계: 상세 명세서 기반 실무 태스크 도출 및 `worklist.md` 등록
 - 작성된 `docs/tech_spec/[시스템명]_spec.md`를 바탕으로 **4단계 아키텍처 우선 순서(Architecture-First Order)**에 따라 태스크를 세분화하여 `docs/work/worklist.md`에 등록합니다:
   1. **[1단계] 기반 인프라 및 데이터 계약**: 공유 인터페이스(`IDamageable`), 공용 매니저, 데이터 `SO` 정의
   2. **[2단계] 핵심 수학/이동 유틸리티 및 베이스 클래스**: 궤적 계산 모듈, 추상 클래스(`EnemyBase`), 오브젝트 풀러
@@ -79,4 +78,5 @@ description: docs/specs/ 내 원본 기획서를 심층 분석하여 docs/tech_s
      ```bash
      node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Designer" --to "Developer" --type "기획 인계" --msg "[기능명] 상세 명세서(docs/tech_spec) 작성 및 worklist 등록 완료"
      ```
+
 

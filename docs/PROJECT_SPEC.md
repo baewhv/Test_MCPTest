@@ -39,7 +39,16 @@
 
 ---
 
-## 4. 필수 5대 도구 인프라 명세 (Essential Tools & MCPs)
+## 4. 아키텍처 및 데이터 드리븐 인프라 기준 (Architecture & Data Baseline)
+- **Physics Engine Mode**: `2D (Rigidbody2D / Collider2D)`
+- **Data-Driven Architecture**: `ScriptableObject 기반 데이터 분리 (Assets/ScriptableObjects/Data/)`
+- **Object Pooling Pattern**: `제네릭 풀링 시스템 (Generic Object Pool / IPoolable)`
+- **Core State Machine**: `FSM 기반 상태 제어`
+- **Input System**: `New Input System (com.unity.inputsystem)`
+
+---
+
+## 5. 필수 5대 도구 인프라 명세 (Essential Tools & MCPs)
 
 | 도구 명칭 | 구분 | 주요 전담 역할 | 미연결 시 영향 (Blocker) |
 | :--- | :--- | :--- | :--- |
