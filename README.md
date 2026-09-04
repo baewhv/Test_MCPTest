@@ -124,7 +124,7 @@ sequenceDiagram
 | :--- | :--- | :--- | :--- |
 | **`Designer`** | 기획서 정밀 분석, 코어루프 검토, 태스크 세분화 | `docs/specs/`, `GEMINI.md` | `worklist.md`, `status.md` |
 | **`Artist`** | AI 2D/3D/오디오 리소스 생성, Particle System, Animator Controller | 나노바나나, UnityMCP, `asset_generation_rule.md` | `Assets/_Imports/`, `status.md` 에셋 제안 |
-| **`Developer`** | C# 코딩, 프리미티브 더미 조립, Search API 금지/보류, CLI 사전검수 | `csharp_coding_rule.md`, `unity-cli-runner` | `PF_*.prefab`, `docs/ARCHITECTURE.md` |
+| **`Developer`** | C# 코딩, 프리미티브 더미 조립, Search API 금지/보류, CLI 사전검수 | `unity-coding-rule`, `unity-work-rule`, `unity-cli-runner` | `PF_*.prefab`, `docs/ARCHITECTURE.md` |
 | **`QA`** | NUnit 테스트, 콘솔/Search API 검증, 코어루프 검증, 스크린샷 캡처 | UnityMCP, `unity-cli-runner` | PR 승인 코멘트, `worklist.md [x] (PR #nn)` |
 | **`GitManager`** | Git Worktree 격리, .meta 검증, 커밋/푸시, PR 생성 및 머지 정리 | `git_rule.md`, GitHub MCP | GitHub PR, 클린 저장소 |
 
@@ -169,8 +169,8 @@ graph LR
 TestMCP/
 ├── .agents/
 │   ├── agents/             # 5대 전문 에이전트 지침서 (designer, artist, developer, qa, git_manager)
-│   ├── rules/              # 4대 표준 규칙 (csharp, git, unity_folder, asset_generation)
-│   └── skills/             # 3대 전용 스킬 (unity-cli-runner, logger, unity-devlog-workflow)
+│   ├── rules/              # 3대 표준 규칙 (git, unity_folder, asset_generation)
+│   └── skills/             # 5대 전용 스킬 (unity-coding-rule, unity-work-rule, unity-cli-runner, logger, unity-devlog-workflow)
 ├── Assets/
 │   ├── _Imports/           # [Submodule 대상] 외부 원본 리소스 (Audio, Fonts, Models, Textures)
 │   ├── Animations/         # 애니메이션 클립(.anim), 컨트롤러(.controller)
@@ -203,3 +203,5 @@ TestMCP/
    - `Designer`가 기획 분석을 완료하면 *"작업 하나 진행해줘"* 또는 *"3개의 작업 진행해줘"*를 입력하여 자율 개발 사이클을 가동합니다.
 4. **일일 종료**:
    - 개발을 마치고 퇴근할 때 *"오늘 작업 마칠게"*라고 말하면 Notion 학습일지가 자동으로 생성됩니다.
+
+

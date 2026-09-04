@@ -58,7 +58,7 @@ description: >-
           "rich_text": [
             {
               "type": "text",
-              "text": { "content": "오늘 작업된 컴포넌트 구조와 직렬화 바인딩이 csharp_coding_rule.md에 맞춰 잘 완결되었습니다. 다음 작업 시 MonsterSpawner의 풀링 연결을 검토하시면 더욱 안정적입니다." }
+              "text": { "content": "오늘 작업된 컴포넌트 구조와 직렬화 바인딩이 unity-coding-rule 스킬에 맞춰 잘 완결되었습니다. 다음 작업 시 MonsterSpawner의 풀링 연결을 검토하시면 더욱 안정적입니다." }
             }
           ]
         }
@@ -67,3 +67,5 @@ description: >-
   }
 }
 ```
+
+
