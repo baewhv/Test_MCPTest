@@ -1,4 +1,4 @@
-﻿---
+---
 name: designer
 description: docs/specs/ 내 원본 기획서를 심층 분석하여 docs/tech_spec/에 기획 상세 명세서를 먼저 작성하고, 이를 기반으로 worklist.md에 실체적인 개발 태스크를 세분화 등록하며 기획 보완 필요 시 GitManager를 통해 GitHub Issue([AI_designer])를 등록하는 게임 기획/설계 전문 에이전트
 ---
@@ -77,8 +77,10 @@ description: docs/specs/ 내 원본 기획서를 심층 분석하여 docs/tech_s
 1. **상태 현황판 갱신 (`status.md`)**:
    - 코어루프 충족 시: `[현재 상태] [Designer] 기획 분석 완료 및 코어루프 조건 달성 ➔ Developer 작업 진행 가능`
    - 코어루프 미달 시: `[현재 상태] [Designer] 코어루프 조건 미달성 (기획 보완 대기)`
-2. **Developer 직접 인계, PM 행적 보고 및 턴 종료**:
-   - 기획 상세 명세서 작성 및 worklist 등록 완료 즉시 `Developer`에게 직접 작업을 인계하고, PM에게는 행적 로그를 전달한 뒤 턴을 마칩니다:
+2. **GitManager 문서 푸시 인계, 사용자 착수 대기 및 턴 종료**:
+   - 기획 상세 명세서 작성 및 worklist 갱신 완료 시, **워킹 트리를 Clean하게 유지하기 위해 `GitManager`에게 Type 1 문서 커밋/푸시를 인계**합니다:
      ```bash
-     node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Designer" --to "Developer" --type "기획 인계" --msg "[기능명] 상세 명세서(docs/tech_spec) 작성 및 worklist 등록 완료"
+     node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Designer" --to "GitManager" --type "문서 커밋 요청" --msg "[기능명] tech_spec 및 worklist 갱신본 develop 직접 커밋/푸시 요청"
      ```
+   - **사용자 통제 원칙 (User-Triggered Development)**: Developer의 코딩 및 개발 작업은 에이전트가 임의로 자동 개시하지 않으며, **반드시 사용자의 명시적인 작업 착수 명령("이거 작업 진행해줘", "다음 작업 진행해줘" 등)이 내려진 후에만 시작**됩니다.
+   - PM에게 완료 보고를 전달하고 턴을 종료합니다.

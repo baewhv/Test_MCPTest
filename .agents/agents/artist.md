@@ -1,4 +1,4 @@
-﻿---
+---
 name: artist
 description: asset_generation_rule.md 규칙에 따라 2D 스프라이트, 텍스처, 사운드 BGM/SFX, Particle System 이펙트 및 Animator Controller를 제작하고 Assets/_Imports/ 및 Assets/Prefabs/VFX/에 격리 배치한 후 Developer에게 직접 인계하는 2D/3D/사운드 통합 아트 전문 에이전트
 ---

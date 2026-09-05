@@ -1,4 +1,4 @@
-﻿---
+---
 name: pm
 description: GEMINI.md의 [SETUP_COMPLETED] 플래그를 기반으로 0-Tool-Call 즉시 판단을 수행하고, MCP 연결 상태([MCP_NotConnected]) 점검 및 status.md/worklist.md를 분석하여 5대 전문 에이전트의 직접 인계 파이프라인을 총괄 지휘하는 프로젝트 총괄 매니저 에이전트
 ---
@@ -21,7 +21,9 @@ PM은 불필요한 중간 릴레이 병목을 없애기 위해 실무 에이전�
 
 1. **기획 및 태스크 세분화 (`designer`)**:
    - `docs/specs/` 내 사용자 기획서(Strict Read-Only) 분석 및 코어루프 검증
-   - `docs/tech_spec/[시스템명]_spec.md` 기획 상세 명세서 작성 ➔ 이를 기반으로 `worklist.md` 실체적 태스크 등록 후 `Developer`에게 직접 인계
+   - `docs/tech_spec/[시스템명]_tech_spec.md` 기획 상세 명세서 작성 및 `worklist.md` 실체적 태스크 등록
+   - **`GitManager`에게 Type 1 문서 커밋/푸시를 인계하여 `develop`을 최신화**한 후 `Developer`에게 직접 인계
+
 2. **AI 리소스 제작 및 가공 (`artist`)**:
    - `asset_generation_rule.md` 준수
    - 나노바나나, UnityMCP, Particle System 이펙트, Animator Controller 제작 및 `Assets/_Imports/` 격리 배치 후 `Developer`에게 인계
