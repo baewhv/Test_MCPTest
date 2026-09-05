@@ -1,11 +1,11 @@
 ---
 name: unity-work-rule
-description: 씬 오버라이드 0건(Zero-Override), 독립 완제품 프리팹(PF_*) 우선 조립, 인스펙터 직렬화 바인딩, Missing Reference 방지 및 에디터 스크립팅 제한을 준수하는 유니티 엔진 작업 스킬
+description: 씬 오버라이드 0건(Zero-Override), 독립 완제품 프리팹(PF_*) 우선 조립, 인스펙터 직렬화 바인딩, Missing Reference 방지, unityMCP/execute_code 오남용 금지 및 에디터 스크립팅 제한을 준수하는 유니티 엔진 작업 스킬
 ---
 
 # 유니티 작업 및 Zero-Override 프리팹 조립 표준 스킬 (Unity Work Skill)
 
-이 스킬은 프로젝트의 유니티 에디터 조작, 씬 충돌 방지, Zero-Override 프리팹 조립, 직렬화 바인딩 및 에디터 스크립팅 제한을 규정하는 작업 표준 지침입니다.
+이 스킬은 프로젝트의 유니티 에디터 조작, 씬 충돌 방지, Zero-Override 프리팹 조립, 직렬화 바인딩, 도구 사용 경계 및 에디터 스크립팅 제한을 규정하는 작업 표준 지침입니다.
 
 ---
 
@@ -40,7 +40,18 @@ description: 씬 오버라이드 0건(Zero-Override), 독립 완제품 프리팹
 
 ---
 
-## 4. 에디터 스크립팅 제한 규칙 (Editor Scripting Boundary)
+## 4. unityMCP/execute_code 오남용 전면 금지 및 네이티브 도구 우선 원칙
+1. **문서 작성 및 Git 조작에 execute_code 사용 절대 금지**:
+   - 마크다운 문서(`*.md`) 작성/수정, 소스 코드 I/O, Git 명령(`git status`, `git commit`, `git push` 등)을 유니티 에디터 C# 리플렉션(`unityMCP/execute_code`)을 통해 실행하는 비효율적 안티패턴을 전면 금지합니다.
+2. **네이티브 도구 사용 의무**:
+   - 파일 생성/수정: 표준 파일 도구(`write_to_file`, `replace_file_content`, OS 파일시스템) 사용
+   - Git 및 CLI 명령: 표준 터미널 도구(`run_command`) 사용
+3. **unityMCP의 제한적 용도**:
+   - `unityMCP`는 오직 유니티 에디터 플레이모드 제어, 콘솔 에러 로그 조회, 씬 GameObject/Component 인스펙션, 스크린샷 캡처 등 **순수 엔진 런타임 조작에만 국한하여 사용**합니다.
+
+---
+
+## 5. 에디터 스크립팅 제한 규칙 (Editor Scripting Boundary)
 1. **허용되는 에디터 코드 (Inspector Customization)**:
    - 인스펙터 가독성 향상, 필드 유효성 검사, 드롭다운 편의성 제공을 위한 **순수 인스펙터 커스터마이징(`CustomEditor`, `PropertyDrawer`)** 목적의 에디터 코드만 허용합니다.
 2. **지양/금지되는 에디터 코드 (No Build / Workflow Automation Scripts)**:
