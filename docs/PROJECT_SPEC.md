@@ -1,4 +1,4 @@
-﻿# 프로젝트 환경 명세서 (Project Environment Specification)
+# 프로젝트 환경 명세서 (Project Environment Specification)
 
 - **환경 설정 상태 (Setup Status)**: `미완료`
   <!-- 새로운 프로젝트 환경 설정 완료 시 [SETUP_COMPLETED] 또는 "완료"로 기입해 주세요 -->
@@ -16,7 +16,6 @@
 - **GitHub Repository URL**: 
 - **Default Integration Branch**: `develop`
 - **Release Branch**: `main`
-- **Worktree Parent Directory**: 
 
 ---
 
