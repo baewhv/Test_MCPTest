@@ -5,7 +5,7 @@ description: QA 에이전트가 기술 명세서를 바탕으로 Assets/Tests/�
 
 # Unity QA 4대 검수 및 NUnit 테스트 작성 워크플로우
 
-이 스킬은 QA 에이전트가 PR 수신 시 수행하는 4대 필수 런타임 검수, Deprecated API 정적 검사, NUnit 테스트 코드 작성, 직접 커밋 및 PR 승인/반려 절차를 정의합니다.
+이 스킬은 QA 에이전트가 PR 수신 시 수행하는 4대 필수 런타임 검수, Zero-Override 프리팹 검증, Deprecated API 정적 검사, NUnit 테스트 코드 작성, 직접 커밋 및 PR 승인/반려 절차를 정의합니다.
 
 ---
 
@@ -23,20 +23,22 @@ description: QA 에이전트가 기술 명세서를 바탕으로 Assets/Tests/�
    git commit -m "[test] : [기능명] NUnit 단위/통합 테스트 코드 작성 및 검증 완료"
    ```
 
-### [2단계: 4대 필수 런타임 및 Deprecated 정적 검수 (Inspection)]
+### [2단계: 4대 필수 런타임, Zero-Override 및 Deprecated 검수 (Inspection)]
 1. **컴파일 무결성 & Deprecated API 0건 검증**:
    - Console Error 0건 확인
-   - **Deprecated/Obsolete API (경고 CS0618) 발생 여부 전수 검사**: 구식 API(예: `FindObjectOfType`, 레거시 Input 등) 사용 발견 시 즉시 **`QA 반려 (5-C)`** 처리하고 Developer에게 최신 API로 교체 요청
-2. **Zero-Override 프리팹 검증**: 씬 내 오버라이드 0건 확인
+   - **Deprecated/Obsolete API (경고 CS0618) 발생 여부 전수 검사**: 구식 API(예: `FindObjectOfType`, 레거시 Input 등) 사용 발견 시 즉시 **`QA 반려 (5-C)`** 처리하고 Developer에게 최신 API 교체 요청
+2. **Zero-Override 프리팹 무결성 검증 (씬 오버라이드 0건)**:
+   - 씬 파일(`*.unity`) 내 `PrefabInstance` 블록에서 `m_AddedComponents`, `m_RemovedComponents`, 프로퍼티 변경(`m_Modifications`) 존재 여부 전수 검사
+   - **오버라이드 1건이라도 발견 시 즉시 `QA 반려 (5-C)`** 처리하고 Developer에게 프리팹 원본 에셋 반영(`Apply All`) 요구
 3. **Missing Reference 검증**: 인스펙터 직렬화 누락 0건 확인
 4. **시각적 렌더링 검증**: 스크린샷 캡처 및 정상 렌더링 확인
 
 ### [3단계: 검수 결과 처리 (승인 vs 반려)]
 - **검수 통과 시**:
   1. `docs/work/worklist.md`의 해당 태스크를 `- [x] [태스크명] (PR #nn)`로 완료 체크합니다.
-- **검수 반려 시 (결함/Deprecated API 발견)**:
-  1. `docs/work/status.md`를 `[QA] [기능명] QA 검수 반려 (Deprecated API / 결함 발견) ➔ developer에게 수정 요청 인계`로 갱신합니다.
-  2. 소통 로거를 통해 Developer에게 구체적인 결함/경고 내용과 개선 요청을 인계합니다.
+- **검수 반려 시 (오버라이드 / Deprecated API / 결함 발견)**:
+  1. `docs/work/status.md`를 `[QA] [기능명] QA 검수 반려 (Prefab Override / Deprecated API / 결함 발견) ➔ developer에게 수정 요청 인계`로 갱신합니다.
+  2. 소통 로거를 통해 Developer에게 구체적인 결함/오버라이드 내용과 개선 요청을 인계합니다.
 
 ### [4단계: PR 승인/머지 및 GitManager 문서 동기화 인계]
 1. 검수 통과 시 GitHub MCP `create_pull_request_review` (event: APPROVE) 또는 `merge_pull_request`를 실행합니다.

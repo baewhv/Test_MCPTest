@@ -1,4 +1,4 @@
-﻿---
+---
 name: unity-work-rule
 description: 씬 오버라이드 0건(Zero-Override), 독립 완제품 프리팹(PF_*) 우선 조립, 인스펙터 직렬화 바인딩, Missing Reference 방지 및 에디터 스크립팅 제한을 준수하는 유니티 엔진 작업 스킬
 ---
@@ -17,11 +17,11 @@ description: 씬 오버라이드 0건(Zero-Override), 독립 완제품 프리팹
    - 컴포넌트 조립과 직렬화 필드 바인딩은 프리팹 에셋 내부에서 완결합니다.
 3. **Zero-Override Clean Instance 유지**:
    - 씬에 배치된 프리팹 인스턴스는 **어떠한 로컬 수정도 가하지 않은 순수 프리팹 완제품(Zero-Override Clean Instance, Overrides 0건)** 상태를 유지해야 합니다.
-   - 수정이 필요한 경우 씬의 인스펙터에서 개별 수정하지 않고 반드시 **프리팹 에셋 원본(Prefab Asset Root)**을 수정하여 모든 인스턴스에 동기화합니다.
+   - 씬 파일 내에 `m_AddedComponents`, `m_RemovedComponents`가 생성되지 않도록 반드시 **프리팹 에셋 원본(Prefab Asset Root)**에 직접 추가하거나 인스펙터 상단 Overrides -> `Apply All`을 실행합니다.
 4. **씬 통합 및 검수는 순차 수행**:
    - 씬에 프리팹을 배치하고 연동하는 최종 작업은 PR 머지 후 `QA` 단계에서 순차적으로 안전하게 수행합니다.
-5. **QA Zero-Override 무결성 검증**:
-   - QA는 검수 시 씬 내의 모든 인스턴스가 프리팹 에셋과 연결되어 있는지 확인하며, 인스펙터 오버라이드(Overrides)가 남아있는 경우 즉시 반려(Reject)하고 프리팹 원본 수정을 요청합니다.
+5. **QA Zero-Override 무결성 검증 및 반려 기준**:
+   - QA는 검수 시 씬 내의 모든 인스턴스가 프리팹 에셋과 1:1로 일치하는지 확인하며, `m_AddedComponents` 등 오버라이드가 남아있는 경우 **즉시 PR을 반려(QA 반려 5-C)**하고 프리팹 원본 동기화를 요청합니다.
 
 ---
 
