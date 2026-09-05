@@ -1,11 +1,11 @@
 ---
 name: unity-coding-rule
-description: 유니티 C# 스크립트 작성 시 [SerializeField] private 직렬화 캡슐화, OnDisable 이벤트 해제, Fake Null 검사, Animator.StringToHash 캐싱, 부하 유발 Search API 제한, 네임스페이스(namespace) 사용 일체 금지, .meta GUID 보존 및 TestCode 표준을 준수하는 C# 코딩 표준 스킬
+description: 유니티 C# 스크립트 작성 시 [SerializeField] private 직렬화 캡슐화, OnDisable 이벤트 해제, Fake Null 검사, Animator.StringToHash 캐싱, 부하 유발 Search API 제한, 네임스페이스(namespace) 사용 일체 금지, .meta GUID 보존, Deprecated API 금지 및 TestCode 표준을 준수하는 C# 코딩 표준 스킬
 ---
 
 # 유니티 C# 코딩 표준 스킬 (Unity C# Coding Skill)
 
-이 스킬은 프로젝트의 모든 유니티 C# 스크립트 작성 시 반드시 준수해야 하는 C# 코딩 컨벤션, 네임스페이스 제한, 메모리 안전성, .meta GUID 보존, Fake Null 검사 및 컴파일 검증 표준 지침입니다.
+이 스킬은 프로젝트의 모든 유니티 C# 스크립트 작성 시 반드시 준수해야 하는 C# 코딩 컨벤션, 네임스페이스 제한, 메모리 안전성, .meta GUID 보존, Deprecated API 배제, Fake Null 검사 및 컴파일 검증 표준 지침입니다.
 
 ---
 
@@ -51,13 +51,26 @@ description: 유니티 C# 스크립트 작성 시 [SerializeField] private 직�
 
 ---
 
-## 5. 네임스페이스(namespace) 사용 일체 금지 원칙 (No-Namespace Rule)
+## 5. Deprecated (Obsolete) API 사용 전면 금지 및 최신 권장 API 대체 원칙
+Unity 엔진 버전 업데이트에 따라 사용 중단(`[Obsolete]`)되었거나 경고(`CS0618`)를 유발하는 구식 코드는 사용을 엄격히 금지하며, 반드시 아래의 최신 권장 API로 대체합니다:
+
+| 구식 Deprecated API (사용 금지) | 최신 표준 권장 API (대체 필수) | 설명 |
+| :--- | :--- | :--- |
+| `FindObjectOfType<T>()` | `FindFirstObjectByType<T>()` 또는 `FindAnyObjectByType<T>()` | Unity 2023+ 권장 (정렬 오버헤드 제거) |
+| `FindObjectsOfType<T>()` | `FindObjectsByType<T>(FindObjectsSortMode.None)` | Unity 2023+ 권장 (명시적 정렬 모드 지정) |
+| `Input.GetKey / Input.GetAxis` | `UnityEngine.InputSystem` (New Input System) | 레거시 인풋 매니저 배제 |
+| `Application.LoadLevel` | `SceneManager.LoadScene` | 씬 매니저 최신 API 사용 |
+| `WWW` | `UnityWebRequest` | 레거시 네트워크 객체 배제 |
+
+---
+
+## 6. 네임스페이스(namespace) 사용 일체 금지 원칙 (No-Namespace Rule)
 - **원칙**: 유니티 C# 스크립트 작성 시 **`namespace` 키워드를 일체 사용하지 않고 최상위 전역 스코프에 클래스를 정의**합니다.
 - **이유**: 불필요한 인덴트 깊이 증가, `using` 구문 남발, 어셈블리 정의 파일(`.asmdef`)과의 불필요한 결합 복잡도를 방지하고 코드를 가장 직관적이고 단순하게 유지합니다.
 
 ---
 
-## 6. 테스트 코드(TestCode) 작성 및 폴더 분류 표준 (Test Code Standards)
+## 7. 테스트 코드(TestCode) 작성 및 폴더 분류 표준 (Test Code Standards)
 1. **폴더 분류 기준**:
    - **`Assets/Tests/Editor/` (EditMode Tests)**: 유니티 엔진 런타임 없이 C# 순수 로직, 수학 공식, ScriptableObject 데이터 정합성, 상태 머신 전이를 초고속 검증하는 단위 테스트.
    - **`Assets/Tests/Runtime/` (PlayMode Tests)**: 씬 로드, 물리 충돌(`Collider2D`), 스포너 생성 및 풀링 수명주기를 검증하는 통합 테스트.
@@ -66,5 +79,5 @@ description: 유니티 C# 스크립트 작성 시 [SerializeField] private 직�
 
 ---
 
-## 7. 사용자 맞춤 코드 스타일 참조 템플릿
+## 8. 사용자 맞춤 코드 스타일 참조 템플릿
 - 구체적인 클래스 필드 배치, 메서드 구조, 주석 스타일은 **`.agents/skills/unity-coding-rule/references/code_style_sample.cs`** 템플릿을 기본 참조 모델로 삼아 일관되게 코딩합니다.
