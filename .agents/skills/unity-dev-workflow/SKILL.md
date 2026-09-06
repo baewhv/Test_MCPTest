@@ -38,12 +38,13 @@ description: Developer 에이전트가 docs/tech_spec/ 분석, 작업 브랜치 
    ```bash
    node .agents/skills/unity-cli-runner/scripts/unity_cli.js compile
    ```
-2. 표준 터미널 Git 명령어로 작업 브랜치에서 **순수 작업물(`Assets/`)만** 직접 커밋합니다 (`docs/` 문서는 커밋하지 않고 로컬에 보존):
+2. 표준 터미널 Git 명령어로 작업 브랜치에서 **순수 작업물(`Assets/`)만** 직접 커밋하고 원격으로 즉시 푸시합니다 (`docs/` 문서는 커밋하지 않고 로컬에 보존):
    ```bash
    git add Assets/
    git commit -m "[feat] : [기능명] C# 구현 및 프리팹 조립 완료"
+   git push origin HEAD
    ```
-3. **물리적 커밋 생성 증거 확인 (Proof-of-Commit)**:
+3. **물리적 커밋 및 푸시 증거 확인 (Proof-of-Commit)**:
    ```bash
    git log -1 --oneline
    ```

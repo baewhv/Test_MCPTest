@@ -43,10 +43,11 @@ description: QA 에이전트가 PR 수신 시 작업 브랜치 변경 파일만 
    node .agents/skills/unity-cli-runner/scripts/unity_cli.js test
    ```
    - 전체 테스트 100% Pass 여부 확인 (실패 시 원인 파악 후 즉시 Developer에게 반려 인계).
-4. **테스트 코드 직접 커밋**:
+4. **테스트 코드 직접 커밋 및 원격 푸시**:
    ```bash
    git add Assets/Tests/
    git commit -m "[test] : [기능명] NUnit 단위/통합 테스트 코드 작성 및 검증 완료"
+   git push origin HEAD
    ```
 
 ### [2단계: 4대 필수 런타임, Zero-Override 및 Deprecated 타겟 검수 (Inspection)]
