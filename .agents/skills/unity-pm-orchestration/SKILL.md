@@ -66,18 +66,17 @@ description: PM 에이전트가 사전 환경 검증, 사용자 작업 의도 �
 
 ---
 
-## 4. 1루프 최종 완료 종합 보고 양식
+## 4. 1루프 최종 완료 보고 양식 (문서 갱신 중심)
 
-서브에이전트들의 Direct Handoff가 완결되면 사용자에게 아래 양식으로 최종 결과를 종합 보고합니다:
+서브에이전트들의 Direct Handoff가 완결되면 장황한 구현/테스트 세부 내역 대신 **어떤 문서가 갱신 및 생성되었는지(문서 목록 중심)** 사용자에게 간결히 알립니다:
 
 ```markdown
-### [기능명] 1루프 개발 및 검수 완료 보고
+### [기능명] 작업 완료 알림
 
-| 구분 | 내용 |
-| :--- | :--- |
-| **완료 태스크** | [태스크명] |
-| **작업 브랜치** | `feat/[기능명]` |
-| **Pull Request** | [PR #nn](PR 링크) (승인 완료) |
-| **QA 4대 검수** | NUnit 테스트 통과, Console 0 Error, Zero-Override 확인, Missing Ref 0건 |
-| **산출물 문서** | `docs/implementations/[태스크명]_impl.md` |
+- **완료 태스크**: [태스크명] (PR #[번호])
+- **갱신 및 생성된 문서 목록**:
+  - `docs/work/worklist.md` (태스크 완료 체크)
+  - `docs/work/status.md` (진행 상태 갱신)
+  - `docs/implementations/[태스크명]_impl.md` (구현 기술문서 신규 생성)
+  - `docs/logs/agent_comm_YYYY-MM-DD.md` (협업 로그 기록)
 ```
