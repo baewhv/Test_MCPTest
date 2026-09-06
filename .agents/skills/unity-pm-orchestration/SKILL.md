@@ -34,8 +34,18 @@ description: PM 에이전트가 사전 환경 검증, 사용자 작업 의도 �
 2. **1개 작업 완료 사이클 (5단계 Clean PR & Post-Merge 문서 정리)**:
    `[PM] (필요시 git-doc-sync 문서 동기화) ➔ [GitManager] 브랜치 분리 ➔ [Developer] C# 구현 (Assets/만 커밋) ➔ [GitManager] Clean PR 발행 ➔ [QA] 4대 검수 & NUnit 커밋 & PR Approve ➔ [PM] 사용자 머지 대기 알림 ➔ [사용자] GitHub PR 직접 머지 ➔ [PM] Post-Merge 문서 동기화`
 
-3. **서브에이전트 도구 권한 보장 원칙 (Write Tools Standard)**:
-   - PM이 `developer`, `qa`, `git_manager` 등 서브에이전트를 동적으로 정의/호출할 때는 파일 생성/수정 및 CLI 실행을 위해 **`enable_write_tools: true`를 필수로 보장**합니다. 쓰기 권한 누락으로 인해 에이전트가 `unityMCP`를 통한 코드 편집 우회 루프에 빠지는 것을 원천 차단합니다.
+3. **서브 에이전트 실물 도구 호출 파이프라인 (invoke_subagent Pipeline)**:
+   - PM은 직접 코드를 작성하거나 브랜치를 분리/검수하지 않고, **반드시 `invoke_subagent` 도구를 실제로 호출**하여 독립된 서브 에이전트에게 실행을 위임합니다:
+     - **[Step 1: GitManager 호출 (브랜치 분리/발행)]**:
+       `invoke_subagent(TypeName="git_manager", Role="Git 형상 관리자", Prompt="feat/[기능명] 브랜치를 develop 기준으로 분리하고 원격에 즉시 publish한 뒤 로컬 전환을 검증해주세요.")`
+     - **[Step 2: Developer 호출 (기능 구현 및 커밋)]**:
+       `invoke_subagent(TypeName="developer", Role="Unity 클라이언트 개발자", Prompt="docs/tech_spec/[기능명]_tech_spec.md 명세를 바탕으로 feat/[기능명] 브랜치에서 C# 구현, CLI 컴파일 검증, Assets/ 커밋 및 원격 푸시, docs/implementations/ 기술문서를 작성해주세요.")`
+     - **[Step 3: GitManager 호출 (Clean PR 발행)]**:
+       `invoke_subagent(TypeName="git_manager", Role="Git 형상 관리자", Prompt="feat/[기능명] 브랜치에 대해 develop 대상 Clean PR을 발행하고 QA에게 인계해주세요.")`
+     - **[Step 4: QA 호출 (검수 및 Approve)]**:
+       `invoke_subagent(TypeName="qa", Role="소프트웨어 품질 보증(QA)", Prompt="PR #[번호]에 대해 변경 파일 타겟 NUnit 테스트 작성, 4대 검수 및 무인 회귀 테스트를 수행하고 PR Approve 리뷰를 제출해주세요.")`
+   - *주의: 단순히 터미널 소통 로깅(`log_comm.js`)만 찍고 PM이 개발 스킬을 직접 읽어 코딩/수정을 혼자 수행하는 1인 다역(Roleplay) 행위를 엄격히 금지합니다.*
+
 
 
 ### [명령어별 라우팅 규격]
