@@ -1,8 +1,8 @@
 # 개발 및 기획 진행 상태 (Status)
 
 ## [현재 상태]
-- **진행 상태**: 기획서 등록 대기 중
-- **작업 브랜치**: `develop`
+- **진행 상태**: [GitManager] [Task 4-2 스테이지 진행 및 섬멸 판정 매니저] feat_phase4_stage_progression_manager 브랜치 분리 완료 ➔ Developer 작업 진행 가능
+- **작업 브랜치**: `feat_phase4_stage_progression_manager`
 
 ---
 
