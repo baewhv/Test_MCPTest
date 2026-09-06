@@ -40,9 +40,10 @@ description: QA 에이전트가 기술 명세서를 바탕으로 Assets/Tests/�
   1. `docs/work/status.md`를 `[QA] [기능명] QA 검수 반려 (Prefab Override / Deprecated API / 결함 발견) ➔ developer에게 수정 요청 인계`로 갱신합니다.
   2. 소통 로거를 통해 Developer에게 구체적인 결함/오버라이드 내용과 개선 요청을 인계합니다.
 
-### [4단계: PR 승인/머지 및 GitManager 문서 동기화 인계]
-1. 검수 통과 시 GitHub MCP `create_pull_request_review` (event: APPROVE) 또는 `merge_pull_request`를 실행합니다.
+### [4단계: PR 검수 승인(Approve) 및 GitManager 문서 동기화 인계]
+1. 검수 통과 시 GitHub MCP `create_pull_request_review` (event: `APPROVE`, body: "QA 4대 검수 및 NUnit 테스트 100% 통과 승인")를 제출합니다.
+   - **머지 권한 원칙 (No Auto-Merge)**: QA 에이전트는 절대로 PR을 직접 머지(`merge_pull_request`)하지 않습니다. PR 머지는 사용자가 GitHub에서 직접 검토 후 머지합니다.
 2. `docs/work/status.md`를 갱신하고 `GitManager`에게 문서 동기화를 인계합니다:
    ```bash
-   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "QA" --to "GitManager" --type "문서 동기화 요청" --msg "[기능명] PR 승인 및 검수 완료, worklist/status 동기화 요청"
+   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "QA" --to "GitManager" --type "문서 동기화 요청" --msg "[기능명] PR 승인(Approve) 완료, worklist/status 동기화 요청"
    ```
