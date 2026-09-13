@@ -10,67 +10,52 @@
 ```mermaid
 graph TD
     %% 사용자 및 PM
-    User["사용자 (User)"]
+    User["사용자 (User / 머지 최종 통제권)"]
     PM["PM (Project Manager / 오케스트레이션)"]
     Specs["docs/specs/ (원본 기획서 - Strict Read-Only)"]
 
     %% 5대 전문 실무 에이전트
     Designer["1. Designer (기획 5대 검수 / 태스크 도출)"]
     Artist["2. Artist (2D/3D/UI/VFX 리소스 제작 / 표준 배치)"]
-    Developer["3. Developer (C# 코딩 / 브랜치 검증 / 직접 커밋 & 푸시)"]
-    GitManager["4. GitManager (브랜치 분리 & 발행 / Clean PR / 문서 동기화)"]
-    QA["5. QA (PR 타겟 NUnit / 4대 검수 / PR 승인 / 종합 전수 감사)"]
+    Developer["3. Developer (C# 코딩 / 브랜치 검증 / 커밋 & PR 댓글)"]
+    GitManager["4. GitManager (작업 브랜치 준비 & 지속 PR 발행)"]
+    QA["5. QA (PR 타겟 NUnit / 4대 무인 검수 / PR 댓글 승인)"]
 
     %% 핵심 관리 및 산출물
     Worklist["docs/work/worklist.md (체크리스트)"]
-    Status["docs/work/status.md (실시간 상태판 / 작업 브랜치)"]
+    Status["docs/work/status.md (실시간 상태판 / 활성 PR #nn)"]
     TechSpec["docs/tech_spec/ (기획 상세 명세서)"]
-    FolderIdx["docs/FOLDER_STRUCTURE.md (폴더 구조 & 네이밍 색인)"]
-    ImplDoc["docs/implementations/ (구현 기술문서)"]
-    ArchMap["docs/ARCHITECTURE.md (객체 상호작용 색인)"]
-    CommLog["docs/logs/agent_comm_YYYY-MM-DD.md (소통 감사 로그)"]
-    PR["GitHub Pull Request (develop 대상 Clean PR)"]
-    Devlog["Notion 학습일지 DB (일일 회고)"]
+    PR["GitHub Pull Request (Phase/에픽 단일 지속 PR)"]
 
     %% 흐름 연결
     User -->|"작업 지시 / 기획서 분석"| PM
-    PM -->|"명령 라우팅 및 브랜치 지정"| Status
     PM -->|"기획 분석 위임 (invoke_subagent)"| Designer
     Specs -->|"Strict Read-Only 분석"| Designer
-    Designer -->|"상세 명세서 작성"| TechSpec
-    Designer -->|"4단계 태스크 등록"| Worklist
+    Designer -->|"상세 명세서 및 실무 태스크 등록"| Worklist
 
-    PM -->|"Step 1. 브랜치 분리/발행 위임"| GitManager
-    GitManager -->|"develop 패치 & 로컬 분리 & 원격 발행"| GitManager
-    GitManager -->|"브랜치 준비 완료 인계"| Developer
+    PM -->|"Step 1. 작업 브랜치 분리 & 단일 지속 PR 개설"| GitManager
+    GitManager -->|"develop 분리 & 작업 브랜치 발행"| PR
 
-    Developer -->|"Step 2. First-Tool-Call 브랜치 검증"| Status
-    Developer -->|"C# 구현 & CLI 무인 컴파일 검증"| Developer
-    Developer -->|"Assets/ 선별 커밋 & 원격 즉시 푸시"| Developer
-    Developer -->|"구현 기술문서 & 아키텍처 갱신"| ImplDoc
-    Developer -->|"PR 발행 요청 인계"| GitManager
+    subgraph "N개 태스크 누적 루프 (동일 PR 내 지속 누적)"
+        PM -->|"Step 2. 구현 위임"| Developer
+        Developer -->|"C# 구현 & CLI 무인 컴파일 검증"| Developer
+        Developer -->|"Assets/ 커밋/푸시 & PR에 [구현 완료] 댓글 등록"| PR
+        Developer -->|"QA 직접 인계"| QA
 
-    GitManager -->|"Step 3. 동기화 확인 & Clean PR 발행"| PR
-    GitManager -->|"상태 갱신 & QA 직접 인계"| QA
+        QA -->|"Step 3. NUnit 테스트 작성 & 4대 무인 검수 (100% Pass)"| QA
+        QA -->|"테스트 커밋/푸시 & PR에 [QA 검수 통과] 댓글 등록"| PR
+        QA -->|"태스크 완료 보고"| PM
+        PM -->|"태스크 완료 체크 [- [x]] & 다음 태스크 연속 진행"| Worklist
+    end
 
-    QA -->|"Step 4. PR 타겟 NUnit 작성 & 커밋/푸시"| QA
-    QA -->|"4대 필수 런타임 & Zero-Override 검수"| QA
-    QA -->|"무인 CLI 전체 회귀 테스트 (100% Pass)"| QA
-    QA -->|"GitHub PR 승인 (APPROVE 리뷰)"| PR
-    QA -->|"태스크 완료 체크 [- [x] (PR #nn)]"| Worklist
-    QA -->|"검수 승인 완료 보고"| PM
-
-    PM -->|"Step 5. [1사이클 최종 완결] develop pull & docs/ 일괄 커밋/푸시"| GitManager
-    GitManager -->|"git-doc-sync 문서 동기화 완결"| GitManager
-    PM -->|"1사이클 공식 완결 및 PR 머지 대기 보고"| User
-    User -->|"Step 6. GitHub UI에서 PR 최종 수동 머지"| PR
+    User -->|"Step 4. 원하는 시점에 GitHub UI에서 PR 직접 수동 머지"| PR
 ```
 
 ---
 
-## 2. 1개 개발 사이클 표준 시퀀스 (Single Task Loop Sequence)
+## 2. 단일 지속 PR 표준 개발 시퀀스 (Ongoing Living PR Sequence)
 
-1개의 개발 작업(Task)은 `브랜치 분리 ➔ C# 구현 & 커밋/푸시 ➔ Clean PR 발행 ➔ QA 검수 & 승인 ➔ PM 문서 동기화 & 1사이클 완결 보고 ➔ 사용자 PR 최종 머지`를 거쳐 **QA 승인 후 PM의 문서 동기화가 완료된 시점에 1사이클이 공식 완결**됩니다:
+1개의 Phase/에픽 개발 작업은 `작업 브랜치 분리 ➔ 단일 PR 개설 ➔ N개 태스크 연속 커밋/댓글 누적 ➔ 사용자 최종 1회 수동 머지`를 거쳐 진행됩니다:
 
 ```mermaid
 sequenceDiagram
@@ -80,35 +65,34 @@ sequenceDiagram
     participant GM as GitManager
     participant Dev as Developer
     participant QA as QA
-    participant Git as GitHub (develop)
+    participant Git as GitHub PR (develop 대상)
 
-    User->>PM: "작업 하나 진행해줘"
-    PM->>PM: worklist.md 최우선 태스크 선정 및 브랜치명(feat/기능명) 확정
-    PM->>GM: invoke_subagent("git_manager", "브랜치 분리 및 원격 발행 요청")
+    Note over PM,Git: [Phase/에픽 착수 시 최초 1회 개설]
+    User->>PM: "작업 진행해줘"
+    PM->>GM: invoke_subagent("git_manager", "작업 브랜치 준비 및 단일 PR 발행")
     GM->>GM: git checkout -b feat/기능명 develop && git push -u origin feat/기능명
-    GM->>Dev: feat/기능명 준비 완료 인계
+    GM->>Git: develop 대상 단일 PR (#nn) 발행
+    GM->>PM: 활성 PR #nn 준비 완료 인계
 
-    Note over Dev: [Safety Gate] Tool Call #1로 git branch 검증
-    Dev->>Dev: C# 코드 작성 & CLI 백그라운드 컴파일 검증
-    Dev->>Dev: git add Assets/ && git commit -m "[feat]..." && git push origin HEAD
-    Dev->>Dev: docs/implementations/ 기술문서 작성
-    Dev->>GM: 직접 커밋/푸시 완료, PR 발행 요청 인계
+    loop N개 태스크 연속 진행 (새 브랜치/새 PR 없이 동일 PR에 누적)
+        Note over Dev,QA: Task N 진행
+        PM->>Dev: invoke_subagent("developer", "Task N C# 구현 및 PR 댓글 등록")
+        Note over Dev: [Safety Gate] Tool Call #1로 git branch 검증
+        Dev->>Dev: C# 코드 작성 & CLI 백그라운드 컴파일 검증
+        Dev->>Git: git add Assets/ && git commit && git push (동일 브랜치)
+        Dev->>Git: PR #nn 댓글 등록: "[구현 완료] Task N 변경 사항 요약"
+        Dev->>QA: QA 직접 인계
 
-    GM->>Git: git push origin HEAD && Clean PR 발행 (develop 대상)
-    GM->>QA: PR #nn 생성 완료, QA 검수 요청 인계
+        Note over QA: Task N NUnit 타겟 검수 & 회귀 무결성 검증
+        QA->>QA: NUnit 테스트 작성 & node unity_cli.js test (100% Pass)
+        QA->>Git: git add Assets/Tests/ && git commit && git push (동일 브랜치)
+        QA->>Git: PR #nn 댓글 등록: "[QA 검수 통과] 4대 무인 검수 100% Pass"
+        QA->>PM: Task N 검수 완료 보고
+        PM->>PM: worklist.md [- [x]] 완료 체크 및 다음 태스크 연속 진행
+    end
 
-    Note over QA: QA PR 타겟 검수 & 회귀 무결성 검증
-    QA->>QA: NUnit 테스트 작성 & git add Assets/Tests/ && git commit && git push
-    QA->>QA: 4대 런타임/정적 검수 (컴파일0, 오버라이드0, MissingRef0, Deprecated0)
-    QA->>QA: node .../unity_cli.js test (100% Pass)
-    QA->>Git: GitHub PR APPROVE 리뷰 등록
-    QA->>PM: QA 검수 승인 완료 보고
-
-    Note over PM,GM: [1사이클 최종 완결 단계]
-    PM->>GM: invoke_subagent("git_manager", "문서 동기화(git-doc-sync)")
-    GM->>Git: git checkout develop && git pull && git add docs/ && git commit && git push
-    PM->>User: "1개 개발 사이클 최종 완결 및 PR 머지 대기 알림" 종합 보고
-    User->>Git: GitHub UI에서 PR 최종 수동 머지(Merge)
+    Note over User,Git: [사용자 최종 수동 머지]
+    User->>Git: GitHub UI에서 누적된 댓글/커밋 확인 후 원하는 시점에 직접 수동 머지(Merge)
 ```
 
 ---

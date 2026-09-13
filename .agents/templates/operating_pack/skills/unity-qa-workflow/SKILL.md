@@ -71,12 +71,30 @@ description: QA 에이전트가 PR 수신 시 작업 브랜치 변경 파일만 
      node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "QA" --to "Developer" --type "QA 반려/수정요청" --msg "[기능명] 결함 발견: [상세내용] 수정 요청"
      ```
 
-### [4단계: PR 검수 승인(Approve) 및 GitManager 문서 동기화 인계]
-1. 검수 통과 시 GitHub MCP `create_pull_request_review` (event: `APPROVE`, body: "QA 4대 검수 및 NUnit 테스트 100% 통과 승인")를 제출합니다.
-   - **머지 권한 원칙 (No Auto-Merge)**: QA 에이전트는 절대로 PR을 직접 머지(`merge_pull_request`)하지 않습니다. PR 머지는 사용자가 GitHub에서 직접 검토 후 머지합니다.
-2. `replace_file_content`로 `docs/work/status.md`를 갱신하고 `GitManager`에게 문서 동기화를 인계합니다:
+### [4단계: GitHub PR 검수 승인 댓글 작성, 상태판 갱신 및 PM 인계]
+1. **GitHub PR 검수 결과 댓글 자동 작성**:
+   - `docs/work/status.md`에 명시된 활성 PR 번호(#nn)를 확인합니다.
+   - GitHub MCP `add_issue_comment` 도구를 호출하여 해당 PR에 검수 통과 댓글을 등록합니다:
+     - **Issue/PR Number**: `[PR 번호]`
+     - **Comment Body**:
+       ```markdown
+       ### [QA 검수 통과] [태스크명]
+       - **검수 상태**: 100% 통과 (PASS)
+       - **테스트 결과**: NUnit 단위/통합 테스트 [N]건 100% Pass
+       - **4대 무인 검수 결과**:
+         - C# 컴파일 에러: 0건
+         - Deprecated API 경고: 0건
+         - Zero-Override (씬 오버라이드): 0건
+         - Missing Reference: 0건
+       - **테스트 커밋 해시**: `[커밋해시]`
+       - **안내**: 본 태스크가 성공적으로 검수 승인되었습니다. (동일 PR에서 후속 태스크가 계속 누적 진행됩니다.)
+       ```
+2. **머지 권한 절대 원칙 (No Agent Merge)**:
+   - QA 및 모든 에이전트는 절대로 PR을 직접 머지(`merge_pull_request`)하거나 닫지 않습니다.
+   - PR은 닫히지 않고 열린 상태(`Open`)로 유지되며, 최종 머지는 사용자가 원하는 시점에 GitHub UI에서 직접 수행합니다.
+3. `replace_file_content`로 `docs/work/status.md`를 갱신하고 PM에게 완료를 인계합니다:
    ```bash
-   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "QA" --to "GitManager" --type "문서 동기화 요청" --msg "[기능명] PR 승인(Approve) 완료, worklist/status 동기화 요청"
+   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "QA" --to "PM" --type "검수 완료 보고" --msg "[태스크명] PR #nn QA 검수 승인 댓글 등록 완료, 태스크 완결"
    ```
 
 

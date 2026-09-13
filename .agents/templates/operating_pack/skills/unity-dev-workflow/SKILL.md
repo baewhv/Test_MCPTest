@@ -55,11 +55,27 @@ description: Developer 에이전트가 docs/tech_spec/ 분석, 작업 브랜치 
 2. **아키텍처 관계도 동기화**: `docs/ARCHITECTURE.md`에 관계도를 갱신합니다.
    - *참고: 작성된 `docs/` 문서는 PR 머지 후 PM이 `develop` 브랜치에 일괄 커밋/푸시합니다.*
 
-### [5단계: 상태 현황판 갱신 및 GitManager PR 인계]
-1. `docs/work/status.md`의 `**진행 상태**`를 `[Developer] [기능명] 구현 및 커밋 완료 ➔ git_manager에게 PR 발행 인계`로 갱신합니다.
-2. 아래 소통 로거를 실행하고 턴을 종료합니다:
+### [5단계: GitHub PR 구현 요약 댓글 작성, 상태판 갱신 및 QA 직접 인계]
+1. **GitHub PR 댓글 자동 작성**:
+   - `docs/work/status.md`에 명시된 활성 PR 번호(#nn)를 확인합니다.
+   - GitHub MCP `add_issue_comment` 도구를 호출하여 해당 PR에 구현 요약 댓글을 등록합니다:
+     - **Issue/PR Number**: `[PR 번호]`
+     - **Comment Body**:
+       ```markdown
+       ### [구현 완료] [태스크명]
+       - **작업 브랜치**: `feat/...`
+       - **C# 컴파일**: CLI 무인 컴파일 0 에러 / 0 경고 검증 완료
+       - **커밋 해시**: `[커밋해시]`
+       - **주요 구현 파일**:
+         - `Assets/Scripts/...`
+         - `Assets/Prefabs/...`
+       - **구현 기술문서**: `docs/implementations/[태스크명]_impl.md`
+       - **QA 검수 요청**: NUnit 단위/통합 테스트 작성 및 4대 검수 진행 요청
+       ```
+2. `docs/work/status.md`의 `**진행 상태**`를 `[Developer] [태스크명] 구현 및 커밋 완료 (PR 댓글 등록 완료) ➔ QA에게 검수 인계`로 갱신합니다.
+3. 소통 로거를 실행하여 QA에게 직접 검수를 요청하고 턴을 종료합니다:
    ```bash
-   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Developer" --to "GitManager" --type "PR 요청" --msg "[기능명] C# 구현 및 직접 커밋(Proof-of-Commit 확인 완료), Clean PR 발행 요청"
+   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Developer" --to "QA" --type "QA 검수 요청" --msg "[태스크명] C# 구현 및 커밋 완료, PR #nn 댓글 등록 완료, QA 검수 요청"
    ```
 
 ---

@@ -31,23 +31,24 @@ description: PM 에이전트가 사전 환경 검증, 사용자 작업 의도 �
      ```
    - `GitManager`에게 지정된 브랜치명으로 분리 및 전환(`git-branch-setup`)을 지시합니다.
 
-2. **1개 개발 사이클의 정의 (1사이클 = 브랜치 분리부터 QA 승인 후 PM 문서 동기화까지)**:
-   - **실무 진행**: `[Step 1: GitManager] 브랜치 분리/발행 ➔ [Step 2: Developer] C# 구현 (Assets/ 커밋/푸시) ➔ [Step 3: GitManager] Clean PR 발행 ➔ [Step 4: QA] 4대 검수 & NUnit 커밋/푸시 & PR Approve`
-   - **1사이클 최종 완결 (PM)**: `[Step 5] QA 승인 수신 즉시, PM이 develop 브랜치에 docs/ 작업 문서를 일괄 커밋/푸시(git-doc-sync)하여 1개 사이클을 공식 최종 완결`
-   - **사용자 검토 및 머지**: `[Step 6] PM이 사용자에게 1사이클 완료 종합 보고 ➔ 사용자가 GitHub UI에서 PR을 확인 후 수동 머지`
+2. **단일 지속 PR 기반 개발 사이클 정의 (Ongoing Living PR Loop)**:
+   - **브랜치 분리 및 단일 PR 개설 (최초 1회)**: Phase/에픽 시작 시 `develop`에서 작업 브랜치(`feat/[기능명]`)를 1회 분리하고, `develop` 대상의 단일 PR(#nn)을 선발행합니다.
+   - **태스크 진행 루프 (동일 PR 내 커밋 및 댓글 누적)**:
+     - `[Step 1: Developer]` 작업 브랜치에서 C# 구현 ➔ CLI 컴파일 검증 ➔ `Assets/` 선별 커밋/푸시 ➔ PR #nn에 `[구현 완료]` 댓글 작성 ➔ QA 직접 인계
+     - `[Step 2: QA]` 동일 브랜치에서 NUnit 테스트 작성/푸시 ➔ 4대 무인 검수 통과 ➔ PR #nn에 `[QA 검수 통과]` 댓글 작성 ➔ PM 인계
+     - `[Step 3: PM 태스크 완결]` QA 승인 댓글 확인 후 `worklist.md` 완료 체크 및 다음 태스크로 연속 진행 (새 브랜치/새 PR 생성 없음)
+   - **사용자 수동 머지 원칙 (No Agent Merge)**:
+     - 에이전트는 PR을 절대 직접 머지하거나 닫지 않습니다.
+     - 사용자가 원하는 시점(Phase 완료 시 또는 퇴근 시)에 GitHub UI에서 누적된 작업 내역을 확인하고 단 1회 직접 수동 머지합니다.
 
 3. **서브 에이전트 실물 도구 호출 파이프라인 (invoke_subagent Pipeline)**:
-   - PM은 직접 코드를 작성하거나 브랜치를 분리/검수하지 않고, **반드시 `invoke_subagent` 도구를 실제로 호출**하여 독립된 서브 에이전트에게 실행을 위임합니다:
-     - **[Step 1: GitManager 호출 (브랜치 분리/발행)]**:
-       `invoke_subagent(TypeName="git_manager", Role="Git 형상 관리자", Prompt="feat/[기능명] 브랜치를 develop 기준으로 분리하고 원격에 즉시 publish한 뒤 로컬 전환을 검증해주세요.")`
-     - **[Step 2: Developer 호출 (기능 구현 및 커밋)]**:
-       `invoke_subagent(TypeName="developer", Role="Unity 클라이언트 개발자", Prompt="docs/tech_spec/[기능명]_tech_spec.md 명세를 바탕으로 feat/[기능명] 브랜치에서 C# 구현, CLI 컴파일 검증, Assets/ 커밋 및 원격 푸시, docs/implementations/ 기술문서를 작성해주세요.")`
-     - **[Step 3: GitManager 호출 (Clean PR 발행)]**:
-       `invoke_subagent(TypeName="git_manager", Role="Git 형상 관리자", Prompt="feat/[기능명] 브랜치에 대해 develop 대상 Clean PR을 발행하고 QA에게 인계해주세요.")`
-     - **[Step 4: QA 호출 (검수 및 Approve)]**:
-       `invoke_subagent(TypeName="qa", Role="소프트웨어 품질 보증(QA)", Prompt="PR #[번호]에 대해 변경 파일 타겟 NUnit 테스트 작성, 4대 검수 및 무인 회귀 테스트를 수행하고 PR Approve 리뷰를 제출해주세요.")`
-     - **[Step 5: PM 문서 동기화 완결]**:
-       QA 승인 보고를 받은 즉시 PM이 `git-doc-sync`를 실행하여 `develop` 브랜치에 `docs/` 문서를 커밋/푸시하고 1사이클을 완결합니다.
+   - PM은 직접 코드를 작성하거나 1인 다역을 수행하지 않고, **반드시 `invoke_subagent` 도구를 실제로 호출**하여 위임합니다:
+     - **[초기 1회: GitManager 호출 (브랜치 준비 & PR 개설)]**:
+       `invoke_subagent(TypeName="git_manager", Role="Git 형상 관리자", Prompt="feat/[기능명] 작업 브랜치를 develop 기준으로 준비하고, develop 대상 지속 PR(#nn)을 발행/확인해주세요.")`
+     - **[매 태스크: Developer 호출 (구현 & PR 댓글)]**:
+       `invoke_subagent(TypeName="developer", Role="Unity 클라이언트 개발자", Prompt="feat/[기능명] 브랜치에서 [태스크명] C# 구현, CLI 컴파일 검증, Assets/ 커밋 및 원격 푸시 후 PR #nn에 구현 댓글을 작성하고 QA에게 인계해주세요.")`
+     - **[매 태스크: QA 호출 (검수 & PR 댓글)]**:
+       `invoke_subagent(TypeName="qa", Role="소프트웨어 품질 보증(QA)", Prompt="PR #nn에 대해 [태스크명] 변경 파일 타겟 NUnit 테스트 작성/푸시, 4대 검수를 수행하고 PR #nn에 검수 승인 댓글을 작성해주세요.")`
    - *주의: 단순히 터미널 소통 로깅(`log_comm.js`)만 찍고 PM이 개발 스킬을 직접 읽어 코딩/수정을 혼자 수행하는 1인 다역(Roleplay) 행위를 엄격히 금지합니다.*
 
 
@@ -103,23 +104,23 @@ PM은 서브에이전트의 텍스트 완료 보고("브랜치 분리 완료", "
 
 ---
 
-## 5. 1개 개발 사이클 최종 완결 보고 양식
+## 5. 태스크 완료 및 진행 현황 보고 양식
 
-QA 에이전트의 검수 승인(Approve) 수신 즉시 PM이 `git-doc-sync`를 실행하여 문서 동기화를 완결한 후, 사용자에게 아래 양식으로 1사이클 공식 완결 보고서를 출력하고 PR 머지를 안내합니다:
+QA 에이전트의 검수 승인 댓글 등록 보고를 접수한 즉시, PM은 `worklist.md`에 완료 체크를 반영하고 사용자에게 아래 양식으로 태스크 완료 보고서를 출력합니다:
 
 ```markdown
-### [기능명] 1개 개발 사이클 최종 완결 보고 (문서 동기화 완료)
+### [태스크명] 작업 완료 및 PR 댓글 기록 보고
 
-- **완결 태스크**: [태스크명] (PR #[번호])
-- **QA 검수 결과**: 4대 런타임/정적 검수 및 NUnit 100% 통과 (APPROVE 완료)
-- **develop 문서 동기화**: `docs/` 작업 문서 일괄 커밋 및 `origin/develop` 푸시 완료 (`git-doc-sync`)
-- **동기화된 산출물 목록**:
-  - `docs/work/worklist.md` (완료 체크 반영)
-  - `docs/work/status.md` (완료 상태 전환)
-  - `docs/implementations/[태스크명]_impl.md` (구현 기술문서)
-  - `docs/logs/agent_comm_YYYY-MM-DD.md` (협업 로그)
-- **안내**: GitHub에서 PR #[번호]를 확인하시고 머지(Merge)해 주십시오. (에이전트의 1사이클 작업은 100% 완료되었습니다.)
+- **완료 태스크**: [태스크명]
+- **활성 작업 브랜치**: `feat/[기능명]`
+- **활성 GitHub PR**: PR #[번호] (동일 PR 유지 중)
+- **PR 타임라인 기록 현황**:
+  - [Developer] C# 구현 요약 댓글 등록 완료 (커밋: `[커밋해시]`)
+  - [QA] NUnit 테스트 통과 및 4대 무인 검수 100% Pass 댓글 등록 완료 (커밋: `[커밋해시]`)
+- **체크리스트 반영**: `docs/work/worklist.md` [- [x] (PR #nn)] 완료 체크 완료
+- **안내**: 본 태스크가 성공적으로 완결되었습니다. 다음 태스크로 연속 진행하시거나, 원하실 때 GitHub UI에서 PR #[번호]를 확인 후 수동 머지(Merge)하실 수 있습니다.
 ```
+
 
 
 

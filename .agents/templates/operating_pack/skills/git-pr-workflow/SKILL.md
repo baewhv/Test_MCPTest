@@ -1,39 +1,43 @@
 ---
 name: git-pr-workflow
-description: 작업 브랜치의 커밋 내역을 확인하고 원격 푸시 후 develop 대상 PR을 발행하고 QA에게 인계하는 표준 PR 워크플로우 스킬입니다.
+description: 단일 지속 PR(Living Epic PR)을 최초 1회 발행하거나 기존 PR 상태를 확인하고, 작업 내역을 누적 관리하는 표준 PR 워크플로우 스킬입니다.
 ---
 
-# Git PR 발행 및 검수 인계 워크플로우
+# 단일 지속 PR(Living Epic PR) 운용 및 인계 워크플로우
 
-이 스킬은 작업자(Developer 등)가 작업을 완료하고 본인의 커밋을 남긴 후, GitManager가 커밋 로그를 확인하여 원격 푸시 및 PR 생성을 완결하는 절차를 정의합니다.
+이 스킬은 GitManager가 Phase/에픽 단위로 **단 하나의 지속적인 PR(Single Living PR)**을 개설하고, 서브 태스크들이 동일한 PR에 커밋과 댓글(Comment)로 안전하게 누적되도록 통제하는 절차를 정의합니다.
+**머지 절대 원칙**: 에이전트는 절대로 PR을 직접 머지하지 않으며, 모든 머지는 **사용자**가 원하는 시점에 GitHub UI에서 직접 수동으로 수행합니다.
 
 ---
 
-## 1. PR 발행 및 검수 인계 4단계 절차
+## 1. 단일 지속 PR 운용 4단계 절차
 
-### [1단계: 작업 브랜치 커밋 로그 및 .meta 검증 (Clean PR 원칙)]
-1. 작업자가 남긴 커밋 목록을 확인합니다 (오직 `Assets/` 작업물만 포함되었는지 확인):
+### [1단계: 기존 활성 PR 존재 여부 확인]
+1. `docs/work/status.md` 또는 GitHub MCP `list_pull_requests`로 현재 작업 브랜치(`feat/...`)에 열려 있는 PR이 이미 존재하는지 확인합니다.
+2. **이미 PR이 열려 있는 경우**:
+   - PR을 중복 생성하지 않고 기존 PR 번호(#nn)를 유지합니다.
+   - 즉시 4단계(상태판 갱신 및 인계)로 직행합니다.
+
+### [2단계: 신규 Phase/에픽용 초기 PR 최초 1회 발행]
+현재 작업 브랜치에 열려 있는 PR이 없을 때만 최초 1회 생성합니다:
+1. **작업 브랜치 원격 푸시 확인**:
    ```bash
-   git log origin/develop..HEAD --oneline
+   git push origin HEAD
    ```
-2. `git status`로 `.meta` 파일 누락 여부를 최종 검증합니다 (`docs/` 문서는 커밋되지 않고 로컬에 유지됨).
+2. **GitHub Pull Request 생성 (`develop` 대상)**:
+   - GitHub MCP `create_pull_request`를 호출하여 지속 관리용 PR을 생성합니다:
+     - **Title**: `[Epic/Phase] : [기능/마일스톤명]`
+     - **Head**: `[작업브랜치명]`
+     - **Base**: `develop`
+     - **Body**: 해당 Phase/에픽의 목표 및 하위 태스크 체크리스트 기재 (이후 하위 태스크 진행 시 댓글로 상세 내역이 누적됨)
 
-### [2단계: 작업 브랜치 원격 상태 동기화 확인 및 안전 푸시]
-```bash
-git push origin HEAD
-```
+### [3단계: PR 상태판 동기화]
+- `docs/work/status.md`에 현재 활성 PR 번호(PR #nn) 및 작업 브랜치명을 명시합니다.
 
-### [3단계: GitHub Pull Request 생성 (Clean PR)]
-GitHub MCP `create_pull_request` 도구를 호출하여 `develop` 브랜치를 베이스로 Clean PR을 생성합니다:
-- **Title**: `[작업내용] - [발의 에이전트]`
-- **Head**: `[작업브랜치명]`
-- **Base**: `develop`
-- **Body**: `docs/implementations/` 구현 내역 요약 및 QA 검수 요청 항목 기재
-
-### [4단계: 상태판 갱신, QA 직접 인계 및 PM 보고]
-1. `docs/work/status.md`의 `[현재 상태]`를 `[GitManager] [기능명] PR 생성 완료 (PR #nn) ➔ qa에게 검수 인계`로 갱신합니다.
-2. `agent-communication-logger`를 실행하여 QA에게 직접 검수를 요청합니다:
+### [4단계: QA/Developer 인계 및 소통 로깅]
+1. 작업자들에게 현재 활성 PR 번호(#nn)를 인계하여, 작업 완료 시 해당 PR에 댓글(Comment)을 작성할 수 있도록 합니다.
+2. 소통 로거를 실행합니다:
    ```bash
-   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "GitManager" --to "QA" --type "QA 검수 요청" --msg "[기능명] PR #nn 생성 완료, QA 검수 요청"
+   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "GitManager" --to "PM" --type "PR 준비 완료" --msg "활성 PR #nn 유지 및 작업 준비 완료"
    ```
-3. PM에게 PR 번호와 함께 완료를 보고하고 턴을 종료합니다.
+
