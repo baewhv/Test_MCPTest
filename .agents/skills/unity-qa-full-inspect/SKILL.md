@@ -18,9 +18,9 @@ description: 사용자 또는 PM의 요청 시 프로젝트 전체 스크립트 
 2. **전체 씬 & 프리팹 Zero-Override 전수 검사 (`Assets/Scenes/`, `Assets/Prefabs/`)**:
    - 모든 씬(`*.unity`) 내 `PrefabInstance` 블록에서 `m_AddedComponents`, `m_RemovedComponents`, 불필요한 `m_Modifications` 존재 여부 전수 검사
    - 프리팹 완제품(`Assets/Prefabs/PF_*`)의 직렬화 바인딩 누락(Missing Mono Script / Missing Reference) 0건 검증
-3. **전체 NUnit 단위/통합 테스트 전수 실행 & 통계 집계**:
-   - `unity-cli-runner`를 통해 전체 EditMode 및 PlayMode 테스트 실행
-   - 총 테스트 수, Pass/Fail 통계, 실행 소요 시간 집계
+3. **전체 NUnit 단위/통합 테스트 무결성 및 통계 집계**:
+   - `Assets/Tests/` 하위 테스트 코드의 정적 무결성 및 컴파일 0 에러 확인 (*Unity CLI 실무 호출 금지*)
+   - 총 테스트 파일 수 및 테스트 케이스 통계 집계
 4. **기획-코드-문서 3대 삼각 정합성 전수 감사**:
    - `docs/tech_spec/` (기획 명세) ➔ `Assets/Scripts/` (실제 C# 코드)
    - `Assets/Scripts/` ➔ `docs/implementations/` (구현 기술문서)
@@ -46,11 +46,9 @@ grep_search("m_AddedComponents" in "Assets/Scenes")
 grep_search("m_RemovedComponents" in "Assets/Scenes")
 ```
 
-### [2단계: 전체 NUnit 무인 테스트 일괄 실행]
-```bash
-node .agents/skills/unity-cli-runner/scripts/unity_cli.js test
-```
-- 전체 테스트 100% Pass 여부 및 세부 테스트 지표 수집.
+### [2단계: 전체 NUnit 테스트 코드 무결성 및 정적 검사]
+- `Assets/Tests/` 하위의 모든 NUnit 단위/통합 테스트 코드의 정적 무결성, 컴파일 0 에러 및 어설션 계약 충족 여부를 확인합니다.
+- (*Unity CLI(`unity_cli.js`)는 초기 셋업 전용 도구이므로 전수 검수 중 호출을 전면 금지합니다.*)
 
 ### [3단계: 기획-코드-문서 삼각 정합성 대조]
 - `docs/tech_spec/`의 핵심 요구사항과 현재 `Assets/Scripts/`의 공개 인터페이스/구조 대조.

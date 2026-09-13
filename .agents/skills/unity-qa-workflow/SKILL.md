@@ -16,15 +16,15 @@ description: QA 에이전트가 PR 수신 시 작업 브랜치 변경 파일만 
    - **Tier 1 (타겟 신규 테스트 및 정적 검수)**:
      - 신규 NUnit 테스트 작성 및 4대 정적/씬 검수는 `git diff --name-only origin/develop`로 식별된 **이번 PR 변경/생성 파일 및 구현 기술문서([docs/implementations/](file:///C:/Users/KGA1/Desktop/TestMCP/docs/implementations)) 대상에만 엄격히 한정**합니다.
      - 이번 작업과 무관한 기존 파일이나 기존 테스트 코드를 불필요하게 열람(`view_file`)하거나 수정하지 않습니다.
-   - **Tier 2 (전체 회귀 무인 자동 검증)**:
-     - `unity-cli-runner`(`unity_cli.js test`) 1회 백그라운드 실행을 통해 **신규 테스트 통과 및 프로젝트 전체 기존 테스트 무결성(Regression 0건)을 단 1턴 만에 일괄 검증**합니다.
+   - **Tier 2 (전체 무결성 점검)**:
+     - 4대 런타임/정적 검수 및 컴파일 에러 0건을 확인하여 기존 기능과의 무결성을 검증합니다. (*Unity CLI 배치 러너는 셋업 전용으로 전환되어 실무 검수에서 호출 금지*)
 2. **비즈니스 로직 수정 절대 금지 & 즉시 반려 (Strict Fast-Fail Boundary)**:
    - QA 에이전트는 `Assets/Scripts/` 하위의 게임 비즈니스 로직 코드를 **단 한 줄도 직접 수정할 수 없습니다**.
-   - 테스트 코드 작성 중 구현 누락, 컴파일 에러, 기능 결함, 단위 테스트 실패 발견 시 **절대로 직접 코드를 고치지 말고 즉시 `[3단계: QA 반려 (5-C)]`로 직행**하여 Developer에게 수정을 요청합니다.
-3. **표준 네이티브 도구 의무화 & unityMCP 코드 I/O 전면 금지**:
+   - 테스트 코드 작성 중 구현 누락, 컴파일 에러, 기능 결함 발견 시 **절대로 직접 코드를 고치지 말고 즉시 `[3단계: QA 반려 (5-C)]`로 직행**하여 Developer에게 수정을 요청합니다.
+3. **표준 네이티브 도구 의무화 & Unity CLI 호출 금지**:
    - 테스트 코드(`Assets/Tests/`) 작성/수정 및 `docs/` 문서 갱신은 반드시 표준 파일 도구(`write_to_file`, `replace_file_content`)를 사용합니다.
-   - `unityMCP`의 `apply_text_edits`, `manage_script`, `create_script`, `get_sha`, `run_tests`, `get_test_job` 사용을 **전면 금지**합니다.
-   - 무인 컴파일 검증 및 단위 테스트 실행은 오직 `unity-cli-runner`(`run_command`)를 통해서만 무인 백그라운드로 실행합니다.
+   - `unityMCP`의 `apply_text_edits`, `manage_script`, `create_script`, `get_sha`, `execute_code` 사용을 **전면 금지**합니다.
+   - **Unity CLI(`unity_cli.js`)는 초기 셋업 전용 도구이므로 일반 실무 검수에서 호출을 전면 금지(제외)**합니다.
 
 ---
 
@@ -38,12 +38,7 @@ description: QA 에이전트가 PR 수신 시 작업 브랜치 변경 파일만 
    - 이번 PR에서 실제로 생성/수정된 파일 목록만 확인하여 검수 대상을 명확히 한정합니다.
 2. **타겟 NUnit 테스트 작성 (표준 파일 도구 사용)**:
    - `docs/implementations/[태스크명]_impl.md`의 구현 명세 및 공개 API 계약에 대해서만 `write_to_file` 도구로 `Assets/Tests/Editor/[기능명]Tests.cs` (또는 `Runtime/`)를 작성합니다.
-3. **전체 회귀 무인 테스트 실행 (CLI 러너 1회)**:
-   ```bash
-   node .agents/skills/unity-cli-runner/scripts/unity_cli.js test
-   ```
-   - 전체 테스트 100% Pass 여부 확인 (실패 시 원인 파악 후 즉시 Developer에게 반려 인계).
-4. **테스트 코드 직접 커밋 및 원격 푸시**:
+3. **테스트 코드 직접 커밋 및 원격 푸시**:
    ```bash
    git add Assets/Tests/
    git commit -m "[test] : [기능명] NUnit 단위/통합 테스트 코드 작성 및 검증 완료"

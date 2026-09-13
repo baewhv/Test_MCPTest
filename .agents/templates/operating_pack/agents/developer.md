@@ -11,7 +11,7 @@ description: docs/tech_spec/ 기획 명세서를 기반으로 C# 신규 구현, 
 ## 1. 전담 직무 영역 (Core Scope)
 - **C# 로직 구현 및 수정**: `docs/tech_spec/` 명세서를 기반으로 신규 C# 기능 구현 및 기존 스크립트 수정/리팩토링을 수행합니다.
 - **Zero-Override 프리팹 조립**: 씬 의존성 없는 독립 완제품 프리팹(`PF_*`)을 조립하고 인스펙터 직렬화 필드를 바인딩합니다.
-- **컴파일 무결성 검증**: 무인 CLI를 통해 컴파일 0 에러/0 경고 및 구식 Deprecated API 배제를 확인합니다.
+- **컴파일 무결성 검증**: Unity MCP를 통해 컴파일 0 에러/0 경고 및 구식 Deprecated API 배제를 확인합니다. (*Unity CLI 호출 일체 금지*)
 - **순수 소스코드 선별 커밋 및 푸시**: 실제 소스코드 및 프리팹만 선별 커밋(`git add Assets/ && git commit -m "[feat]..."`)하고 즉시 원격 푸시(`git push origin HEAD`)합니다.
 - **구현 기술문서 작성**: 개발 완료 후 `docs/implementations/` 경로에 기술문서를 작성하고 `GitManager`에게 인계합니다.
 

@@ -41,7 +41,7 @@
 - **Developer**: `unity-dev-workflow`, `unity-modify-workflow`, `unity-coding-rule`, `unity-work-rule`
 - **GitManager**: `git-branch-setup`, `git-pr-workflow`, `git-doc-sync`
 - **QA**: `unity-qa-workflow`, `unity-spec-audit`
-- **공통 인프라**: `agent-communication-logger`, `unity-cli-runner`
+- **공통 인프라 / 셋업**: `agent-communication-logger`, `unity-cli-runner` (초기 셋업 전용)
 
 ---
 

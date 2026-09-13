@@ -37,11 +37,8 @@ description: Developer 에이전트가 docs/tech_spec/ 분석, 작업 브랜치 
    - **[4단계] HUD/UI 및 연출**: 스코어보드, 파티클 이펙트/사운드 바인딩
 
 
-### [3단계: 백그라운드 컴파일 검증 및 물리적 커밋 검증 (Proof-of-Commit)]
-1. 코드 작성 후 아래 명령을 실행하여 컴파일 에러가 0건인지 자체 검증합니다:
-   ```bash
-   node .agents/skills/unity-cli-runner/scripts/unity_cli.js compile
-   ```
+### [3단계: 컴파일 상태 검증 및 물리적 커밋 검증 (Proof-of-Commit)]
+1. 코드 작성 후 Unity MCP를 통해 컴파일 에러가 0건인지 확인합니다. (*주의: Unity CLI 호출 일체 금지*)
 2. 표준 터미널 Git 명령어로 작업 브랜치에서 **순수 작업물(`Assets/`)만** 직접 커밋하고 원격으로 즉시 푸시합니다 (`docs/` 문서는 커밋하지 않고 로컬에 보존):
    ```bash
    git add Assets/
@@ -68,7 +65,7 @@ description: Developer 에이전트가 docs/tech_spec/ 분석, 작업 브랜치 
        ```markdown
        ### [구현 완료] [태스크명]
        - **작업 브랜치**: `feat/...`
-       - **C# 컴파일**: CLI 무인 컴파일 0 에러 / 0 경고 검증 완료
+       - **C# 컴파일**: 컴파일 0 에러 / 0 경고 검증 완료
        - **커밋 해시**: `[커밋해시]`
        - **주요 구현 파일**:
          - `Assets/Scripts/...`

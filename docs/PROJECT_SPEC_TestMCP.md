@@ -1,4 +1,4 @@
-﻿# 프로젝트 환경 명세서 (Project Environment Specification)
+# 프로젝트 환경 명세서 (Project Environment Specification)
 
 - **환경 설정 상태 (Setup Status)**: `[SETUP_COMPLETED]`
 
@@ -47,7 +47,7 @@
 | :--- | :--- | :--- | :--- |
 | **GitHub MCP** | MCP Server | PR 생성, 커밋 푸시, 이슈/리뷰 코멘트 등록 | PR 생성 및 자동 머지 인계 불가 |
 | **Unity MCP** | MCP Server | 에디터 플레이 제어, 콘솔 에러 읽기, 스크린샷 캡처 | QA 4대 검수 중 런타임/스크린샷 검증 불가 |
-| **Unity CLI** | CLI Tool | 백그라운드 무인 컴파일 검증 및 NUnit 단위 테스트 | Developer/QA의 오프라인 사전 검증 불가 |
+| **Unity CLI** | CLI Tool (Setup 전용) | 신규 프로젝트 초기 생성 및 환경 설치 (실무 에이전트 호출 금지) | 초기 유니티 프로젝트 자동 설치 불가 |
 | **Notion MCP** | MCP Server | 일일 학습일지 자동 생성 및 접힌 토글 피드백 | 작업 종료 시 Notion 자동 일지 작성 불가 |
 | **Rider MCP** | MCP Server | C# 네이밍 컨벤션 검사 및 IDE 진단 연동 | C# IDE 정적 분석 및 네이밍 실시간 검증 불가 |
 
