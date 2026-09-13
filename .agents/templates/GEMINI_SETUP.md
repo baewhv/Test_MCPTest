@@ -23,22 +23,27 @@
 3. **사용자 기획서 원본 등록 안내 (Strict Read-Only Specs)**:
    - 사용자가 구상한 게임 시스템/기능 기획서 원본을 `docs/specs/[기획서명].md` 경로에 배치하도록 안내합니다.
    - `docs/specs/` 하위 파일은 **엄격한 읽기 전용(Strict Read-Only)**으로 취급하며, 에이전트는 절대 임의 수정/덮어쓰기를 하지 않습니다.
-4. **Designer 에이전트 분석 연계**:
-   - `docs/specs/`에 기획서가 등록되면, `Designer` 에이전트(`unity-design-workflow`)를 통해 5대 무결성 검수를 수행하고 상세 기획 명세서(`docs/tech_spec/`) 및 실무 체크리스트(`docs/work/worklist.md`)를 도출합니다.
 
 ---
 
-## 2. 개발 운영 헌장으로의 전환 규칙 (Phase Transition Trigger)
+## 2. 개발 운영 헌장 전환 및 에셋 자동 배포 규칙 (Deploy & Transition Trigger)
 
 - **전환 조건**:
   1. `docs/PROJECT_SPEC.md`의 필수 정보가 모두 기입 완료됨.
   2. `docs/PROJECT_SPEC.md`의 환경 설정 상태가 `[SETUP_COMPLETED]`로 갱신됨.
-- **전환 실행 절차**:
-  - 위 조건이 충족되면, PM 에이전트는 프로젝트 루트의 `GEMINI.md`를 아래 템플릿의 내용으로 즉시 덮어씁니다:
-    - **소스 파일**: `.agents/templates/GEMINI_OPERATING.md`
-    - **대상 파일**: 루트 디렉토리의 `GEMINI.md`
-  - 덮어쓰기 완료 즉시 시스템은 **6대 전문 에이전트 표준 5단계 개발 라이프사이클(운영 모드)**로 공식 전환됩니다.
-  - PM은 사용자에게 "초기 환경 셋업 완료 및 정규 개발 라이프사이클 전환 완료"를 공식 보고합니다.
+- **전환 및 배포 2단계 실행 절차**:
+  1. **실전 운영 에셋 일괄 배포 (Deploy Operating Pack)**:
+     - PM 에이전트는 격리 보관되어 있던 실전 개발 에셋들을 `.agents/` 정규 경로로 일괄 복사 배포합니다:
+       ```powershell
+       Copy-Item -Path ".agents/templates/operating_pack/*" -Destination ".agents" -Recurse -Force
+       ```
+     - 이로써 6대 전문 에이전트(`pm`, `designer`, `developer`, `qa` 등) 및 18대 실전 스킬이 정식 활성화됩니다.
+  2. **운영 헌장 교체 (Swap to Operating Rules)**:
+     - 프로젝트 루트의 `GEMINI.md`를 아래 파일의 내용으로 완전히 덮어씁니다:
+       - **소스 파일**: `.agents/templates/GEMINI_OPERATING.md`
+       - **대상 파일**: 루트 디렉토리의 `GEMINI.md`
+  3. 덮어쓰기 완료 즉시 시스템은 **6대 전문 에이전트 표준 5단계 개발 라이프사이클(운영 모드)**로 공식 전환됩니다.
+  4. PM은 사용자에게 "초기 환경 셋업 완료, 운영 에셋 배포 완료 및 정규 개발 라이프사이클 전환"을 공식 보고합니다.
 
 ---
 
