@@ -45,5 +45,10 @@
 
 ---
 
-## 6. 아키텍처 피드백 및 회고 (Feedback & Retrospectives)
+## 6. 도구 인프라 및 MCP 레퍼런스 (Tooling & Infrastructure)
+- [Unity & Rider MCP 도구 전체 레퍼런스 (MCP_TOOLS.md)](../MCP_TOOLS.md): Unity MCP (48종) 및 Rider MCP (4종) 기능 명세 가이드
+
+---
+
+## 7. 아키텍처 피드백 및 회고 (Feedback & Retrospectives)
 - [에이전트 아키텍처 피드백 폴더 (`docs/llm_architecture_feedback/`)](./llm_architecture_feedback/): 시스템 구조 및 협업에 대한 기술 회고/피드백 보관소
