@@ -22,10 +22,13 @@ description: GEMINI_SETUP 초기 프로젝트 셋업 전용 Unity CLI 도구 (�
 ## 2. CLI 실행 명령어
 
 ```bash
-# 1. Unity 프로젝트 설치 상태 및 워크스페이스 에디터 버전 진단
+# 1. 시스템에 설치된 모든 Unity 에디터 버전 및 경로 목록 조회
+node .agents/templates/operating_pack/skills/unity-cli-runner/scripts/unity_cli.js versions
+
+# 2. 현재 Unity 프로젝트 설치 상태 및 docs/PROJECT_SPEC.md 버전 일치 진단
 node .agents/templates/operating_pack/skills/unity-cli-runner/scripts/unity_cli.js check
 
-# 2. 프로젝트 최상단에 신규 Unity 프로젝트 개설 및 설치 (-createProject)
+# 3. 프로젝트 최상단에 신규 Unity 프로젝트 개설 및 설치 (-createProject)
 node .agents/templates/operating_pack/skills/unity-cli-runner/scripts/unity_cli.js init
 ```
 

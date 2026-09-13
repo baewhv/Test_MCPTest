@@ -47,38 +47,67 @@ function getProjectSpec() {
 /**
  * 워크스페이스(OS) 내에 지정된 버전의 Unity.exe가 설치되어 있는지 탐색 및 검증
  */
+/**
+ * 시스템(Unity Hub 디렉토리)에 설치된 모든 Unity 에디터 버전 탐색
+ */
+function getInstalledUnityVersions() {
+  const hubEditorBase = 'C:\\Program Files\\Unity\\Hub\\Editor';
+  const versions = [];
+
+  if (fs.existsSync(hubEditorBase)) {
+    const entries = fs.readdirSync(hubEditorBase, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        const exePath = path.join(hubEditorBase, entry.name, 'Editor', 'Unity.exe');
+        if (fs.existsSync(exePath)) {
+          versions.push({
+            version: entry.name,
+            path: exePath
+          });
+        }
+      }
+    }
+  }
+
+  return versions;
+}
+
+/**
+ * 설치된 Unity 에디터 목록 출력 (versions / list)
+ */
+function listInstalledVersions() {
+  const versions = getInstalledUnityVersions();
+  console.log('==================================================');
+  console.log('[Unity CLI] 시스템에 설치된 Unity 에디터 목록');
+  console.log('==================================================');
+  if (versions.length === 0) {
+    console.log('설치된 Unity 에디터를 찾을 수 없습니다.');
+    console.log('Unity Hub를 통해 에디터를 설치해 주세요.');
+  } else {
+    versions.forEach((item, index) => {
+      console.log(`[${index + 1}] 버전: ${item.version}`);
+      console.log(`    경로: ${item.path}`);
+    });
+  }
+  console.log('==================================================');
+  return versions;
+}
+
 function findUnityEditor(specifiedVersion, specifiedPath) {
   // 1. 직접 명시된 경로가 유효한지 우선 확인
   if (specifiedPath && fs.existsSync(specifiedPath)) {
     return specifiedPath;
   }
 
-  const hubEditorBase = 'C:\\Program Files\\Unity\\Hub\\Editor';
+  const installed = getInstalledUnityVersions();
 
-  // 2. 버전이 명시되어 있는 경우 정확한 경로 확인
+  // 2. 버전이 명시되어 있는 경우 일치하는 에디터 탐색
   if (specifiedVersion) {
-    const candidate = path.join(hubEditorBase, specifiedVersion, 'Editor', 'Unity.exe');
-    if (fs.existsSync(candidate)) {
-      return candidate;
-    }
-  }
-
-  // 3. Unity Hub 디렉토리에서 설치된 버전 탐색
-  if (fs.existsSync(hubEditorBase)) {
-    const installed = fs.readdirSync(hubEditorBase);
-    if (installed.length > 0) {
-      if (specifiedVersion) {
-        const matched = installed.find(v => v.includes(specifiedVersion));
-        if (matched) {
-          const matchedPath = path.join(hubEditorBase, matched, 'Editor', 'Unity.exe');
-          if (fs.existsSync(matchedPath)) return matchedPath;
-        }
-      } else {
-        // 버전 미지정 시 설치된 첫 번째 에디터 사용
-        const fallbackPath = path.join(hubEditorBase, installed[0], 'Editor', 'Unity.exe');
-        if (fs.existsSync(fallbackPath)) return fallbackPath;
-      }
-    }
+    const matched = installed.find(item => item.version === specifiedVersion || item.version.includes(specifiedVersion));
+    if (matched) return matched.path;
+  } else if (installed.length > 0) {
+    // 3. 버전 미지정 시 설치된 첫 번째 에디터 사용
+    return installed[0].path;
   }
 
   return null;
@@ -178,8 +207,13 @@ switch (command) {
   case 'check':
     checkInstallation();
     break;
+  case 'versions':
+  case 'list':
+    listInstalledVersions();
+    break;
   default:
-    console.log('사용법: node unity_cli.js [init | check]');
-    console.log('  - init : docs/PROJECT_SPEC.md를 기반으로 Unity 프로젝트를 최상단에 개설/설치합니다.');
-    console.log('  - check: 현재 Unity 설치 상태 및 버전 일치 여부를 진단합니다.');
+    console.log('사용법: node unity_cli.js [check | versions | init]');
+    console.log('  - check   : 현재 Unity 설치 상태 및 docs/PROJECT_SPEC.md 버전 일치 여부를 진단합니다.');
+    console.log('  - versions: 시스템(Unity Hub)에 설치된 모든 Unity 에디터 버전 목록을 조회합니다.');
+    console.log('  - init    : docs/PROJECT_SPEC.md를 기반으로 Unity 프로젝트를 최상단에 개설/설치합니다.');
 }
