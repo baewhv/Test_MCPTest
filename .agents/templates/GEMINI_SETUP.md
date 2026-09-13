@@ -18,9 +18,16 @@
 2. **필수 환경 정보 기입 (PROJECT_SPEC.md)**:
    - `docs/PROJECT_SPEC.md`의 필수 항목을 사용자와 함께 점검 및 기입합니다:
      - GitHub Repository URL 및 기본 브랜치(`develop`, `main`)
-     - 새 PC의 Unity Editor 실행 경로(`Unity Editor Path`)
+     - `Unity Project Name` 및 `Unity Version` (또는 `Unity Editor Path`)
      - 대상 플랫폼 및 프로젝트 기본 사양
-3. **사용자 기획서 원본 등록 안내 (Strict Read-Only Specs)**:
+3. **Unity 프로젝트 설치 확인 및 자동 개설 (Unity Project Init)**:
+   - 프로젝트 최상단에 Unity 프로젝트(`ProjectSettings/ProjectVersion.txt`)가 설치되어 있는지 확인합니다.
+   - 미설치 상태인 경우, `docs/PROJECT_SPEC.md`의 명세를 기반으로 Unity CLI를 통해 프로젝트 최상단에 신규 프로젝트를 자동 개설합니다:
+     ```bash
+     node .agents/templates/operating_pack/skills/unity-cli-runner/scripts/unity_cli.js init
+     ```
+   - 워크스페이스에 해당 `Unity Version`이 설치되어 있지 않다면 즉시 중단(Fast-Fail)하고 Unity Hub를 통한 에디터 설치를 안내합니다.
+4. **사용자 기획서 원본 등록 안내 (Strict Read-Only Specs)**:
    - 사용자가 구상한 게임 시스템/기능 기획서 원본을 `docs/specs/[기획서명].md` 경로에 배치하도록 안내합니다.
    - `docs/specs/` 하위 파일은 **엄격한 읽기 전용(Strict Read-Only)**으로 취급하며, 에이전트는 절대 임의 수정/덮어쓰기를 하지 않습니다.
 

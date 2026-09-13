@@ -29,6 +29,7 @@
 
 ## 3. Unity 프로젝트 및 에셋 환경 명세 (Unity Specification)
 - **Unity Project Name**: 
+- **Unity Version**: 
 - **Unity Editor Path**: 
 - **Target Platform**: `PC, Mac & Linux Standalone`
 - **Asset Root**: `Assets/`

@@ -14,9 +14,29 @@ description: GEMINI_SETUP 초기 프로젝트 셋업 전용 Unity CLI 도구 (�
 
 ## 1. 전담 용도 (Intended Scope)
 - **`GEMINI_SETUP` 초기 환경 설정 전용**:
-  - 신규 프로젝트 셋업 시 로컬에 Unity Project가 설치/생성되지 않은 경우 빈 유니티 프로젝트를 자동 생성(`-createProject`)하거나 초기 패키지를 설치하는 용도로 한정 운용됩니다.
-  - 구체적인 설치 파라미터 및 실행 절차는 사용자 추가 가이드에 따라 `GEMINI_SETUP` 스크립트와 연계됩니다.
+  - 신규 프로젝트 복제 후 로컬에 Unity Project(`ProjectSettings/ProjectVersion.txt`)가 설치되지 않은 경우, `docs/PROJECT_SPEC.md`의 명세를 기반으로 프로젝트 최상단에 빈 유니티 프로젝트를 자동 생성(`-createProject`)합니다.
+  - 워크스페이스에 명시된 `Unity Version`이 실제로 설치되어 있는지 자동 탐색 및 검증합니다.
 
-## 2. 실무 에이전트 준수 수칙
-- `Developer`: C# 컴파일 확인 시 Unity CLI를 호출하지 않고 Unity MCP를 통해 무결성을 확인합니다.
-- `QA`: NUnit 테스트 검수 시 Unity CLI 무인 실행을 호출하지 않고 작성된 테스트 코드의 정적 무결성 및 엔진 런타임을 점검합니다.
+---
+
+## 2. CLI 실행 명령어
+
+```bash
+# 1. Unity 프로젝트 설치 상태 및 워크스페이스 에디터 버전 진단
+node .agents/templates/operating_pack/skills/unity-cli-runner/scripts/unity_cli.js check
+
+# 2. 프로젝트 최상단에 신규 Unity 프로젝트 개설 및 설치 (-createProject)
+node .agents/templates/operating_pack/skills/unity-cli-runner/scripts/unity_cli.js init
+```
+
+---
+
+## 3. 동작 절차 및 안전 게이트 (Safety Gates)
+
+1. **설치 여부 우선 판별 (Bypass Safety Gate)**:
+   - 프로젝트 최상단에 `ProjectSettings/ProjectVersion.txt`가 이미 존재하는 경우, 기존 프로젝트 환경을 보존하기 위해 신규 생성을 건너뜁니다.
+2. **Unity 버전 일치 검증 (Version Check Gate)**:
+   - `docs/PROJECT_SPEC.md`에 명시된 `Unity Version`을 읽어 시스템 경로(`C:\Program Files\Unity\Hub\Editor\<Version>\Editor\Unity.exe`)에 해당 버전이 설치되어 있는지 확인합니다.
+   - 일치하는 에디터가 없으면 Fast-Fail 에러를 출력하고 중단합니다.
+3. **최상단 프로젝트 개설 (Create Project)**:
+   - 검증된 Unity 실행 파일로 `Unity.exe -batchmode -createProject "<ProjectRoot>" -quit -logFile "<LogFile>"`를 무인 실행하여 프로젝트 최상단에 표준 Unity 프로젝트 구조를 자동 초기화합니다.
