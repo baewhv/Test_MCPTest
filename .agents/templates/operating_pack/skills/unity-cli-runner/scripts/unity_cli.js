@@ -32,13 +32,13 @@ function getProjectSpec() {
   }
 
   const content = fs.readFileSync(specPath, 'utf8');
-  const nameMatch = content.match(/Unity Project Name\s*:\s*`?([^`\r\n]+)`?/i);
+  const nameMatch = content.match(/Unity Project Name[^\n:]*:\s*[`"']?([^`"'\r\n]+)[`"']?/i);
   if (nameMatch && nameMatch[1].trim()) spec.projectName = nameMatch[1].trim();
 
-  const versionMatch = content.match(/Unity Version\s*:\s*`?([^`\r\n]+)`?/i);
+  const versionMatch = content.match(/Unity Version[^\n:]*:\s*[`"']?([^`"'\r\n]+)[`"']?/i);
   if (versionMatch && versionMatch[1].trim()) spec.unityVersion = versionMatch[1].trim();
 
-  const pathMatch = content.match(/Unity Editor Path\s*:\s*`?([^`\r\n]+)`?/i);
+  const pathMatch = content.match(/Unity Editor Path[^\n:]*:\s*[`"']?([^`"'\r\n]+)[`"']?/i);
   if (pathMatch && pathMatch[1].trim()) spec.unityEditorPath = pathMatch[1].trim();
 
   return spec;
