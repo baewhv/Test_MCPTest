@@ -5,8 +5,13 @@
 
 ---
 
-## 0. 프로젝트 환경 설정 상태 (Setup Status)
-- **상태**: `[SETUP_COMPLETED]`
+## 0. 프로젝트 개발 운영 상태 및 파이프라인 진단 트리거 (Operating Status & Trigger)
+- **상태**: `[SETUP_COMPLETED]` (정규 개발 라이프사이클 가동 중)
+- **공식 진단 트리거**: `"현재 상태는?"` (동의어: `"상태 확인"`, `"status"`)
+- 사용자가 트리거를 입력하면 에이전트는 즉시 5단계 개발 파이프라인 진행 상태를 진단하여 보고합니다:
+  1. 현재 작업 브랜치 및 활성 Living PR 번호 / 상태
+  2. `docs/work/status.md` 및 `docs/work/worklist.md` 기준 현재 실행 중인 Phase 및 Task
+  3. 최근 커밋 해시 및 다음에 이어받아야 할 전담 에이전트(Developer, QA, GitManager 등) 안내
 
 ---
 

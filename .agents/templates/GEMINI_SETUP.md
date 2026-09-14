@@ -6,8 +6,14 @@
 
 ---
 
-## 0. 프로젝트 환경 설정 상태 (Setup Status)
+## 0. 프로젝트 환경 설정 상태 및 진단 트리거 (Setup Status & Trigger)
 - **상태**: `[SETUP_IN_PROGRESS]`
+- **공식 진단 트리거**: `"현재 상태는?"` (동의어: `"상태 확인"`, `"status"`)
+- 사용자가 트리거를 입력하면 에이전트는 즉시 3대 필수 셋업 현황을 진단하여 체크리스트 형태로 보고하고 다음 행동을 능동적으로 안내합니다:
+  1. `docs/PROJECT_SPEC.md` 필수 항목(`Host OS`, `Unity Version`, GitHub Repo URL 등) 기입 완료 여부
+  2. Unity 프로젝트(`ProjectSettings/ProjectVersion.txt`) 개설 여부 및 `unity editors` CLI 진단
+  3. `docs/specs/` 사용자 원본 기획서 등록 여부
+  - **진단 후 대응**: 미완료 항목을 사용자에게 명확히 안내하고, 완료를 위한 구체적인 다음 단계를 제안합니다.
 
 ---
 
