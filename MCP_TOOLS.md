@@ -4,6 +4,44 @@
 
 ---
 
+## 0. 토큰 최적화 상태 기반 스마트 프록시 (Status-Driven Dynamic Diet Gateway)
+
+> [!TIP]
+> **턴당 9,000~10,000 토큰 절감 (약 90~100% 압축)**
+> Unity MCP의 48종 도구 스키마를 그대로 로드하면 매 턴 8,000~10,000 토큰이 소모됩니다.
+> 스마트 프록시([`tools/mcp_filter_proxy.js`](tools/mcp_filter_proxy.js))는 `docs/work/status.md`의 현재 작업 단계를 실시간으로 읽어, **지금 일하고 있는 전문 에이전트에게 필요한 최소한의 도구(0~6종)만 동적으로 선별 노출**합니다.
+
+### [작업 단계별 동적 도구 노출 분기표]
+| 현재 작업 단계 (`status.md`) | 동적 노출 도구 목록 (Active Tools) | 예상 도구 토큰 | 절감율 |
+| :--- | :--- | :---: | :---: |
+| **`[Developer]` 구현 단계** | `read_console`, `find_gameobjects`, `manage_prefabs`, `manage_components`, `manage_scriptable_object` (5종) | ~800 토큰 | **92% 절감** |
+| **`[QA]` 검수 단계** | `read_console`, `find_gameobjects`, `manage_scene`, `manage_camera`, `run_tests`, `get_test_job` (6종) | ~900 토큰 | **91% 절감** |
+| **`[Artist]` 리소스/VFX 단계** | `manage_camera`, `manage_prefabs` (2종) | ~300 토큰 | **97% 절감** |
+| **`[Designer / Git / PM]`** | 유니티 에디터 조작 불필요 (0종 노출) | **0 토큰** | **100% 절감** |
+| **`[대기 / 기본]`** | `read_console` (에러 확인용 1종) | ~150 토큰 | **98% 절감** |
+
+### [프록시 구동 및 연동 2단계]
+1. **프록시 실행**:
+   ```bash
+   node tools/mcp_filter_proxy.js
+   ```
+   *(포트 8081에서 수신하여 유니티 에디터 8080 포트로 동적 중계)*
+2. **`~/.gemini/config/mcp_config.json` 설정**:
+   ```json
+   {
+     "mcpServers": {
+       "unityMCP": {
+         "serverUrl": "http://127.0.0.1:8081/mcp",
+         "type": "http",
+         "disabled": false
+       }
+     }
+   }
+   ```
+3. **거버넌스 방화벽 차단 도구**: `execute_code`, `apply_text_edits`, `manage_script`, `create_script`, `delete_script`, `get_sha` 등 헌장 금지 도구 6종 상시 원천 차단
+
+---
+
 ## 1. JetBrains Rider MCP 도구 목록 (4종)
 
 Rider IDE와의 실시간 정적 분석 및 에디터 뷰포트 연동을 제공하는 전용 도구입니다.
