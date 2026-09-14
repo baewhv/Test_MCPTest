@@ -1,4 +1,4 @@
-﻿# 프로젝트 환경 명세서 (Project Environment Specification)
+# 프로젝트 환경 명세서 (Project Environment Specification)
 
 - **환경 설정 상태 (Setup Status)**: `[SETUP_COMPLETED]`
 
@@ -22,9 +22,12 @@
 
 ---
 
-## 3. Unity 프로젝트 및 에셋 환경 명세 (Unity Specification)
+## 3. 호스트 OS 및 Unity 환경 명세 (Environment Specification)
+- **Host OS (작업 환경 운영체제)**: `Windows` <!-- `Windows` 또는 `macOS` 지정 -->
 - **Unity Project Name**: `TestMCP`
+- **Unity Version**: `6000.5.8f1`
 - **Unity Editor Path**: `C:\Program Files\Unity\Hub\Editor\6000.5.8f1\Editor\Unity.exe`
+  - *(macOS 예시: `/Applications/Unity/Hub/Editor/6000.5.8f1/Unity.app/Contents/MacOS/Unity`)*
 - **Target Platform**: `PC, Mac & Linux Standalone`
 - **Asset Root**: `Assets/`
 - **Raw Imports Root (Submodule Boundary)**: `Assets/_Imports/`
@@ -43,11 +46,11 @@
 ---
 ## 5. 필수 5대 도구 인프라 명세 (Essential Tools & MCPs)
 
-| 도구 명칭 | 구분 | 주요 전담 역할 | 미연결 시 영향 (Blocker) |
+| 도구 명칭 | 구분 | 주요 전담 역할 | 우선순위 및 대체 방안 (Fallback) |
 | :--- | :--- | :--- | :--- |
-| **GitHub MCP** | MCP Server | PR 생성, 커밋 푸시, 이슈/리뷰 코멘트 등록 | PR 생성 및 자동 머지 인계 불가 |
-| **Unity MCP** | MCP Server | 에디터 플레이 제어, 콘솔 에러 읽기, 스크린샷 캡처 | QA 4대 검수 중 런타임/스크린샷 검증 불가 |
-| **Unity CLI** | CLI Tool | 백그라운드 무인 컴파일 검증 및 NUnit 단위 테스트 | Developer/QA의 오프라인 사전 검증 불가 |
-| **Notion MCP** | MCP Server | 일일 학습일지 자동 생성 및 접힌 토글 피드백 | 작업 종료 시 Notion 자동 일지 작성 불가 |
-| **Rider MCP** | MCP Server | C# 네이밍 컨벤션 검사 및 IDE 진단 연동 | C# IDE 정적 분석 및 네이밍 실시간 검증 불가 |
+| **GitHub MCP** | MCP Server | PR 생성, 커밋 푸시, 이슈/리뷰 코멘트 등록 | 필수 (미연결 시 PR 생성 및 자동 머지 인계 불가) |
+| **Unity MCP** | MCP Server | 에디터 플레이 제어, 콘솔 에러 읽기, 런타임/시각 검수 | **최우선 (1순위)** / 에디터 미기동 시 Unity CLI로 자동 대체 |
+| **Unity CLI** | CLI Tool | 백그라운드 무인 컴파일 검증, NUnit 무인 테스트, 신규 프로젝트 셋업 | **대체 및 셋업 (2순위)** / Unity MCP 부재 시 무인 검증 전담 |
+| **Notion MCP** | MCP Server | 일일 학습일지 자동 생성 및 접힌 토글 피드백 | 선택 (미연결 시 로컬 로그 보존) |
+| **Rider MCP** | MCP Server | C# 네이밍 컨벤션 검사 및 IDE 진단 연동 | 선택 (미연결 시 정적 코딩룰 자체 검증) |
 
