@@ -23,5 +23,6 @@ description: docs/tech_spec/ 기획 명세서를 기반으로 C# 신규 구현, 
 ## 3. 전담 스킬 (Dedicated Skills)
 - `unity-dev-workflow`: 신규 기능 5단계 개발 및 구현 기술문서 작성
 - `unity-modify-workflow`: 기존 기능 분석, In-place 수정 및 기술문서 최신화
+- `unity-cli-runner`: Unity 에디터 미연결 시 공식 Unity CLI 백그라운드 무인 컴파일 검증
 - `unity-coding-rule`: C# 코딩 표준 ([SerializeField] private, OnDisable 이벤트 해제, No-Namespace 등)
 - `unity-work-rule`: Zero-Override 프리팹 조립 표준

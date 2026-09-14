@@ -14,7 +14,7 @@ description: QA 에이전트가 PR 수신 시 작업 브랜치 변경 파일만 
 
 1. **2-Tier 하이브리드 검수 전략 (Targeted Scope & Full Regression)**:
    - **Tier 1 (타겟 신규 테스트 및 정적 검수)**:
-     - 신규 NUnit 테스트 작성 및 4대 정적/씬 검수는 `git diff --name-only origin/develop`로 식별된 **이번 PR 변경/생성 파일 및 구현 기술문서([docs/implementations/](file:///C:/Users/KGA1/Desktop/TestMCP/docs/implementations)) 대상에만 엄격히 한정**합니다.
+     - 신규 NUnit 테스트 작성 및 4대 정적/씬 검수는 `git diff --name-only origin/develop`로 식별된 **이번 PR 변경/생성 파일 및 구현 기술문서(`docs/implementations/`) 대상에만 엄격히 한정**합니다.
      - 이번 작업과 무관한 기존 파일이나 기존 테스트 코드를 불필요하게 열람(`view_file`)하거나 수정하지 않습니다.
    - **Tier 2 (전체 무결성 점검)**:
      - 4대 런타임/정적 검수 및 NUnit 무인 회귀 테스트(100% Pass)를 확인하여 기존 기능과의 무결성을 검증합니다.

@@ -22,5 +22,6 @@ description: PR 단위 타겟 부분 검수(unity-qa-workflow), 프로젝트 종
 
 ## 3. 전담 스킬 (Dedicated Skills)
 - `unity-qa-workflow`: PR 단위 타겟 부분 검수, NUnit 작성, 4대 검수 및 PR Approve 리뷰 제출
+- `unity-cli-runner`: Unity 에디터 미연결 시 공식 Unity CLI 백그라운드 NUnit 무인 테스트 및 컴파일 검증
 - `unity-qa-full-inspect`: 프로젝트 종합 전체 전수 검수 및 보고서 발행
 - `unity-spec-audit`: 기획-코드-문서 삼각 정합성 정밀 감사

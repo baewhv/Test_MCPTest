@@ -1,19 +1,63 @@
 const fs = require('fs');
 const https = require('https');
+const path = require('path');
+const { execSync } = require('child_process');
+
+function findProjectRoot() {
+  let curr = __dirname;
+  while (curr !== path.dirname(curr)) {
+    if (fs.existsSync(path.join(curr, 'GEMINI.md')) || fs.existsSync(path.join(curr, '.git'))) {
+      return curr;
+    }
+    curr = path.dirname(curr);
+  }
+  return process.cwd();
+}
+
+const projectRoot = findProjectRoot();
 
 function getGitHubToken() {
-  const mcpConfigPath = 'C:\\Users\\KGA1\\.gemini\\config\\mcp_config.json';
+  const homeDir = process.env.USERPROFILE || process.env.HOME || '';
+  const mcpConfigPath = path.join(homeDir, '.gemini', 'config', 'mcp_config.json');
   if (fs.existsSync(mcpConfigPath)) {
-    const mcpConfig = JSON.parse(fs.readFileSync(mcpConfigPath, 'utf8'));
-    const githubMcp = mcpConfig.mcpServers && mcpConfig.mcpServers.github;
-    if (githubMcp && githubMcp.env) {
-      return githubMcp.env.GITHUB_PERSONAL_ACCESS_TOKEN || githubMcp.env.GITHUB_TOKEN || '';
+    try {
+      const mcpConfig = JSON.parse(fs.readFileSync(mcpConfigPath, 'utf8'));
+      const githubMcp = mcpConfig.mcpServers && mcpConfig.mcpServers.github;
+      if (githubMcp && githubMcp.env) {
+        const token = githubMcp.env.GITHUB_PERSONAL_ACCESS_TOKEN || githubMcp.env.GITHUB_TOKEN;
+        if (token) return token;
+      }
+    } catch (e) {
+      // Ignore JSON parse error
     }
   }
-  return process.env.GITHUB_TOKEN || '';
+  return process.env.GITHUB_PERSONAL_ACCESS_TOKEN || process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
 }
 
 const token = getGitHubToken();
+
+function getRepoInfo() {
+  try {
+    const remoteUrl = execSync('git remote get-url origin', { cwd: projectRoot, encoding: 'utf8' }).trim();
+    const match = remoteUrl.match(/github\.com[:/]([^/]+)\/([^/.]+)(?:\.git)?/i);
+    if (match) {
+      return { owner: match[1], repo: match[2] };
+    }
+  } catch (e) {
+    // Fall back
+  }
+
+  const specPath = path.join(projectRoot, 'docs', 'PROJECT_SPEC.md');
+  if (fs.existsSync(specPath)) {
+    const content = fs.readFileSync(specPath, 'utf8');
+    const match = content.match(/github\.com\/([^/\s]+)\/([^/\s.]+)/i);
+    if (match) {
+      return { owner: match[1], repo: match[2] };
+    }
+  }
+
+  return { owner: 'baewhv', repo: 'Test_MCPTest' };
+}
 
 function githubRequest(method, endpoint, data) {
   return new Promise((resolve, reject) => {
@@ -52,8 +96,7 @@ function githubRequest(method, endpoint, data) {
 }
 
 async function run() {
-  const owner = 'baewhv';
-  const repo = 'Test_MCPTest';
+  const { owner, repo } = getRepoInfo();
 
   console.log(`=== GitHub Issues 점검 및 동기화: ${owner}/${repo} ===\n`);
   
@@ -65,7 +108,7 @@ async function run() {
   const processedAccepted = [];
   const processedCompleted = [];
 
-  const worklistPath = 'C:\\Users\\KGA1\\Desktop\\TestMCP\\docs\\work\\worklist.md';
+  const worklistPath = path.join(projectRoot, 'docs', 'work', 'worklist.md');
   let worklistContent = fs.existsSync(worklistPath) ? fs.readFileSync(worklistPath, 'utf8') : '';
 
   for (const issue of issues) {

@@ -43,9 +43,24 @@ description: Developer 에이전트가 docs/tech_spec/ 변경사항을 분석하
 ### [4단계: implementations 기술문서 및 ARCHITECTURE 최신화 (네이티브 도구 사용)]
 1. 네이티브 파일 도구를 사용하여 `docs/implementations/[태스크명]_impl.md` 및 `docs/ARCHITECTURE.md`의 변경사항을 갱신합니다.
 
-### [5단계: 상태 현황판 갱신 및 GitManager PR 인계]
-1. `docs/work/status.md`의 `**진행 상태**`를 `[Developer] [기능명] 수정 및 커밋 완료 ➔ git_manager에게 PR 발행 인계`로 갱신합니다.
-2. 소통 로거를 실행하고 턴을 종료합니다:
+### [5단계: GitHub PR 수정 요약 댓글 작성, 상태판 갱신 및 QA 직접 인계]
+1. **GitHub PR 댓글 자동 작성**:
+   - `docs/work/status.md`에 명시된 활성 PR 번호(#nn)를 확인합니다.
+   - GitHub MCP `add_issue_comment` 도구를 호출하여 해당 PR에 수정 요약 댓글을 등록합니다:
+     - **Issue/PR Number**: `[PR 번호]`
+     - **Comment Body**:
+       ```markdown
+       ### [수정/리팩토링 완료] [태스크명]
+       - **작업 브랜치**: `feat/...`
+       - **C# 컴파일**: 컴파일 0 에러 / 0 경고 검증 완료
+       - **커밋 해시**: `[커밋해시]`
+       - **수정 파일 목록**:
+         - `Assets/Scripts/...`
+       - **기술문서 최신화**: `docs/implementations/[태스크명]_impl.md`
+       - **QA 검수 요청**: 타겟 NUnit 테스트 및 4대 무인 검수 진행 요청
+       ```
+2. `docs/work/status.md`의 `**진행 상태**`를 `[Developer] [태스크명] 수정 및 커밋 완료 (PR 댓글 등록 완료) ➔ QA에게 검수 인계`로 갱신합니다.
+3. 소통 로거를 실행하여 QA에게 직접 검수를 요청하고 턴을 종료합니다:
    ```bash
-   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Developer" --to "GitManager" --type "PR 요청" --msg "[기능명] C# 코드 수정 및 직접 커밋 완료, PR 발행 요청"
+   node .agents/skills/agent-communication-logger/scripts/log_comm.js --from "Developer" --to "QA" --type "QA 검수 요청" --msg "[태스크명] C# 수정 및 커밋 완료, PR #nn 댓글 등록 완료, QA 검수 요청"
    ```
