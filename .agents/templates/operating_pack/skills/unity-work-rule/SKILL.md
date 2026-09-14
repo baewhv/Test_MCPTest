@@ -63,3 +63,11 @@ description: 씬 오버라이드 0건(Zero-Override), 독립 완제품 프리팹
    - "원클릭 빌더(One-Click Build)", "자동 씬 생성기", "메뉴 아이템(`[MenuItem]`) 일괄 배치기" 등 런타임 게임 로직과 무관한 과도한 에디터 스크립트 작성은 엄격히 지양합니다.
 3. **표준 해결 원칙**:
    - 모든 기능 구현은 에디터 툴 코드가 아닌 **순수 런타임 표준 컴포넌트(`MonoBehaviour`), Zero-Override 프리팹 우선 조립 및 인스펙터 직렬화 바인딩**으로 완결합니다.
+
+---
+
+## 6. 마크다운 기술문서 경로 작성 표준 (Markdown Path Standards)
+1. **절대경로(`file:///`, `C:/`, `/Users/`) 기입 전면 금지**:
+   - 로컬 머신 계정명 노출 방지(개인정보 보호), 크로스 플랫폼(Windows / macOS) 호환성 보장 및 GitHub 웹 뷰어 링크 정상 작동을 위해 로컬 절대경로 기입을 전면 금지합니다.
+2. **상대경로(Relative Path) 작성 필수**:
+   - 모든 기술문서(`docs/tech_spec/`, `docs/implementations/`, `docs/ARCHITECTURE.md` 등) 내 문서/에셋 상호 참조 링크는 작성 대상 파일 위치 기준의 **상대경로(`../`, `./`)**로만 작성해야 합니다.

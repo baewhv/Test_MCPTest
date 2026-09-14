@@ -67,11 +67,11 @@
 
 | 파일 경로 | 주요 수정 내용 |
 | :--- | :--- |
-| [`.agents/agents/developer.md`](file:///C:/Users/KGA1/Desktop/Test_MCPv2/.agents/agents/developer.md) | - Unity C# 코딩 및 기술문서 작성만 전담 (테스트 코드 작성/실행 일체 금지)<br>- `docs/implementations/[태스크명]_impl.md` 작성 및 `ARCHITECTURE.md` 관계도 1줄 동기화 의무화<br>- 신규 기능 개발 시작 시 GitManager에게 develop 최신 패치 요청 명시 |
-| [`.agents/agents/git_manager.md`](file:///C:/Users/KGA1/Desktop/Test_MCPv2/.agents/agents/git_manager.md) | - Git 관련 업무(버전 관리/PR/Issue)만 독점 전담 (코드/문서 직접 작성 금지)<br>- **신규 작업 브랜치/Worktree 생성 전 develop fetch & pull 필수 선행 규칙 추가** |
-| [`.agents/agents/qa.md`](file:///C:/Users/KGA1/Desktop/Test_MCPv2/.agents/agents/qa.md) | - `docs/implementations/` 명세를 기반으로 **NUnit 단위/통합 테스트 코드 직접 작성 및 4대 필수 검수 전담**<br>- `create_script` 호출 지양 및 `write_to_file` + `unity-cli-runner` 안전 실행 수칙 반영 |
-| [`docs/ARCHITECTURE.md`](file:///C:/Users/KGA1/Desktop/Test_MCPv2/docs/ARCHITECTURE.md) | - 줄글 설명 제거 후 순수 참조 기반 관계도(상호작용, 충돌, 이벤트, 바인딩, Mermaid 다이어그램)로 경량화 |
-| [`GEMINI.md`](file:///C:/Users/KGA1/Desktop/Test_MCPv2/GEMINI.md) | - 작업 문서 목록에 `docs/implementations/` (Developer 개별 구현 기술문서 폴더) 추가 |
+| [`developer.md`](../../.agents/templates/operating_pack/agents/developer.md) | - Unity C# 코딩 및 기술문서 작성만 전담 (테스트 코드 작성/실행 일체 금지)<br>- `docs/implementations/[태스크명]_impl.md` 작성 및 `ARCHITECTURE.md` 관계도 1줄 동기화 의무화<br>- 신규 기능 개발 시작 시 GitManager에게 develop 최신 패치 요청 명시 |
+| [`git-manager.md`](../../.agents/templates/operating_pack/agents/git-manager.md) | - Git 관련 업무(버전 관리/PR/Issue)만 독점 전담 (코드/문서 직접 작성 금지)<br>- **신규 작업 브랜치/Worktree 생성 전 develop fetch & pull 필수 선행 규칙 추가** |
+| [`qa.md`](../../.agents/templates/operating_pack/agents/qa.md) | - `docs/implementations/` 명세를 기반으로 **NUnit 단위/통합 테스트 코드 직접 작성 및 4대 필수 검수 전담**<br>- `create_script` 호출 지양 및 `write_to_file` + `unity-cli-runner` 안전 실행 수칙 반영 |
+| [`ARCHITECTURE.md`](../ARCHITECTURE.md) | - 줄글 설명 제거 후 순수 참조 기반 관계도(상호작용, 충돌, 이벤트, 바인딩, Mermaid 다이어그램)로 경량화 |
+| [`GEMINI.md`](../../GEMINI.md) | - 작업 문서 목록에 `docs/implementations/` (Developer 개별 구현 기술문서 폴더) 추가 |
 
 ---
 
