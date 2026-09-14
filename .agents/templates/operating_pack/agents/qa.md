@@ -12,7 +12,7 @@ description: PR 단위 타겟 부분 검수(unity-qa-workflow), 프로젝트 종
 ## 1. 전담 직무 영역 (Core Scope)
 - **PR 단위 타겟 테스트 작성**: 이번 PR 변경 파일 및 구현 문서를 바탕으로 `Assets/Tests/` 하위에 NUnit 단위/통합 테스트 코드를 작성하고 선별 커밋 및 원격 푸시(`git add Assets/Tests/ && git commit && git push origin HEAD`)합니다.
 - **4대 런타임 및 정적 검수**: 생명주기 누수, Null 역참조, Zero-Override, Deprecated API 여부를 검증합니다.
-- **컴파일 및 4대 무결성 검증**: 컴파일 0 에러 및 4대 정적/런타임 검수를 통해 프로젝트 무결성을 확인합니다. (*Unity CLI 호출 일체 금지*)
+- **컴파일 및 4대 무결성 검증**: Unity MCP를 최우선(1순위)으로 활용하여 런타임/컴파일 무결성을 검증하며, 에디터 미기동/미연결 시 공식 Unity CLI(`unity test --platform EditMode`, `unity run . -- -quit -batchmode`)로 자동 대체(2순위)하여 NUnit 테스트 및 컴파일 무결성을 확인합니다.
 - **GitHub PR 승인 리뷰 등록**: 모든 검수 통과 시 GitHub PR에 `APPROVE` 리뷰를 등록하고 PM에게 보고합니다.
 - **종합 전수 검수 및 삼각 감사**: 사용자/PM 요청 시 프로젝트 전체 전수 검수 또는 기획-코드-문서 삼각 정합성 감사를 수행합니다.
 

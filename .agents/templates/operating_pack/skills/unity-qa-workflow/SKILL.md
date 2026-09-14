@@ -17,14 +17,15 @@ description: QA 에이전트가 PR 수신 시 작업 브랜치 변경 파일만 
      - 신규 NUnit 테스트 작성 및 4대 정적/씬 검수는 `git diff --name-only origin/develop`로 식별된 **이번 PR 변경/생성 파일 및 구현 기술문서([docs/implementations/](file:///C:/Users/KGA1/Desktop/TestMCP/docs/implementations)) 대상에만 엄격히 한정**합니다.
      - 이번 작업과 무관한 기존 파일이나 기존 테스트 코드를 불필요하게 열람(`view_file`)하거나 수정하지 않습니다.
    - **Tier 2 (전체 무결성 점검)**:
-     - 4대 런타임/정적 검수 및 컴파일 에러 0건을 확인하여 기존 기능과의 무결성을 검증합니다. (*Unity CLI 배치 러너는 셋업 전용으로 전환되어 실무 검수에서 호출 금지*)
+     - 4대 런타임/정적 검수 및 NUnit 무인 회귀 테스트(100% Pass)를 확인하여 기존 기능과의 무결성을 검증합니다.
+     - **검증 2중화**: Unity 에디터 연결 시 Unity MCP를 최우선 사용하며, 에디터 미기동 시 공식 `unity test --platform EditMode`로 무인 백그라운드 테스트를 자동 대체합니다.
 2. **비즈니스 로직 수정 절대 금지 & 즉시 반려 (Strict Fast-Fail Boundary)**:
    - QA 에이전트는 `Assets/Scripts/` 하위의 게임 비즈니스 로직 코드를 **단 한 줄도 직접 수정할 수 없습니다**.
    - 테스트 코드 작성 중 구현 누락, 컴파일 에러, 기능 결함 발견 시 **절대로 직접 코드를 고치지 말고 즉시 `[3단계: QA 반려 (5-C)]`로 직행**하여 Developer에게 수정을 요청합니다.
-3. **표준 네이티브 도구 의무화 & Unity CLI 호출 금지**:
+3. **표준 네이티브 도구 의무화 및 검증 2중 파이프라인**:
    - 테스트 코드(`Assets/Tests/`) 작성/수정 및 `docs/` 문서 갱신은 반드시 표준 파일 도구(`write_to_file`, `replace_file_content`)를 사용합니다.
-   - `unityMCP`의 `apply_text_edits`, `manage_script`, `create_script`, `get_sha`, `execute_code` 사용을 **전면 금지**합니다.
-   - **Unity CLI(`unity_cli.js`)는 초기 셋업 전용 도구이므로 일반 실무 검수에서 호출을 전면 금지(제외)**합니다.
+   - `unityMCP`의 C# 코드 임의 수정/실행(`apply_text_edits`, `execute_code`) 사용을 **전면 금지**합니다.
+   - **무인 테스트 실행**: 에디터 연결 상태에서는 Unity MCP를 활용하고, 에디터 미기동 시에는 공식 `unity test`를 통해 백그라운드 무인 검증을 수행합니다.
 
 ---
 

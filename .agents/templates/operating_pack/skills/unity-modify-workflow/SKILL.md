@@ -24,7 +24,9 @@ description: Developer 에이전트가 docs/tech_spec/ 변경사항을 분석하
 ### [3단계: 핀포인트 In-place C# 코드 수정 (.meta GUID 보존) 및 컴파일 검증]
 1. **`delete_script` 및 `execute_code` 절대 금지**:
    - 기존 스크립트를 삭제 후 재생성하거나 execute_code로 C# 파일 I/O를 수행하지 않고, 로컬 파일 시스템 도구(In-place Overwrite 또는 `replace_file_content`)로 파일 내용만 직접 수정하여 **`.meta` 파일의 고유 GUID를 100% 보존**합니다.
-2. Unity MCP를 통해 컴파일 에러가 0건인지 확인합니다. (*주의: Unity CLI 호출 일체 금지*)
+2. **컴파일 에러 0건 검증 (Unity MCP 최우선 & Unity CLI 자동 대체)**:
+   - **1순위 (Unity MCP)**: Unity MCP 도구가 연결되어 있다면 `read_console`을 통해 에디터 컴파일 에러 0건을 확인합니다.
+   - **2순위 (Unity CLI 대체)**: Unity MCP 미연결 또는 에디터 미기동 시, 공식 `unity` CLI(`unity run . -- -quit -batchmode`)를 통해 백그라운드 무인 컴파일 무결성을 검증합니다.
 3. 표준 터미널 Git 명령어로 작업 브랜치에서 **순수 작업물(`Assets/`)만** 직접 커밋합니다 (`docs/` 문서는 로컬 보존):
    ```bash
    git add Assets/

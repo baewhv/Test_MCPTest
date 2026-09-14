@@ -48,10 +48,15 @@
   2. `docs/PROJECT_SPEC.md`의 환경 설정 상태가 `[SETUP_COMPLETED]`로 갱신됨.
 - **전환 및 배포 2단계 실행 절차**:
   1. **실전 운영 에셋 일괄 배포 (Deploy Operating Pack)**:
-     - PM 에이전트는 격리 보관되어 있던 실전 개발 에셋들을 `.agents/` 정규 경로로 일괄 복사 배포합니다:
-       ```powershell
-       Copy-Item -Path ".agents/templates/operating_pack/*" -Destination ".agents" -Recurse -Force
-       ```
+     - PM 에이전트는 `docs/PROJECT_SPEC.md`의 `Host OS`를 확인하고, 격리 보관되어 있던 실전 개발 에셋들을 `.agents/` 정규 경로로 일괄 복사 배포합니다:
+       - **Windows (PowerShell)**:
+         ```powershell
+         Copy-Item -Path ".agents/templates/operating_pack/*" -Destination ".agents" -Recurse -Force
+         ```
+       - **macOS / Linux (Zsh/Bash)**:
+         ```bash
+         cp -R .agents/templates/operating_pack/* .agents/
+         ```
      - 이로써 6대 전문 에이전트(`pm`, `designer`, `developer`, `qa` 등) 및 18대 실전 스킬이 정식 활성화됩니다.
   2. **운영 헌장 교체 (Swap to Operating Rules)**:
      - 프로젝트 루트의 `GEMINI.md`를 아래 파일의 내용으로 완전히 덮어씁니다:

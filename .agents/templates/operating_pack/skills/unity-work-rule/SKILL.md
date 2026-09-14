@@ -43,9 +43,10 @@ description: 씬 오버라이드 0건(Zero-Override), 독립 완제품 프리팹
 ## 4. unityMCP/execute_code 및 코드 편집 도구 오남용 전면 금지 및 네이티브 도구 우선 원칙
 1. **코드 I/O, 문서 작성 및 Git 조작에 unityMCP 사용 절대 금지**:
    - 마크다운 문서(`*.md`) 작성/수정, 소스 코드 I/O(`apply_text_edits`, `manage_script`, `create_script`, `get_sha`), Git 명령(`git status`, `git commit` 등)을 유니티 MCP 도구 또는 C# 리플렉션(`unityMCP/execute_code`)을 통해 실행하는 비효율적 안티패턴을 전면 금지합니다.
-2. **unityMCP run_tests 및 Unity CLI 실무 호출 금지**:
-   - `unityMCP:run_tests` 사용을 전면 금지합니다.
-   - `Unity CLI`(`unity_cli.js`)는 GEMINI_SETUP 단계의 초기 프로젝트 생성 전용 도구이므로 일반 실무 에이전트의 작업/검수 중 호출을 전면 금지합니다.
+2. **Unity 검증 2중 파이프라인 (UnityMCP 1순위 최우선 & Unity CLI 자동 폴백)**:
+   - **1순위 (Unity MCP 최우선)**: 유니티 에디터가 실행 중이고 Unity MCP 도구가 연결되어 있다면, 에디터 콘솔 에러 조회(`read_console`), 씬 인스펙션(`find_gameobjects`), 런타임 제어를 **최우선 검증 수단**으로 사용합니다.
+   - **2순위 (Unity CLI 자동 대체 / 폴백)**: 유니티 에디터가 꺼져 있거나 Unity MCP를 찾을 수 없는 경우, 작업을 중단하지 않고 공식 `unity` CLI를 통해 백그라운드 무인 컴파일 검증(`unity run . -- -quit -batchmode`) 및 NUnit 무인 테스트(`unity test --platform EditMode`)로 자동 대체(Fallback)하여 검증을 완결합니다.
+   - 단, `unityMCP`를 통한 C# 코드 수정 및 터미널 우회(`apply_text_edits`, `execute_code`)는 여전히 전면 금지됩니다.
 3. **네이티브 도구 사용 의무**:
    - 파일 생성/수정: 표준 파일 도구(`write_to_file`, `replace_file_content`) 사용
    - Git 및 CLI 명령: 표준 터미널 도구(`run_command`) 사용

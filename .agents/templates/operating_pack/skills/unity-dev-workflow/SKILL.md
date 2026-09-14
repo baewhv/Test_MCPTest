@@ -38,7 +38,13 @@ description: Developer 에이전트가 docs/tech_spec/ 분석, 작업 브랜치 
 
 
 ### [3단계: 컴파일 상태 검증 및 물리적 커밋 검증 (Proof-of-Commit)]
-1. 코드 작성 후 Unity MCP를 통해 컴파일 에러가 0건인지 확인합니다. (*주의: Unity CLI 호출 일체 금지*)
+1. **컴파일 에러 0건 검증 (Unity MCP 최우선 & Unity CLI 자동 대체)**:
+   - **1순위 (Unity MCP)**: Unity MCP 도구가 연결되어 있다면 `read_console`을 통해 에디터 컴파일 에러 0건을 확인합니다.
+   - **2순위 (Unity CLI 대체)**: Unity MCP 미연결 또는 에디터 미기동 시, 공식 `unity` CLI를 통해 백그라운드 무인 컴파일 검증을 수행합니다:
+     ```bash
+     unity run . -- -quit -batchmode
+     ```
+     *(Exit Code 0 확인 시 컴파일 무결성 통과)*
 2. 표준 터미널 Git 명령어로 작업 브랜치에서 **순수 작업물(`Assets/`)만** 직접 커밋하고 원격으로 즉시 푸시합니다 (`docs/` 문서는 커밋하지 않고 로컬에 보존):
    ```bash
    git add Assets/
